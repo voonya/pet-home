@@ -2,7 +2,7 @@
 The idea of out project is to create application which will help people who are looking for a temporary house for their pets, find it. Others can earn money or simply take care of pets.
 
 <p align="center">
-  <img width="800" height="400" src="https://media.istockphoto.com/photos/domestic-pets-hanging-over-white-website-banner-picture-id1006322426?k=20&m=1006322426&s=612x612&w=0&h=4vcbsebs6CWO_kQCj441e80w9e9QtK2HxK208TkGmSo=">
+  <img width="900" height="300" src="https://media.istockphoto.com/photos/domestic-pets-hanging-over-white-website-banner-picture-id1006322426?k=20&m=1006322426&s=612x612&w=0&h=4vcbsebs6CWO_kQCj441e80w9e9QtK2HxK208TkGmSo=">
 </p>
 
 ## Use cases
