@@ -8,7 +8,7 @@ The idea of out project is to create application which will help people who are 
 
 ## Roles
 There are two roles in our system:
-  1. Owner, the onwer of the pet.
+  1. Owner, the owner of the pet.
   2. Holder, person, who agreed to look after the pet.
   3. User, includes two previous roles, that has certain possibilities.
   4. Admin, manages the system.
@@ -47,8 +47,15 @@ Admin manages the hole system, so he can do all CRUD operations with Users and P
 
 ## Technology stack:
 1. NestJs + Typescript
+    When beginning a new Node.js project, NestJS is a much better choice than 
+    ExpressJS since it is built on a clear design with a few simple components 
+    (controllers, modules, and providers).
+    
+    Typescript brings clarity to the project, which is a key point of collaboration in our team.
 2. MongoDB + Mongoose
+    Mongoose module is one of the most powerful external modules of NodeJS. 
+    Mongoose is a MongoDB ODM i.e (Object database Modelling) that used to 
+    translate the code and its representation from MongoDB to the Node.js server.
 3. Auth: - (3rd party)
-4. Linter: airbnb
-
-We have chosen these technologies because we want to learn them more and write an application with TypeScript which allows to make code with less number of bugs and makes development faster.
+    As a 3rd party auth provider we will use Firebase Auth. 
+    It's a relaible and easy-to-use solution, especially for small applications.
