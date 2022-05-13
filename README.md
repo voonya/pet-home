@@ -7,13 +7,13 @@
 The idea of out project is to create application which will help people who are looking for a temporary house for their pets, find it. Others can earn money or simply take care of pets. This project is high relevant nowadays, because a lot of people had to leave their houses and some of them left their pets without food and water.
 
 ## Roles
-There are two roles in our system:
+There are four roles in our system:
   1. Owner, the owner of the pet.
   2. Holder, person, who agreed to look after the pet.
   3. User, includes two previous roles, that has certain possibilities.
   4. Admin, manages the system.
 
-## Functionallity
+## Functionality
 They have different permissions and functionally.
 
 ### Owner
@@ -22,15 +22,15 @@ Owner has the following features:
     Acceptance criteria: max count is 10
   2. Edit information about his pet.
   3. Delete pet from his zoo.
-  4. Create advertisment.
+  4. Create advertisement.
     Acceptance criteria: user must have at least one pet
-  5. Edit advertisment.
-    Acceptance criteria: nobody of holder left request for advetisement.
+  5. Edit advertisement.
+    Acceptance criteria: nobody of holder left request for advertisement.
   6. Delete advertisement.
     Acceptance criteria: advertisement is not in progress and not completed.
 
 ### Holder
-Owner has the following features:
+The holder has the following features:
   1. See the list of advertisement to choose one of them.
   2. Send request to complete an advertisement.
   3. Discard request.
@@ -58,4 +58,4 @@ Admin manages the hole system, so he can do all CRUD operations with Users and P
     translate the code and its representation from MongoDB to the Node.js server.
 
 3. Auth: - (3rd party)</br>As a 3rd party auth provider we will use Firebase Auth.
-    It's a relaible and easy-to-use solution, especially for small applications.
+    It's a reliable and easy-to-use solution, especially for small applications.
