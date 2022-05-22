@@ -15,4 +15,12 @@ export class UsersService {
     users.push(newUser);
     return newUser;
   }
+
+  getUserByEmail(email: string) {
+    return users.find((user) => user.email == email);
+  }
+
+  getUserById(id: string) {
+    return users.find((user) => user.id == id);
+  }
 }
