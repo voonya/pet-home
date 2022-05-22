@@ -6,21 +6,21 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UsersService {
-  getAll() {
+  getAll(): UserDto[] {
     return users;
   }
 
-  createUser(createUserDto: CreateUserDto) {
+  createUser(createUserDto: CreateUserDto): UserDto {
     const newUser: UserDto = { id: uuidv4(), ...createUserDto };
     users.push(newUser);
     return newUser;
   }
 
-  getUserByEmail(email: string) {
+  getUserByEmail(email: string): UserDto {
     return users.find((user) => user.email == email);
   }
 
-  getUserById(id: string) {
+  getUserById(id: string): UserDto {
     return users.find((user) => user.id == id);
   }
 }
