@@ -7,8 +7,8 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Post()
-  create(@Body() userDto: CreateUserDto) {
-    return this.usersService.createUser(userDto);
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
   }
 
   @Get()
@@ -18,6 +18,6 @@ export class UsersController {
 
   @Get(':id')
   getById(@Param('id') id: string) {
-    return this.usersService.getUserById(id);
+    return this.usersService.getById(id);
   }
 }

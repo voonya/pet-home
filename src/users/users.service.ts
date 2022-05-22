@@ -10,17 +10,17 @@ export class UsersService {
     return users;
   }
 
-  createUser(createUserDto: CreateUserDto): UserDto {
+  create(createUserDto: CreateUserDto): UserDto {
     const newUser: UserDto = { id: uuidv4(), ...createUserDto };
     users.push(newUser);
     return newUser;
   }
 
-  getUserByEmail(email: string): UserDto {
+  getByEmail(email: string): UserDto {
     return users.find((user) => user.email == email);
   }
 
-  getUserById(id: string): UserDto {
+  getById(id: string): UserDto {
     return users.find((user) => user.id == id);
   }
 }
