@@ -10,7 +10,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'airbnb-typescript/base',
-    'plugin:sonarjs/recommended'
+    'plugin:sonarjs/recommended',
+    'prettier'
   ],
   root: true,
   env: {
