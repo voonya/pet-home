@@ -11,21 +11,21 @@ export class UsersService {
     return users;
   }
 
-  create(createUserDto: CreateUserDto): UserDto {
+  create(createUserDto: CreateUserDto) {
     const newUser: UserDto = { id: uuidv4(), ...createUserDto };
     users.push(newUser);
     return newUser;
   }
 
-  getByEmail(email: string): UserDto {
+  getByEmail(email: string) {
     return users.find((user) => user.email == email);
   }
 
-  getById(id: string): UserDto {
+  getById(id: string) {
     return users.find((user) => user.id == id);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): UserDto {
+  update(id: string, updateUserDto: UpdateUserDto) {
     const oldUser = users.find((user) => user.id === id);
     const index = users.indexOf(oldUser);
     const newUser = { ...oldUser, ...updateUserDto };
@@ -33,7 +33,7 @@ export class UsersService {
     return newUser;
   }
 
-  remove(id: string): UserDto {
+  remove(id: string) {
     const userToRemove = users.find((user) => user.id === id);
     const index = users.indexOf(userToRemove);
     if (index !== -1) {

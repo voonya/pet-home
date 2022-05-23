@@ -7,21 +7,21 @@ import { animals } from '@animals/animals';
 
 @Injectable()
 export class AnimalsService {
-  getAll(): AnimalDto[] {
+  getAll() {
     return animals;
   }
 
-  createAnimal(createAnimalDto: CreateAnimalDto): AnimalDto {
+  createAnimal(createAnimalDto: CreateAnimalDto) {
     const newAnimal: AnimalDto = { id: uuidv4(), ...createAnimalDto };
     animals.push(newAnimal);
     return newAnimal;
   }
 
-  getById(id: string): AnimalDto {
+  getById(id: string) {
     return animals.find((animal) => animal.id === id);
   }
 
-  update(id: string, updateAnimalDto: UpdateAnimalDto): AnimalDto {
+  update(id: string, updateAnimalDto: UpdateAnimalDto) {
     const oldAnimal = animals.find((animal) => animal.id === id);
     const index = animals.indexOf(oldAnimal);
     const newAnimal = { ...oldAnimal, ...updateAnimalDto };
@@ -29,7 +29,7 @@ export class AnimalsService {
     return newAnimal;
   }
 
-  remove(id: string): AnimalDto {
+  remove(id: string) {
     const animalToRemove = animals.find((animal) => animal.id === id);
     const index = animals.indexOf(animalToRemove);
     if (index !== -1) {

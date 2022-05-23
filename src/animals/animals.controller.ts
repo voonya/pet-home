@@ -10,7 +10,6 @@ import {
 import { AnimalsService } from '@animals/animals.service';
 import { CreateAnimalDto } from '@animals/dto/create-animal.dto';
 import { UpdateAnimalDto } from '@animals/dto/update-animal.dto';
-import { AnimalDto } from '@animals/dto/animal.dto';
 
 @Controller('animals')
 export class AnimalsController {
@@ -22,20 +21,17 @@ export class AnimalsController {
   }
 
   @Get()
-  getAll(): AnimalDto[] {
+  getAll() {
     return this.animalsService.getAll();
   }
 
   @Get(':id')
-  getById(@Param('id') id: string): AnimalDto {
+  getById(@Param('id') id: string) {
     return this.animalsService.getById(id);
   }
 
   @Put(':id')
-  update(
-    @Body() updateAnimalDto: UpdateAnimalDto,
-    @Param('id') id: string,
-  ): AnimalDto {
+  update(@Body() updateAnimalDto: UpdateAnimalDto, @Param('id') id: string) {
     return this.animalsService.update(id, updateAnimalDto);
   }
 
