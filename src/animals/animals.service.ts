@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAnimalDto } from './dto/create-animal.dto';
-import { AnimalDto } from './dto/animal.dto';
+import { AnimalDto, CreateAnimalDto, UpdateAnimalDto } from '@animals/dto';
 import { v4 as uuidv4 } from 'uuid';
-import { UpdateAnimalDto } from './dto/update-animal.dto';
 import { animals } from '@animals/animals';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 

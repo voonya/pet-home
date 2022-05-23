@@ -9,8 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { AnimalsService } from '@animals/animals.service';
-import { CreateAnimalDto } from '@animals/dto/create-animal.dto';
-import { UpdateAnimalDto } from '@animals/dto/update-animal.dto';
+import { CreateAnimalDto, UpdateAnimalDto } from '@animals/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 
 @Controller('animals')

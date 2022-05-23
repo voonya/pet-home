@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from '@users/dto/create-user.dto';
+import { UserDto, CreateUserDto, UpdateUserDto } from '@users/dto';
 import { users } from '@users/users';
-import { UserDto } from '@users/dto/user.dto';
 import { v4 as uuidv4 } from 'uuid';
-import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 
 @Injectable()
