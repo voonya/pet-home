@@ -1,5 +1,5 @@
 import { AnimalType } from '@animals/animal-type';
-import { IsEnum, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class CreateAnimalDto {
   @IsString()
@@ -11,6 +11,7 @@ export class CreateAnimalDto {
   @IsEnum(AnimalType)
   readonly type: AnimalType;
 
+  @IsOptional()
   @IsString()
   readonly breed: string;
 
