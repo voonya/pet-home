@@ -1,61 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Feedback } from './feedback.model';
 import { PostFeedbackDto } from './dto';
+import { feedbacksMock } from '@feedback/feedbackMock';
 import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class FeedbackService {
-  feedbacks: Feedback[] = [
-    {
-      id: '0',
-      userId: '1',
-      creatorId: '2',
-      created_date: new Date(),
-      userType: 'Owner',
-      title: 'My feedback1',
-      body: 'Super owner! a lot of great feelings!',
-      rate: 5,
-    },
-    {
-      id: '1',
-      userId: '1',
-      creatorId: '2',
-      created_date: new Date(),
-      userType: 'Owner',
-      title: 'My feedback2',
-      body: 'Super owner! And his dog is nice!',
-      rate: 10,
-    },
-    {
-      id: '2',
-      userId: '1',
-      creatorId: '2',
-      created_date: new Date(),
-      userType: 'Owner',
-      title: 'My feedback3',
-      body: 'Super owner! really',
-      rate: 7,
-    },
-    {
-      id: '3',
-      userId: '1',
-      creatorId: '2',
-      created_date: new Date(),
-      userType: 'Hadler',
-      title: 'My feedback4',
-      body: 'Super handler!',
-      rate: 8,
-    },
-    {
-      id: '4',
-      userId: '1',
-      creatorId: '2',
-      created_date: new Date(),
-      userType: 'Handler',
-      title: 'My feedback5',
-      body: 'Super handler! I love him!',
-      rate: 10,
-    },
-  ];
+  feedbacks: Feedback[] = feedbacksMock;
 
   async getAllFeedback(offset: number, limit: number, userType?: string) {
     console.log(userType, offset, limit);
