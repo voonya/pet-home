@@ -1,10 +1,11 @@
 import { AnimalType } from '@animals/animal-type';
-import { IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
 
 export class UpdateAnimalDto {
   @IsString()
   readonly name: string;
 
+  @IsEnum(AnimalType)
   readonly type: AnimalType;
 
   @IsString()
