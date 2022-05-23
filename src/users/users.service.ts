@@ -11,7 +11,11 @@ export class UsersService {
   }
 
   create(createUserDto: CreateUserDto) {
-    const newUser: UserDto = { id: uuidv4(), ...createUserDto };
+    const newUser: UserDto = {
+      id: uuidv4(),
+      ...createUserDto,
+      creationDate: new Date(),
+    };
     users.push(newUser);
     return newUser;
   }

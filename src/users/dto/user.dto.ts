@@ -31,6 +31,9 @@ export class UserDto {
   @IsDate()
   birthDate?: Date;
 
+  @IsDate()
+  creationDate: Date;
+
   @IsNotEmpty()
   @IsOptional()
   @IsString()

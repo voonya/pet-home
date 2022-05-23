@@ -1,5 +1,6 @@
 import { AnimalType } from '@animals/animal-type';
 import {
+  IsDate,
   IsEnum,
   IsOptional,
   IsString,
@@ -27,6 +28,9 @@ export class AnimalDto {
   @IsOptional()
   @IsString()
   breed: string;
+
+  @IsDate()
+  creationDate: Date;
 
   @MaxLength(500)
   @MinLength(5)

@@ -14,7 +14,11 @@ export class AnimalsService {
   }
 
   createAnimal(createAnimalDto: CreateAnimalDto) {
-    const newAnimal: AnimalDto = { id: uuidv4(), ...createAnimalDto };
+    const newAnimal: AnimalDto = {
+      id: uuidv4(),
+      ...createAnimalDto,
+      creationDate: new Date(),
+    };
     animals.push(newAnimal);
     return newAnimal;
   }
