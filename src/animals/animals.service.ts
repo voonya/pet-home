@@ -3,7 +3,7 @@ import { CreateAnimalDto } from './dto/create-animal.dto';
 import { AnimalDto } from './dto/animal.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { UpdateAnimalDto } from './dto/update-animal.dto';
-import { animals } from './animals';
+import { animals } from '@animals/animals';
 
 @Injectable()
 export class AnimalsService {

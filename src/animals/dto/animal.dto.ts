@@ -1,4 +1,4 @@
-import { AnimalType } from '../animal-type';
+import { AnimalType } from '@animals/animal-type';
 
 export class AnimalDto {
   id: string;

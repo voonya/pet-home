@@ -1,5 +1,5 @@
-import { AnimalDto } from './dto/animal.dto';
-import { AnimalType } from './animal-type';
+import { AnimalDto } from '@animals/dto/animal.dto';
+import { AnimalType } from '@animals/animal-type';
 
 export const animals: AnimalDto[] = [
   {

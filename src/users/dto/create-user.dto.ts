@@ -7,7 +7,5 @@ export class CreateUserDto {
 
   readonly birthDate: Date;
 
-  readonly address: string;
-
   readonly sex: string;
 }

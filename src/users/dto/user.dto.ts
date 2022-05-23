@@ -9,7 +9,5 @@ export class UserDto {
 
   birthDate: Date;
 
-  address: string;
-
   sex: string;
 }

@@ -7,10 +7,10 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { AnimalsService } from './animals.service';
-import { CreateAnimalDto } from './dto/create-animal.dto';
-import { UpdateAnimalDto } from './dto/update-animal.dto';
-import { AnimalDto } from './dto/animal.dto';
+import { AnimalsService } from '@animals/animals.service';
+import { CreateAnimalDto } from '@animals/dto/create-animal.dto';
+import { UpdateAnimalDto } from '@animals/dto/update-animal.dto';
+import { AnimalDto } from '@animals/dto/animal.dto';
 
 @Controller('animals')
 export class AnimalsController {

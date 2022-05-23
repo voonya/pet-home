@@ -1,4 +1,4 @@
-import { UserDto } from './dto/user.dto';
+import { UserDto } from '@users/dto/user.dto';
 
 export const users: UserDto[] = [
   {
@@ -7,7 +7,6 @@ export const users: UserDto[] = [
     surname: 'Petrenko',
     email: 'MyEmail@gmail.com',
     birthDate: new Date('2001-10-5'),
-    address: 'Khmelnitsky',
     sex: 'Man',
   },
   {
@@ -16,7 +15,6 @@ export const users: UserDto[] = [
     surname: 'Johnson',
     email: 'MyEmail2@gmail.com',
     birthDate: new Date('2001-10-5'),
-    address: 'Kyiv Heroiv Dnypra',
     sex: 'Man',
   },
   {
@@ -25,7 +23,6 @@ export const users: UserDto[] = [
     surname: 'Billy',
     email: 'MyEmail3@gmail.com',
     birthDate: new Date('2001-10-5'),
-    address: 'Kyiv Borshahivka',
     sex: 'Man',
   },
   {
@@ -34,7 +31,6 @@ export const users: UserDto[] = [
     surname: 'Ostapenko',
     email: 'MyEmail4@gmail.com',
     birthDate: new Date('2001-10-5'),
-    address: 'Some city street',
     sex: 'Man',
   },
   {
@@ -43,7 +39,6 @@ export const users: UserDto[] = [
     surname: 'Petrenko',
     email: 'MyEmail@gmail.com',
     birthDate: new Date('2001-10-5'),
-    address: 'Lviv street',
     sex: 'Man',
   },
 ];
