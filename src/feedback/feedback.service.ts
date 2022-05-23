@@ -57,7 +57,7 @@ export class FeedbackService {
     },
   ];
 
-  getAllFeedback(offset: number, limit: number, userType?: string) {
+  async getAllFeedback(offset: number, limit: number, userType?: string) {
     console.log(userType, offset, limit);
     let feedbacks: Feedback[] = [];
     if (userType) {
@@ -75,22 +75,30 @@ export class FeedbackService {
           ) /
             feedbacks.length),
       ) / 10;
-    return {
-      rate: averageRate,
-      feedbacks,
-    };
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          rate: averageRate,
+          feedbacks,
+        });
+      }, 300);
+    });
   }
 
-  getFeedbackById(id: string) {
+  async getFeedbackById(id: string) {
     console.log(this.feedbacks);
     const feedback = this.feedbacks.find((el) => el.id === id);
     if (!feedback) {
       throw new BadRequestException('No feedback with this id!');
     }
-    return feedback;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(feedback);
+      }, 300);
+    });
   }
 
-  createFeedback(creatorId: string, feedback: PostFeedbackDto) {
+  async createFeedback(creatorId: string, feedback: PostFeedbackDto) {
     const id = uuidv4();
     // check if user can create feedback on this user
     const newFeedback = {
@@ -102,10 +110,15 @@ export class FeedbackService {
     console.log(newFeedback);
     this.feedbacks.push(newFeedback);
     console.log(this.feedbacks);
-    return newFeedback;
+    //return newFeedback;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(newFeedback);
+      }, 300);
+    });
   }
 
-  deleteFeedback(id: string, userId: string) {
+  async deleteFeedback(id: string, userId: string) {
     const feedbackIdx = this.feedbacks.findIndex((el) => el.id === id);
     console.log(!feedbackIdx);
     if (feedbackIdx === -1) {
@@ -116,6 +129,10 @@ export class FeedbackService {
         'User can not delete feedback that is not his!',
       );
     }
-    return this.feedbacks.splice(feedbackIdx, 1)[0];
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(this.feedbacks.splice(feedbackIdx, 1)[0]);
+      }, 300);
+    });
   }
 }

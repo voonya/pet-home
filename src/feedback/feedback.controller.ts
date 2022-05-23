@@ -8,25 +8,25 @@ import {
   Delete,
 } from '@nestjs/common';
 import { FeedbackService } from '@feedback/feedback.service';
-import { PostFeedbackDto } from '@feedback/dto';
+import { PostFeedbackDto, GetAllFeedbackDto } from '@feedback/dto';
 
 @Controller('feedback')
 export class FeedbackController {
   constructor(private feedbackService: FeedbackService) {}
 
   @Get()
-  getAllFeedback(
-    @Query('userType') userType?: string,
-    @Query('offset') offset?: number,
-    @Query('limit') limit?: number,
-  ) {
-    offset = offset || 0;
-    limit = limit || 10;
-    return this.feedbackService.getAllFeedback(offset, limit, userType);
+  getAllFeedback(@Query() queryFeedback: GetAllFeedbackDto) {
+    const offset = queryFeedback.offset || 0;
+    const limit = queryFeedback.limit || 10;
+    return this.feedbackService.getAllFeedback(
+      offset,
+      limit,
+      queryFeedback.userType,
+    );
   }
 
   @Get(':id')
-  getFeedback(@Param('id') id: string) {
+  async getFeedback(@Param('id') id: string) {
     return this.feedbackService.getFeedbackById(id);
   }
 
