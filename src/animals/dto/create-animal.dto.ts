@@ -1,7 +1,15 @@
 import { AnimalType } from '@animals/animal-type';
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class CreateAnimalDto {
+  @MaxLength(75)
+  @MinLength(5)
   @IsString()
   readonly name: string;
 
@@ -11,10 +19,14 @@ export class CreateAnimalDto {
   @IsEnum(AnimalType)
   readonly type: AnimalType;
 
+  @MaxLength(75)
+  @MinLength(5)
   @IsOptional()
   @IsString()
   readonly breed: string;
 
+  @MaxLength(500)
+  @MinLength(5)
   @IsString()
   readonly description: string;
 }

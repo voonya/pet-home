@@ -1,13 +1,25 @@
-import { IsDate, IsEmail, IsOptional, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class UserDto {
   @IsString()
   id: string;
 
+  @MaxLength(75)
+  @MinLength(5)
   @IsString()
   name: string;
 
+  @MaxLength(75)
+  @MinLength(5)
   @IsString()
   surname: string;
 
@@ -17,9 +29,10 @@ export class UserDto {
   @IsOptional()
   @Type(() => Date)
   @IsDate()
-  birthDate: Date;
+  birthDate?: Date;
 
+  @IsNotEmpty()
   @IsOptional()
   @IsString()
-  sex: string;
+  sex?: string;
 }
