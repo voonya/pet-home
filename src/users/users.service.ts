@@ -4,11 +4,12 @@ import { users } from '@users/users';
 import { UserDto } from '@users/dto/user.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
+import { PaginationDto } from 'pagination/dto/pagination.dto';
 
 @Injectable()
 export class UsersService {
-  getAll(): UserDto[] {
-    return users;
+  getAll(pagination: PaginationDto) {
+    return users.slice(pagination.offset, pagination.offset + pagination.limit);
   }
 
   create(createUserDto: CreateUserDto) {
