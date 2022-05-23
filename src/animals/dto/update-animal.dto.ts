@@ -1,6 +1,7 @@
 import { AnimalType } from '@animals/animal-type';
 import {
   IsEnum,
+  IsNumber,
   IsOptional,
   IsString,
   MaxLength,
@@ -26,4 +27,8 @@ export class UpdateAnimalDto {
   @MinLength(5)
   @IsString()
   readonly description: string;
+
+  @IsOptional()
+  @IsNumber()
+  age?: number;
 }

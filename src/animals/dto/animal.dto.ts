@@ -2,6 +2,7 @@ import { AnimalType } from '@animals/animal-type';
 import {
   IsDate,
   IsEnum,
+  IsNumber,
   IsOptional,
   IsString,
   MaxLength,
@@ -31,6 +32,10 @@ export class AnimalDto {
 
   @IsDate()
   creationDate: Date;
+
+  @IsOptional()
+  @IsNumber()
+  age?: number;
 
   @MaxLength(500)
   @MinLength(5)

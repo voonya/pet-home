@@ -10,6 +10,7 @@ export const animals: AnimalDto[] = [
     breed: 'Husky',
     description: 'The best dog',
     creationDate: new Date('2022-10-5'),
+    age: 2,
   },
   {
     id: '039c3118-da21-11ec-9d64-0242ac120002',
@@ -19,6 +20,7 @@ export const animals: AnimalDto[] = [
     breed: 'Husky',
     description: 'The best cat',
     creationDate: new Date('2022-10-5'),
+    age: 3,
   },
   {
     id: '039c3226-da21-11ec-9d64-0242ac120002',
@@ -28,6 +30,7 @@ export const animals: AnimalDto[] = [
     breed: 'Husky',
     description: 'The best pet',
     creationDate: new Date('2022-10-5'),
+    age: 5,
   },
   {
     id: '039c3320-da21-11ec-9d64-0242ac120002',
@@ -37,5 +40,6 @@ export const animals: AnimalDto[] = [
     breed: 'SImple',
     description: 'The best dog',
     creationDate: new Date('2022-10-5'),
+    age: 10,
   },
 ];

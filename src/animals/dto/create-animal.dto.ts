@@ -1,6 +1,7 @@
 import { AnimalType } from '@animals/animal-type';
 import {
   IsEnum,
+  IsNumber,
   IsOptional,
   IsString,
   MaxLength,
@@ -12,9 +13,6 @@ export class CreateAnimalDto {
   @MinLength(5)
   @IsString()
   readonly name: string;
-
-  @IsString()
-  readonly ownerId: string;
 
   @IsEnum(AnimalType)
   readonly type: AnimalType;
@@ -29,4 +27,8 @@ export class CreateAnimalDto {
   @MinLength(5)
   @IsString()
   readonly description: string;
+
+  @IsOptional()
+  @IsNumber()
+  age?: number;
 }
