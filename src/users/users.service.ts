@@ -18,11 +18,11 @@ export class UsersService {
   }
 
   getByEmail(email: string) {
-    return users.find((user) => user.email == email);
+    return users.find((user) => user.email === email);
   }
 
   getById(id: string) {
-    return users.find((user) => user.id == id);
+    return users.find((user) => user.id === id);
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
