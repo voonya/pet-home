@@ -6,10 +6,12 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { AnimalsService } from '@animals/animals.service';
 import { CreateAnimalDto } from '@animals/dto/create-animal.dto';
 import { UpdateAnimalDto } from '@animals/dto/update-animal.dto';
+import { PaginationDto } from 'pagination/dto/pagination.dto';
 
 @Controller('animals')
 export class AnimalsController {
@@ -21,8 +23,8 @@ export class AnimalsController {
   }
 
   @Get()
-  getAll() {
-    return this.animalsService.getAll();
+  getAll(@Query() pagination: PaginationDto) {
+    return this.animalsService.getAll(pagination);
   }
 
   @Get(':id')

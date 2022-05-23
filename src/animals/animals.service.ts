@@ -4,11 +4,15 @@ import { AnimalDto } from './dto/animal.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { UpdateAnimalDto } from './dto/update-animal.dto';
 import { animals } from '@animals/animals';
+import { PaginationDto } from 'pagination/dto/pagination.dto';
 
 @Injectable()
 export class AnimalsService {
-  getAll() {
-    return animals;
+  getAll(pagination: PaginationDto) {
+    return animals.slice(
+      pagination.offset,
+      pagination.offset + pagination.limit,
+    );
   }
 
   createAnimal(createAnimalDto: CreateAnimalDto) {
