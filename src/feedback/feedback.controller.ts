@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { FeedbackService } from '@feedback/feedback.service';
 import { PostFeedbackDto, GetAllFeedbackDto } from '@feedback/dto';
-import { PaginationPipe } from '../pagination/pagination.pipe';
+import { PaginationPipe } from 'pagination/pagination.pipe';
 
 @Controller('feedback')
 export class FeedbackController {
