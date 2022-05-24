@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Feedback } from './feedback.model';
-import { PostFeedbackDto } from './dto';
+import { PostFeedbackDto, Feedback } from './dto';
 import { feedbacksMock } from '@feedback/feedbackMock';
 import { v4 as uuidv4 } from 'uuid';
 @Injectable()

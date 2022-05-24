@@ -1,4 +1,4 @@
-import { Feedback } from '@feedback/feedback.model';
+import { Feedback } from '@feedback/dto';
 
 export const feedbacksMock: Feedback[] = [
   {
