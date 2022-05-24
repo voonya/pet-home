@@ -1,12 +1,7 @@
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { UserType } from '@users/user-type';
-export class GetAllFeedbackDto {
+import { PaginationDto } from 'pagination/dto/pagination.dto';
+export class GetAllFeedbackDto extends PaginationDto {
   @IsString()
   @IsNotEmpty()
   userId: string;
@@ -14,12 +9,4 @@ export class GetAllFeedbackDto {
   @IsEnum(UserType)
   @IsOptional()
   userType?: UserType;
-
-  @IsNumber()
-  @IsOptional()
-  offset?: number;
-
-  @IsNumber()
-  @IsOptional()
-  limit?: number;
 }

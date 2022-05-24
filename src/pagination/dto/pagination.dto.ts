@@ -1,5 +1,11 @@
-export class PaginationDto {
-  readonly offset: number;
+import { IsNumber, IsOptional } from 'class-validator';
 
-  readonly limit: number;
+export class PaginationDto {
+  @IsNumber()
+  @IsOptional()
+  readonly offset?: number;
+
+  @IsNumber()
+  @IsOptional()
+  readonly limit?: number;
 }
