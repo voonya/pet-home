@@ -7,6 +7,7 @@ import { ForecastModule } from '@forecast/forecast.module';
 import { UsersModule } from '@users/users.module';
 import { AnimalsModule } from '@animals/animals.module';
 import { PagingMiddleware } from 'middlewares/paging.middleware';
+import { ApplicationsModule } from 'applications/applications.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PagingMiddleware } from 'middlewares/paging.middleware';
     ForecastModule,
     UsersModule,
     AnimalsModule,
+    ApplicationsModule,
   ],
   controllers: [FeedbackController],
   providers: [FeedbackService],
