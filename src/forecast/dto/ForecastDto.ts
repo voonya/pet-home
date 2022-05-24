@@ -1,26 +1,40 @@
+import { IsNumber, IsString } from 'class-validator';
+
 export class ForecastDto {
+  @IsString()
   cityName: string;
 
+  @IsString()
   countryCode: string;
 
+  @IsNumber()
   windSpeed: number;
 
+  @IsString()
   windDirectionFull: string;
 
+  @IsString()
   windDirection: string;
 
+  @IsString()
   sunrise: string;
 
+  @IsString()
   sunset: string;
 
+  @IsNumber()
   pressure: number;
 
+  @IsString()
   weatherDescription: string;
 
+  @IsNumber()
   temperature: number;
 
+  @IsNumber()
   lon: number;
 
+  @IsNumber()
   lat: number;
 
   constructor(forecastData) {
