@@ -16,6 +16,7 @@ export class BaseAnimalDto {
   @IsNotEmpty()
   name: string;
 
+  @IsNotEmpty()
   @IsEnum(AnimalType)
   type: AnimalType;
 
