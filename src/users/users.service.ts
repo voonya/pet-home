@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UserDto, CreateUserDto, UpdateUserDto } from '@users/dto';
+import { UserDto, BaseUserDto } from '@users/dto';
 import { users } from '@users/users';
 import { v4 as uuidv4 } from 'uuid';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
@@ -10,7 +10,7 @@ export class UsersService {
     return users.slice(pagination.offset, pagination.offset + pagination.limit);
   }
 
-  create(createUserDto: CreateUserDto) {
+  create(createUserDto: BaseUserDto) {
     const newUser: UserDto = {
       id: uuidv4(),
       ...createUserDto,
@@ -36,7 +36,7 @@ export class UsersService {
     return user;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: BaseUserDto) {
     const oldUser = users.find((user) => user.id === id);
     if (!oldUser) {
       throw new BadRequestException('No user with this id to update!');

@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { UsersService } from '@users/users.service';
-import { CreateUserDto, UpdateUserDto } from '@users/dto';
+import { BaseUserDto, UpdateUserDto } from '@users/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 
 @Controller('users')
@@ -17,7 +17,7 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: BaseUserDto) {
     return this.usersService.create(createUserDto);
   }
 
