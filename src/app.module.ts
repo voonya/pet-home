@@ -3,18 +3,18 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FeedbackController } from '@feedback/feedback.controller';
 import { FeedbackService } from '@feedback/feedback.service';
-import { ForecastController } from './forecast/forecast.controller';
 import { HttpModule } from '@nestjs/axios';
-import { ForecastService } from '@forecast/forecast.service';
 import { ConfigModule } from '@nestjs/config';
+import { ForecastModule } from '@forecast/forecast.module';
 @Module({
   imports: [
     HttpModule,
     ConfigModule.forRoot({
       envFilePath: 'src/.env',
     }),
+    ForecastModule,
   ],
-  controllers: [AppController, FeedbackController, ForecastController],
-  providers: [AppService, FeedbackService, ForecastService],
+  controllers: [AppController, FeedbackController],
+  providers: [AppService, FeedbackService],
 })
 export class AppModule {}
