@@ -14,12 +14,12 @@ export class UserDto {
   id: string;
 
   @MaxLength(75)
-  @MinLength(5)
+  @MinLength(2)
   @IsString()
   name: string;
 
   @MaxLength(75)
-  @MinLength(5)
+  @MinLength(2)
   @IsString()
   surname: string;
 

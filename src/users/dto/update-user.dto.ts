@@ -11,12 +11,12 @@ import { Type } from 'class-transformer';
 
 export class UpdateUserDto {
   @MaxLength(75)
-  @MinLength(5)
+  @MinLength(2)
   @IsString()
   readonly name: string;
 
   @MaxLength(75)
-  @MinLength(5)
+  @MinLength(2)
   @IsString()
   readonly surname: string;
 

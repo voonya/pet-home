@@ -1,13 +1,9 @@
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
-import { AnimalDto, CreateAnimalDto, UpdateAnimalDto } from '@animals/dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { AnimalDto, BaseAnimalDto } from '@animals/dto';
 import { v4 as uuidv4 } from 'uuid';
 import { animals } from '@animals/animals';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
+import { CreateAnimalDto } from '@animals/dto/create-animal.dto';
 
 const maxAnimalsPerUser = 10;
 
@@ -24,10 +20,7 @@ export class AnimalsService {
       (animal) => animal.ownerId === userId,
     ).length;
     if (currentNumberOfUserAnimals >= maxAnimalsPerUser) {
-      throw new HttpException(
-        'You have reached maximum number of pets',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('You have reached maximum number of pets');
     }
     const newAnimal: AnimalDto = {
       id: uuidv4(),
@@ -47,7 +40,7 @@ export class AnimalsService {
     return animal;
   }
 
-  update(id: string, updateAnimalDto: UpdateAnimalDto, userId: string) {
+  update(id: string, updateAnimalDto: BaseAnimalDto, userId: string) {
     const oldAnimal = animals.find(
       (animal) => animal.id === id && animal.ownerId === userId,
     );
@@ -61,12 +54,12 @@ export class AnimalsService {
   }
 
   remove(id: string, userId: string) {
-    const animalIndex = animals.findIndex(
+    const index = animals.findIndex(
       (animal) => animal.id === id && animal.ownerId === userId,
     );
-    if (animalIndex === -1) {
+    if (index === -1) {
       throw new BadRequestException('No animal with this id to remove!');
     }
-    return animals.splice(animalIndex, 1)[0];
+    return animals.splice(index, 1)[0];
   }
 }

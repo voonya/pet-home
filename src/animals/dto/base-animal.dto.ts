@@ -1,6 +1,7 @@
 import { AnimalType } from '@animals/animal-type';
 import {
   IsEnum,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -8,27 +9,29 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class UpdateAnimalDto {
+export class BaseAnimalDto {
   @MaxLength(75)
-  @MinLength(5)
+  @MinLength(2)
   @IsString()
-  readonly name: string;
+  @IsNotEmpty()
+  name: string;
 
   @IsEnum(AnimalType)
-  readonly type: AnimalType;
+  type: AnimalType;
 
   @MaxLength(75)
-  @MinLength(5)
+  @MinLength(2)
   @IsOptional()
   @IsString()
-  readonly breed: string;
-
-  @MaxLength(500)
-  @MinLength(5)
-  @IsString()
-  readonly description: string;
+  breed?: string;
 
   @IsOptional()
   @IsNumber()
   age?: number;
+
+  @MaxLength(500)
+  @MinLength(10)
+  @IsString()
+  @IsNotEmpty()
+  description: string;
 }

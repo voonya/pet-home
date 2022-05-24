@@ -1,34 +1,7 @@
-import { AnimalType } from '@animals/animal-type';
-import {
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { BaseAnimalDto } from '@animals/dto/base-animal.dto';
+import { IsString } from 'class-validator';
 
-export class CreateAnimalDto {
-  @MaxLength(75)
-  @MinLength(5)
+export class CreateAnimalDto extends BaseAnimalDto {
   @IsString()
-  readonly name: string;
-
-  @IsEnum(AnimalType)
-  readonly type: AnimalType;
-
-  @MaxLength(75)
-  @MinLength(5)
-  @IsOptional()
-  @IsString()
-  readonly breed: string;
-
-  @MaxLength(500)
-  @MinLength(5)
-  @IsString()
-  readonly description: string;
-
-  @IsOptional()
-  @IsNumber()
-  age?: number;
+  ownerId: string;
 }
