@@ -12,6 +12,7 @@
     "baseUrl": "src",
     "paths": {
       "@feedback/*": ["feedback/*"],
+      "@forecast/*": ["forecast/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
