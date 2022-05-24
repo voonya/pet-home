@@ -8,6 +8,7 @@ import { UsersModule } from '@users/users.module';
 import { AnimalsModule } from '@animals/animals.module';
 import { PagingMiddleware } from 'middlewares/paging.middleware';
 import { ApplicationsModule } from 'applications/applications.module';
+import { RequestsModule } from 'requests/requests.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ApplicationsModule } from 'applications/applications.module';
     UsersModule,
     AnimalsModule,
     ApplicationsModule,
+    RequestsModule,
   ],
   controllers: [FeedbackController],
   providers: [FeedbackService],
