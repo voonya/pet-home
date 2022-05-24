@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PostFeedbackDto, Feedback } from './dto';
 import { feedbacksMock } from '@feedback/feedbackMock';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import { UserType } from '@users/user-type';
 @Injectable()
 export class FeedbackService {
@@ -46,7 +46,7 @@ export class FeedbackService {
   }
 
   async createFeedback(creatorId: string, feedback: PostFeedbackDto) {
-    const id = uuidv4();
+    const id = randomUUID();
     // check if user can create feedback on this user
     const newFeedback = {
       id,
