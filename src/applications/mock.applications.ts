@@ -1,4 +1,4 @@
-import { ApplicationDto } from './dto/create-application.dto';
+import { ApplicationDto } from 'applications/dto/create-application.dto';
 
 export const applications: ApplicationDto[] = [
   {

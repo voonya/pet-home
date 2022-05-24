@@ -10,10 +10,10 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApplicationService } from './applications.service';
-import { ApplicationQueryDto } from './dto/application-query.dto';
-import { BaseApplicationDto } from './dto/base-application.dto';
-import { ApplicationDto } from './dto/create-application.dto';
+import { ApplicationService } from 'applications/applications.service';
+import { ApplicationQueryDto } from 'applications/dto/application-query.dto';
+import { BaseApplicationDto } from 'applications/dto/base-application.dto';
+import { ApplicationDto } from 'applications/dto/create-application.dto';
 
 @Controller('applications')
 export class ApplicationController {

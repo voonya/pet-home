@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { ApplicationQueryDto } from './dto/application-query.dto';
-import { BaseApplicationDto } from './dto/base-application.dto';
-import { ApplicationDto } from './dto/create-application.dto';
-import { applications } from './mock.applications';
+import { ApplicationQueryDto } from 'applications/dto/application-query.dto';
+import { BaseApplicationDto } from 'applications/dto/base-application.dto';
+import { ApplicationDto } from 'applications/dto/create-application.dto';
+import { applications } from 'applications/mock.applications';
 
 @Injectable()
 export class ApplicationService {
