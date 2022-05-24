@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { UsersService } from '@users/users.service';
-import { BaseUserDto, UpdateUserDto } from '@users/dto';
+import { BaseUserDto } from '@users/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 
 @Controller('users')
@@ -32,7 +32,7 @@ export class UsersController {
   }
 
   @Put(':id')
-  update(@Body() updateUserDto: UpdateUserDto, @Param('id') id: string) {
+  update(@Body() updateUserDto: BaseUserDto, @Param('id') id: string) {
     return this.usersService.update(id, updateUserDto);
   }
 

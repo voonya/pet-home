@@ -1,6 +1,4 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { FeedbackController } from '@feedback/feedback.controller';
 import { FeedbackService } from '@feedback/feedback.service';
 import { HttpModule } from '@nestjs/axios';
@@ -20,8 +18,8 @@ import { PagingMiddleware } from 'middlewares/paging.middleware';
     UsersModule,
     AnimalsModule,
   ],
-  controllers: [AppController, FeedbackController],
-  providers: [AppService, FeedbackService],
+  controllers: [FeedbackController],
+  providers: [FeedbackService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
