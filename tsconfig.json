@@ -12,7 +12,9 @@
     "baseUrl": "src",
     "paths": {
       "@feedback/*": ["feedback/*"],
-      "@forecast/*": ["forecast/*"]
+      "@forecast/*": ["forecast/*"],
+      "@users/*": ["users/*"],
+      "@animals/*": ["animals/*"],
     },
     "incremental": true,
     "skipLibCheck": true,
@@ -20,6 +22,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
   }
 }
