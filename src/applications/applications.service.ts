@@ -9,11 +9,11 @@ import { applications } from 'applications/mock.applications';
 export class ApplicationService {
   private notFoundMsg = 'Application not found';
 
-  async getAll(): Promise<ApplicationDto[]> {
+  getAll() {
     return applications;
   }
 
-  async getById(id: string): Promise<ApplicationDto> {
+  getById(id: string) {
     const foundApplication = applications.find((p) => p.id === id);
 
     if (foundApplication) {
@@ -23,23 +23,23 @@ export class ApplicationService {
     throw new NotFoundException(this.notFoundMsg);
   }
 
-  async getFiltered(q: ApplicationQueryDto): Promise<ApplicationDto[]> {
-    let allRecords = await this.getAll();
+  getFiltered(query: ApplicationQueryDto) {
+    let allRecords = this.getAll();
 
-    if (q.id) {
-      allRecords = allRecords.filter((p) => p.id === q.id);
+    if (query.id) {
+      allRecords = allRecords.filter((p) => p.id === query.id);
     }
-    if (q.requestId) {
-      allRecords = allRecords.filter((p) => p.requestId === q.requestId);
+    if (query.requestId) {
+      allRecords = allRecords.filter((p) => p.requestId === query.requestId);
     }
-    if (q.userId) {
-      allRecords = allRecords.filter((p) => p.userId === q.userId);
+    if (query.userId) {
+      allRecords = allRecords.filter((p) => p.userId === query.userId);
     }
 
     return allRecords;
   }
 
-  async create(applicationDto: BaseApplicationDto) {
+  create(applicationDto: BaseApplicationDto) {
     const newRecord: ApplicationDto = {
       ...applicationDto,
       id: randomUUID().toString(),
@@ -50,8 +50,8 @@ export class ApplicationService {
     return newRecord;
   }
 
-  async remove(id: string): Promise<ApplicationDto> {
-    const applicationToRemove = await this.getById(id);
+  remove(id: string) {
+    const applicationToRemove = this.getById(id);
 
     if (applicationToRemove) {
       const index = applications.indexOf(applicationToRemove);
@@ -63,11 +63,8 @@ export class ApplicationService {
     throw new NotFoundException(this.notFoundMsg);
   }
 
-  async update(
-    id: string,
-    updateApplicationDto: BaseApplicationDto,
-  ): Promise<ApplicationDto> {
-    const oldApplication = await this.getById(id);
+  update(id: string, updateApplicationDto: BaseApplicationDto) {
+    const oldApplication = this.getById(id);
 
     if (oldApplication) {
       const index = applications.indexOf(oldApplication);

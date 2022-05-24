@@ -3,8 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   Post,
   Put,
@@ -13,39 +11,33 @@ import {
 import { ApplicationService } from 'applications/applications.service';
 import { ApplicationQueryDto } from 'applications/dto/application-query.dto';
 import { BaseApplicationDto } from 'applications/dto/base-application.dto';
-import { ApplicationDto } from 'applications/dto/create-application.dto';
 
 @Controller('applications')
 export class ApplicationController {
   constructor(private applicationService: ApplicationService) {}
 
   @Get(':id')
-  async getById(@Param('id') id: string): Promise<ApplicationDto> {
+  getById(@Param('id') id: string) {
     return this.applicationService.getById(id);
   }
 
   @Get()
-  async getByAttribute(
-    @Query() q: ApplicationQueryDto,
-  ): Promise<ApplicationDto[]> {
+  getByAttribute(@Query() q: ApplicationQueryDto) {
     return this.applicationService.getFiltered(q);
   }
 
   @Post()
-  @HttpCode(HttpStatus.CREATED)
-  create(
-    @Body() createApplicationDto: BaseApplicationDto,
-  ): Promise<ApplicationDto> {
+  create(@Body() createApplicationDto: BaseApplicationDto) {
     return this.applicationService.create(createApplicationDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<ApplicationDto> {
+  remove(@Param('id') id: string) {
     return this.applicationService.remove(id);
   }
 
   @Put(':id')
-  async update(
+  update(
     @Param('id') id: string,
     @Body() updateApplicationDto: BaseApplicationDto,
   ) {
