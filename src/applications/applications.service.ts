@@ -4,7 +4,7 @@ import { ApplicationQueryDto } from 'applications/dto/application-query.dto';
 import { BaseApplicationDto } from 'applications/dto/base-application.dto';
 import { ApplicationDto } from 'applications/dto/application.dto';
 import { applications } from 'applications/mock.applications';
-import { UpdateApplicationDto } from './dto/update-application.dto';
+import { UpdateApplicationDto } from 'applications/dto/update-application.dto';
 
 @Injectable()
 export class ApplicationService {

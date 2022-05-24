@@ -11,7 +11,7 @@ import {
 import { ApplicationService } from 'applications/applications.service';
 import { ApplicationQueryDto } from 'applications/dto/application-query.dto';
 import { BaseApplicationDto } from 'applications/dto/base-application.dto';
-import { UpdateApplicationDto } from './dto/update-application.dto';
+import { UpdateApplicationDto } from 'applications/dto/update-application.dto';
 
 @Controller('applications')
 export class ApplicationController {
