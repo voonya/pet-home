@@ -30,14 +30,10 @@ export class FeedbackService {
           ) /
             feedbacks.length),
       ) / 10;
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          rate: averageRate,
-          feedbacks,
-        });
-      }, 300);
-    });
+    return {
+      rate: averageRate,
+      feedbacks,
+    };
   }
 
   async getFeedbackById(id: string) {
@@ -45,11 +41,7 @@ export class FeedbackService {
     if (!feedback) {
       throw new BadRequestException('No feedback with this id!');
     }
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(feedback);
-      }, 300);
-    });
+    return feedback;
   }
 
   async createFeedback(creatorId: string, feedback: PostFeedbackDto) {
@@ -61,20 +53,12 @@ export class FeedbackService {
       creatorId,
       created_date: new Date(),
     };
-    console.log(newFeedback);
     this.feedbacks.push(newFeedback);
-    console.log(this.feedbacks);
-    //return newFeedback;
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(newFeedback);
-      }, 300);
-    });
+    return newFeedback;
   }
 
   async deleteFeedback(id: string, userId: string) {
     const feedbackIdx = this.feedbacks.findIndex((el) => el.id === id);
-    console.log(!feedbackIdx);
     if (feedbackIdx === -1) {
       throw new BadRequestException('No feedback with this id!');
     }
@@ -83,10 +67,6 @@ export class FeedbackService {
         'User can not delete feedback that is not his!',
       );
     }
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.feedbacks.splice(feedbackIdx, 1)[0]);
-      }, 300);
-    });
+    return this.feedbacks.splice(feedbackIdx, 1)[0];
   }
 }
