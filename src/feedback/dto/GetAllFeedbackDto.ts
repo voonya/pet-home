@@ -1,13 +1,19 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { UserType } from '@users/user-type';
 export class GetAllFeedbackDto {
   @IsString()
   @IsNotEmpty()
   userId: string;
 
-  @IsString()
+  @IsEnum(UserType)
   @IsOptional()
-  userType?: string;
+  userType?: UserType;
 
   @IsNumber()
   @IsOptional()

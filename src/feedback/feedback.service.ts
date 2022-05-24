@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PostFeedbackDto, Feedback } from './dto';
 import { feedbacksMock } from '@feedback/feedbackMock';
 import { v4 as uuidv4 } from 'uuid';
+import { UserType } from '@users/user-type';
 @Injectable()
 export class FeedbackService {
   feedbacks: Feedback[] = feedbacksMock;
@@ -10,7 +11,7 @@ export class FeedbackService {
     userId: string,
     offset: number,
     limit: number,
-    userType?: string,
+    userType?: UserType,
   ) {
     let feedbacks: Feedback[] = [];
     if (userType) {

@@ -1,4 +1,11 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from 'class-validator';
+import { UserType } from '@users/user-type';
 
 export class Feedback {
   @IsString()
@@ -13,9 +20,9 @@ export class Feedback {
   @IsNotEmpty()
   creatorId: string;
 
-  @IsString()
+  @IsEnum(UserType)
   @IsNotEmpty()
-  userType: string;
+  userType: UserType;
 
   @IsString()
   @IsNotEmpty()
