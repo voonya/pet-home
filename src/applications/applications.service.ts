@@ -1,18 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { ApplicationQueryDto } from './dto/application-query.dto';
-import { ApplicationDto } from './dto/application.dto';
-import { CreateApplicationDto } from './dto/create-application.dto';
+import { BaseApplicationDto } from './dto/base-application.dto';
+import { ApplicationDto } from './dto/create-application.dto';
 import { applications } from './mock.applications';
 
 @Injectable()
 export class ApplicationService {
+  private notFoundMsg = 'Application not found';
+
   async getAll(): Promise<ApplicationDto[]> {
     return applications;
   }
 
   async getById(id: string): Promise<ApplicationDto> {
-    return applications.find((p) => p.id === id);
+    const foundApplication = applications.find((p) => p.id === id);
+
+    if (foundApplication) {
+      return foundApplication;
+    }
+
+    throw new NotFoundException(this.notFoundMsg);
   }
 
   async getFiltered(q: ApplicationQueryDto): Promise<ApplicationDto[]> {
@@ -31,7 +39,7 @@ export class ApplicationService {
     return allRecords;
   }
 
-  async create(applicationDto: CreateApplicationDto) {
+  async create(applicationDto: BaseApplicationDto) {
     const newRecord: ApplicationDto = {
       ...applicationDto,
       id: randomUUID().toString(),
@@ -51,11 +59,13 @@ export class ApplicationService {
 
       return applicationToRemove;
     }
+
+    throw new NotFoundException(this.notFoundMsg);
   }
 
   async update(
     id: string,
-    updateApplicationDto: CreateApplicationDto,
+    updateApplicationDto: BaseApplicationDto,
   ): Promise<ApplicationDto> {
     const oldApplication = await this.getById(id);
 
@@ -65,5 +75,7 @@ export class ApplicationService {
       applications[index] = newApplication;
       return newApplication;
     }
+
+    throw new NotFoundException(this.notFoundMsg);
   }
 }

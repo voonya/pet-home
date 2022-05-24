@@ -1,9 +1,7 @@
-export class CreateApplicationDto {
-  readonly requestId: string;
+import { IsString } from 'class-validator';
+import { BaseApplicationDto } from './base-application.dto';
 
-  readonly userId: string;
-
-  readonly description: string;
-
-  readonly price: number;
+export class ApplicationDto extends BaseApplicationDto {
+  @IsString()
+  id: string;
 }

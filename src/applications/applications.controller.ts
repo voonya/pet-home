@@ -5,7 +5,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -13,24 +12,16 @@ import {
 } from '@nestjs/common';
 import { ApplicationService } from './applications.service';
 import { ApplicationQueryDto } from './dto/application-query.dto';
-import { ApplicationDto } from './dto/application.dto';
-import { CreateApplicationDto } from './dto/create-application.dto';
+import { BaseApplicationDto } from './dto/base-application.dto';
+import { ApplicationDto } from './dto/create-application.dto';
 
 @Controller('applications')
 export class ApplicationController {
   constructor(private applicationService: ApplicationService) {}
 
-  private notFoundMsg = 'Application not found';
-
   @Get(':id')
   async getById(@Param('id') id: string): Promise<ApplicationDto> {
-    const application = await this.applicationService.getById(id);
-
-    if (application) {
-      return application;
-    }
-
-    throw new NotFoundException(this.notFoundMsg);
+    return this.applicationService.getById(id);
   }
 
   @Get()
@@ -43,36 +34,21 @@ export class ApplicationController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(
-    @Body() createApplicationDto: CreateApplicationDto,
+    @Body() createApplicationDto: BaseApplicationDto,
   ): Promise<ApplicationDto> {
     return this.applicationService.create(createApplicationDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<ApplicationDto> {
-    const removedApplication = await this.applicationService.remove(id);
-
-    if (removedApplication) {
-      return removedApplication;
-    }
-
-    throw new NotFoundException(this.notFoundMsg);
+    return this.applicationService.remove(id);
   }
 
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateApplicationDto: CreateApplicationDto,
+    @Body() updateApplicationDto: BaseApplicationDto,
   ) {
-    const updatedApplication = this.applicationService.update(
-      id,
-      updateApplicationDto,
-    );
-
-    if (updateApplicationDto) {
-      return updatedApplication;
-    }
-
-    throw new NotFoundException(this.notFoundMsg);
+    return this.applicationService.update(id, updateApplicationDto);
   }
 }
