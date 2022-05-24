@@ -4,6 +4,7 @@ import {
   IsOptional,
   IsString,
   MaxLength,
+  Min,
   MinLength,
 } from 'class-validator';
 
@@ -17,5 +18,6 @@ export class UpdateApplicationDto {
   @IsOptional()
   @IsNumber()
   @IsNotEmpty()
+  @Min(0)
   price?: number;
 }

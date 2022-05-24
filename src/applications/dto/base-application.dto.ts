@@ -3,6 +3,7 @@ import {
   IsNumber,
   IsString,
   MaxLength,
+  Min,
   MinLength,
 } from 'class-validator';
 
@@ -22,5 +23,6 @@ export class BaseApplicationDto {
 
   @IsNumber()
   @IsNotEmpty()
+  @Min(0)
   price: number;
 }
