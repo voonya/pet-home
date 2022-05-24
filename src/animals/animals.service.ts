@@ -1,10 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AnimalDto, BaseAnimalDto } from '@animals/dto';
-import { v4 as uuidv4 } from 'uuid';
 import { animals } from '@animals/animals';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { CreateAnimalDto } from '@animals/dto/create-animal.dto';
-
+import { randomUUID } from 'crypto';
 const maxAnimalsPerUser = 10;
 
 @Injectable()
@@ -23,7 +22,7 @@ export class AnimalsService {
       throw new BadRequestException('You have reached maximum number of pets');
     }
     const newAnimal: AnimalDto = {
-      id: uuidv4(),
+      id: randomUUID(),
       ...createAnimalDto,
       creationDate: new Date(),
       ownerId: userId,

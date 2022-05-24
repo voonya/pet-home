@@ -6,12 +6,13 @@ import {
   MinLength,
   Min,
   Max,
+  IsEnum,
 } from 'class-validator';
-
+import { UserType } from '@users/user-type';
 export class PostFeedbackDto {
-  @IsString()
+  @IsEnum(UserType)
   @IsNotEmpty()
-  userType: string;
+  userType: UserType;
 
   @IsString()
   userId: string;

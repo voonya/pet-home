@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserDto, BaseUserDto } from '@users/dto';
 import { users } from '@users/users';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class UsersService {
 
   create(createUserDto: BaseUserDto) {
     const newUser: UserDto = {
-      id: uuidv4(),
+      id: randomUUID(),
       ...createUserDto,
       creationDate: new Date(),
     };
