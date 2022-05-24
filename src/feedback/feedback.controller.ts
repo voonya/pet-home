@@ -19,6 +19,7 @@ export class FeedbackController {
     const offset = queryFeedback.offset || 0;
     const limit = queryFeedback.limit || 10;
     return this.feedbackService.getAllFeedback(
+      queryFeedback.userId,
       offset,
       limit,
       queryFeedback.userType,

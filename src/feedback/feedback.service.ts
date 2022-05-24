@@ -7,11 +7,17 @@ import { v4 as uuidv4 } from 'uuid';
 export class FeedbackService {
   feedbacks: Feedback[] = feedbacksMock;
 
-  async getAllFeedback(offset: number, limit: number, userType?: string) {
-    console.log(userType, offset, limit);
+  async getAllFeedback(
+    userId: string,
+    offset: number,
+    limit: number,
+    userType?: string,
+  ) {
     let feedbacks: Feedback[] = [];
     if (userType) {
-      feedbacks = this.feedbacks.filter((obj) => obj.userType === userType);
+      feedbacks = this.feedbacks.filter(
+        (obj) => obj.userType === userType && obj.userId === userId,
+      );
     } else {
       feedbacks = this.feedbacks;
     }
@@ -36,7 +42,6 @@ export class FeedbackService {
   }
 
   async getFeedbackById(id: string) {
-    console.log(this.feedbacks);
     const feedback = this.feedbacks.find((el) => el.id === id);
     if (!feedback) {
       throw new BadRequestException('No feedback with this id!');
