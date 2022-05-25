@@ -1,4 +1,4 @@
 export enum UserTypeEnum {
-  Owner = 'HANDLER',
-  Handler = 'OWNER',
+  Owner = 'OWNER',
+  Handler = 'HANDLER',
 }
