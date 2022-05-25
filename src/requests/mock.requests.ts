@@ -1,4 +1,4 @@
-import { RequestDto } from 'requests/dto/request.dto';
+import { RequestDto } from 'requests/dto';
 
 export const requests: RequestDto[] = [
   {

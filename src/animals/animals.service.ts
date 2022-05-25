@@ -3,10 +3,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { AnimalDto, BaseAnimalDto } from '@animals/dto';
-import { animals } from '@animals/animals';
+import { AnimalDto, BaseAnimalDto } from 'animals/dto';
+import { animals } from 'animals/animals';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
-import { CreateAnimalDto } from '@animals/dto/create-animal.dto';
+import { CreateAnimalDto } from 'animals/dto/create-animal.dto';
 import { randomUUID } from 'crypto';
 const maxAnimalsPerUser = 10;
 

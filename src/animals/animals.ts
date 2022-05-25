@@ -1,5 +1,5 @@
-import { AnimalDto } from '@animals/dto/animal.dto';
-import { AnimalTypeEnum } from '@animals/animal-type.enum';
+import { AnimalDto } from 'animals/dto/animal.dto';
+import { AnimalTypeEnum } from 'animals/animal-type.enum';
 
 export const animals: AnimalDto[] = [
   {

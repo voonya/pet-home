@@ -10,9 +10,11 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ApplicationService } from 'applications/applications.service';
-import { ApplicationQueryDto } from 'applications/dto/application-query.dto';
-import { BaseApplicationDto } from 'applications/dto/base-application.dto';
-import { UpdateApplicationDto } from 'applications/dto/update-application.dto';
+import {
+  ApplicationQueryDto,
+  BaseApplicationDto,
+  UpdateApplicationDto,
+} from 'applications/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 
 @Controller('applications')

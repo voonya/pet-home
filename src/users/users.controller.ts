@@ -9,8 +9,8 @@ import {
   Query,
   UsePipes,
 } from '@nestjs/common';
-import { UsersService } from '@users/users.service';
-import { AddRoleDto, BaseUserDto, BanUserDto } from '@users/dto';
+import { UsersService } from 'users/users.service';
+import { AddRoleDto, BaseUserDto, BanUserDto } from 'users/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 

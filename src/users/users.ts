@@ -1,5 +1,5 @@
-import { UserDto } from '@users/dto/user.dto';
-import { RoleEnum } from '@users/role.enum';
+import { UserDto } from 'users/dto/user.dto';
+import { RoleEnum } from 'users/role.enum';
 
 export const users: UserDto[] = [
   {

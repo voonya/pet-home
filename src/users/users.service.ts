@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from '@users/dto';
-import { users } from '@users/users';
+import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from 'users/dto';
+import { users } from 'users/users';
 import { randomUUID } from 'crypto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
-import { RoleEnum } from '@users/role.enum';
+import { RoleEnum } from 'users/role.enum';
 
 @Injectable()
 export class UsersService {
