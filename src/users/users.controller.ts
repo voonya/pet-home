@@ -7,10 +7,12 @@ import {
   Post,
   Put,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { UsersService } from '@users/users.service';
-import { BaseUserDto } from '@users/dto';
+import { AddRoleDto, BaseUserDto, BanUserDto } from '@users/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
+import { PaginationPipe } from 'pagination/pagination.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -22,6 +24,7 @@ export class UsersController {
   }
 
   @Get()
+  @UsePipes(new PaginationPipe(0, 10))
   getAll(@Query() pagination: PaginationDto) {
     return this.usersService.getAll(pagination);
   }
@@ -39,5 +42,15 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
+  }
+
+  @Post('/role')
+  addRole(@Body() addRoleDto: AddRoleDto) {
+    return this.usersService.addRole(addRoleDto);
+  }
+
+  @Post('/ban')
+  ban(@Body() banUserDto: BanUserDto) {
+    return this.usersService.ban(banUserDto);
   }
 }

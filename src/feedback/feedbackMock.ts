@@ -1,4 +1,5 @@
-import { Feedback } from '@feedback/feedback.model';
+import { Feedback } from '@feedback/dto';
+import { UserTypeEnum } from '@users/user-type.enum';
 
 export const feedbacksMock: Feedback[] = [
   {
@@ -6,7 +7,7 @@ export const feedbacksMock: Feedback[] = [
     userId: '1',
     creatorId: '2',
     created_date: new Date(),
-    userType: 'Owner',
+    userType: UserTypeEnum.Owner,
     title: 'My feedback1',
     body: 'Super owner! a lot of great feelings!',
     rate: 5,
@@ -16,7 +17,7 @@ export const feedbacksMock: Feedback[] = [
     userId: '1',
     creatorId: '2',
     created_date: new Date(),
-    userType: 'Owner',
+    userType: UserTypeEnum.Owner,
     title: 'My feedback2',
     body: 'Super owner! And his dog is nice!',
     rate: 10,
@@ -26,7 +27,7 @@ export const feedbacksMock: Feedback[] = [
     userId: '1',
     creatorId: '2',
     created_date: new Date(),
-    userType: 'Owner',
+    userType: UserTypeEnum.Owner,
     title: 'My feedback3',
     body: 'Super owner! really',
     rate: 7,
@@ -36,7 +37,7 @@ export const feedbacksMock: Feedback[] = [
     userId: '1',
     creatorId: '2',
     created_date: new Date(),
-    userType: 'Hadler',
+    userType: UserTypeEnum.Handler,
     title: 'My feedback4',
     body: 'Super handler!',
     rate: 8,
@@ -46,7 +47,7 @@ export const feedbacksMock: Feedback[] = [
     userId: '1',
     creatorId: '2',
     created_date: new Date(),
-    userType: 'Handler',
+    userType: UserTypeEnum.Handler,
     title: 'My feedback5',
     body: 'Super handler! I love him!',
     rate: 10,

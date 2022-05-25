@@ -1,4 +1,4 @@
-export enum AnimalType {
+export enum AnimalTypeEnum {
   Cat,
   Dog,
   Fish,

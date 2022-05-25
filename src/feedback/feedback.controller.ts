@@ -6,21 +6,23 @@ import {
   Body,
   Query,
   Delete,
+  UsePipes,
 } from '@nestjs/common';
 import { FeedbackService } from '@feedback/feedback.service';
 import { PostFeedbackDto, GetAllFeedbackDto } from '@feedback/dto';
+import { PaginationPipe } from 'pagination/pagination.pipe';
 
 @Controller('feedback')
 export class FeedbackController {
   constructor(private feedbackService: FeedbackService) {}
 
   @Get()
+  @UsePipes(new PaginationPipe(0, 10))
   getAllFeedback(@Query() queryFeedback: GetAllFeedbackDto) {
-    const offset = queryFeedback.offset || 0;
-    const limit = queryFeedback.limit || 10;
     return this.feedbackService.getAllFeedback(
-      offset,
-      limit,
+      queryFeedback.userId,
+      queryFeedback.offset,
+      queryFeedback.limit,
       queryFeedback.userType,
     );
   }

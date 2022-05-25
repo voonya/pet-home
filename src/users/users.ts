@@ -1,4 +1,5 @@
 import { UserDto } from '@users/dto/user.dto';
+import { RoleEnum } from '@users/role.enum';
 
 export const users: UserDto[] = [
   {
@@ -9,6 +10,8 @@ export const users: UserDto[] = [
     birthDate: new Date('2001-10-5'),
     sex: 'Man',
     creationDate: new Date('2022-10-5'),
+    banned: false,
+    roles: [RoleEnum.User],
   },
   {
     id: '0bdc5c68-da0d-11ec-9d64-0242ac120002',
@@ -18,6 +21,8 @@ export const users: UserDto[] = [
     birthDate: new Date('2001-10-5'),
     sex: 'Man',
     creationDate: new Date('2022-10-5'),
+    banned: false,
+    roles: [RoleEnum.User],
   },
   {
     id: '122fe7b0-da0d-11ec-9d64-0242ac120002',
@@ -27,6 +32,8 @@ export const users: UserDto[] = [
     birthDate: new Date('2001-10-5'),
     sex: 'Man',
     creationDate: new Date('2022-10-5'),
+    banned: false,
+    roles: [RoleEnum.User],
   },
   {
     id: '122fe904-da0d-11ec-9d64-0242ac120002',
@@ -36,6 +43,8 @@ export const users: UserDto[] = [
     birthDate: new Date('2001-10-5'),
     sex: 'Man',
     creationDate: new Date('2022-10-5'),
+    banned: false,
+    roles: [RoleEnum.User],
   },
   {
     id: '123e4567-e89b-12d3-a456-426614174000',
@@ -45,5 +54,7 @@ export const users: UserDto[] = [
     birthDate: new Date('2001-10-5'),
     sex: 'Man',
     creationDate: new Date('2022-10-5'),
+    banned: false,
+    roles: [RoleEnum.User],
   },
 ];
