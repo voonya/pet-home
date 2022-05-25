@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { BaseRequestDto } from 'requests/dto/base-request.dto';
 import { RequestQueryDto } from 'requests/dto/request-query.dto';
@@ -9,6 +13,8 @@ import { requests } from 'requests/mock.requests';
 @Injectable()
 export class RequestService {
   private notFoundMsg = 'Request not found';
+
+  private dateError = 'expirationDate should later than creationDate';
 
   private getAll() {
     return requests;
@@ -48,6 +54,10 @@ export class RequestService {
       creationDate: new Date(),
     };
 
+    if (this.isDateIsUnacceptable(newRecord)) {
+      throw new BadRequestException(this.dateError);
+    }
+
     requests.push(newRecord);
 
     return newRecord;
@@ -75,7 +85,19 @@ export class RequestService {
 
     const index = requests.indexOf(oldRequest);
     const newRequest = { ...oldRequest, ...updateRequestDto };
+
+    if (this.isDateIsUnacceptable(newRequest)) {
+      throw new BadRequestException(this.dateError);
+    }
+
     requests[index] = newRequest;
     return newRequest;
+  }
+
+  private isDateIsUnacceptable(requestDto: RequestDto) {
+    return (
+      requestDto.expirationDate &&
+      requestDto.creationDate > requestDto.expirationDate
+    );
   }
 }
