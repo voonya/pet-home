@@ -10,7 +10,7 @@ import { requests } from 'requests/mock.requests';
 export class RequestService {
   private notFoundMsg = 'Request not found';
 
-  getAll() {
+  private getAll() {
     return requests;
   }
 

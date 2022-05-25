@@ -10,7 +10,7 @@ import { UpdateApplicationDto } from 'applications/dto/update-application.dto';
 export class ApplicationService {
   private notFoundMsg = 'Application not found';
 
-  getAll() {
+  private getAll() {
     return applications;
   }
 
