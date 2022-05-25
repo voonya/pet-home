@@ -7,11 +7,13 @@ import {
   Post,
   Put,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { RequestService } from 'requests/requests.service';
 import { BaseRequestDto } from 'requests/dto/base-request.dto';
 import { RequestQueryDto } from 'requests/dto/request-query.dto';
 import { UpdateRequestDto } from 'requests/dto/update-request.dto';
+import { PaginationPipe } from 'pagination/pagination.pipe';
 
 @Controller('requests')
 export class RequestsController {
@@ -23,6 +25,7 @@ export class RequestsController {
   }
 
   @Get()
+  @UsePipes(new PaginationPipe(0, 10))
   getByAttribute(@Query() q: RequestQueryDto) {
     return this.requestsService.getFiltered(q);
   }
