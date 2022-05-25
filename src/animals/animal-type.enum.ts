@@ -1,10 +1,10 @@
 export enum AnimalTypeEnum {
-  Cat,
-  Dog,
-  Fish,
-  Parrot,
-  Bird,
-  Turtle,
-  SeaPig,
-  Other,
+  Cat = 'CAT',
+  Dog = 'DOG',
+  Fish = 'FISH',
+  Parrot = 'PARROT',
+  Bird = 'BIRD',
+  Turtle = 'TURTLE',
+  SeaPig = 'SEAPIG',
+  Other = 'OTHER',
 }
