@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PostFeedbackDto, Feedback } from './dto';
+import { Feedback, PostFeedbackDto } from './dto';
 import { feedbacksMock } from '@feedback/feedbackMock';
 import { randomUUID } from 'crypto';
 import { UserType } from '@users/user-type';
+
 @Injectable()
 export class FeedbackService {
   feedbacks: Feedback[] = feedbacksMock;
@@ -22,15 +23,10 @@ export class FeedbackService {
       feedbacks = this.feedbacks;
     }
     feedbacks = feedbacks.slice(offset, offset + limit);
-    const averageRate =
-      Math.floor(
-        10 *
-          (feedbacks.reduce(
-            (prev: number, curr: Feedback) => prev + curr.rate,
-            0,
-          ) /
-            feedbacks.length),
-      ) / 10;
+    const averageRate = (
+      feedbacks.reduce((prev: number, curr: Feedback) => prev + curr.rate, 0) /
+      feedbacks.length
+    ).toFixed(2);
     return {
       rate: averageRate,
       feedbacks,
