@@ -17,11 +17,11 @@ export class RequestService {
   getById(id: string) {
     const foundRequest = requests.find((p) => p.id === id);
 
-    if (foundRequest) {
-      return foundRequest;
+    if (!foundRequest) {
+      throw new NotFoundException(this.notFoundMsg);
     }
 
-    throw new NotFoundException(this.notFoundMsg);
+    return foundRequest;
   }
 
   getFiltered(query: RequestQueryDto) {
@@ -56,26 +56,26 @@ export class RequestService {
   remove(id: string) {
     const requestToRemove = this.getById(id);
 
-    if (requestToRemove) {
-      const index = requests.indexOf(requestToRemove);
-      requests.splice(index, 1);
-
-      return requestToRemove;
+    if (!requestToRemove) {
+      throw new NotFoundException(this.notFoundMsg);
     }
 
-    throw new NotFoundException(this.notFoundMsg);
+    const index = requests.indexOf(requestToRemove);
+    requests.splice(index, 1);
+
+    return requestToRemove;
   }
 
   update(id: string, updateRequestDto: UpdateRequestDto) {
     const oldRequest = this.getById(id);
 
-    if (oldRequest) {
-      const index = requests.indexOf(oldRequest);
-      const newRequest = { ...oldRequest, ...updateRequestDto };
-      requests[index] = newRequest;
-      return newRequest;
+    if (!oldRequest) {
+      throw new NotFoundException(this.notFoundMsg);
     }
 
-    throw new NotFoundException(this.notFoundMsg);
+    const index = requests.indexOf(oldRequest);
+    const newRequest = { ...oldRequest, ...updateRequestDto };
+    requests[index] = newRequest;
+    return newRequest;
   }
 }

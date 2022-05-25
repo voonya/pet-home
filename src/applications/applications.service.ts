@@ -17,11 +17,11 @@ export class ApplicationService {
   getById(id: string) {
     const foundApplication = applications.find((p) => p.id === id);
 
-    if (foundApplication) {
-      return foundApplication;
+    if (!foundApplication) {
+      throw new NotFoundException(this.notFoundMsg);
     }
 
-    throw new NotFoundException(this.notFoundMsg);
+    return foundApplication;
   }
 
   getFiltered(query: ApplicationQueryDto) {
@@ -55,26 +55,26 @@ export class ApplicationService {
   remove(id: string) {
     const applicationToRemove = this.getById(id);
 
-    if (applicationToRemove) {
-      const index = applications.indexOf(applicationToRemove);
-      applications.splice(index, 1);
-
-      return applicationToRemove;
+    if (!applicationToRemove) {
+      throw new NotFoundException(this.notFoundMsg);
     }
 
-    throw new NotFoundException(this.notFoundMsg);
+    const index = applications.indexOf(applicationToRemove);
+    applications.splice(index, 1);
+
+    return applicationToRemove;
   }
 
   update(id: string, updateApplicationDto: UpdateApplicationDto) {
     const oldApplication = this.getById(id);
 
-    if (oldApplication) {
-      const index = applications.indexOf(oldApplication);
-      const newApplication = { ...oldApplication, ...updateApplicationDto };
-      applications[index] = newApplication;
-      return newApplication;
+    if (!oldApplication) {
+      throw new NotFoundException(this.notFoundMsg);
     }
 
-    throw new NotFoundException(this.notFoundMsg);
+    const index = applications.indexOf(oldApplication);
+    const newApplication = { ...oldApplication, ...updateApplicationDto };
+    applications[index] = newApplication;
+    return newApplication;
   }
 }
