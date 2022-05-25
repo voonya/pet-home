@@ -10,7 +10,7 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { UsersService } from '@users/users.service';
-import { BaseUserDto } from '@users/dto';
+import { AddRoleDto, BaseUserDto, BanUserDto } from '@users/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 
@@ -42,5 +42,15 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
+  }
+
+  @Post('/role')
+  addRole(@Body() addRoleDto: AddRoleDto) {
+    return this.usersService.addRole(addRoleDto);
+  }
+
+  @Post('/ban')
+  ban(@Body() banUserDto: BanUserDto) {
+    return this.usersService.ban(banUserDto);
   }
 }

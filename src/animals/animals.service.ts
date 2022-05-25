@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { AnimalDto, BaseAnimalDto } from '@animals/dto';
 import { animals } from '@animals/animals';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
@@ -34,7 +38,7 @@ export class AnimalsService {
   getById(id: string, userId: string) {
     const animal = animals.find((el) => el.id === id && el.ownerId === userId);
     if (!animal) {
-      throw new BadRequestException('No animal with this id!');
+      throw new NotFoundException('No animal with this id!');
     }
     return animal;
   }
@@ -44,7 +48,7 @@ export class AnimalsService {
       (animal) => animal.id === id && animal.ownerId === userId,
     );
     if (!oldAnimal) {
-      throw new BadRequestException('No animal with this id to update!');
+      throw new NotFoundException('No animal with this id to update!');
     }
     const index = animals.indexOf(oldAnimal);
     const newAnimal = { ...oldAnimal, ...updateAnimalDto };
@@ -57,7 +61,7 @@ export class AnimalsService {
       (animal) => animal.id === id && animal.ownerId === userId,
     );
     if (index === -1) {
-      throw new BadRequestException('No animal with this id to remove!');
+      throw new NotFoundException('No animal with this id to remove!');
     }
     return animals.splice(index, 1)[0];
   }

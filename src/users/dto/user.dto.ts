@@ -1,10 +1,14 @@
-import { IsDate, IsString } from 'class-validator';
 import { BaseUserDto } from '@users/dto/base-user.dto';
+import { RoleEnum } from '@users/role.enum';
 
 export class UserDto extends BaseUserDto {
-  @IsString()
   id: string;
 
-  @IsDate()
   creationDate: Date;
+
+  banned: boolean;
+
+  banReason?: string;
+
+  roles: RoleEnum[];
 }

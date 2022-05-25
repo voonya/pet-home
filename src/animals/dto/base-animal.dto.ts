@@ -1,4 +1,4 @@
-import { AnimalType } from '@animals/animal-type';
+import { AnimalTypeEnum } from '@animals/animal-type.enum';
 import {
   IsEnum,
   IsNotEmpty,
@@ -17,8 +17,8 @@ export class BaseAnimalDto {
   name: string;
 
   @IsNotEmpty()
-  @IsEnum(AnimalType)
-  type: AnimalType;
+  @IsEnum(AnimalTypeEnum)
+  type: AnimalTypeEnum;
 
   @MaxLength(75)
   @MinLength(2)
