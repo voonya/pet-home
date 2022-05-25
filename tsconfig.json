@@ -15,6 +15,7 @@
       "@forecast/*": ["forecast/*"],
       "@users/*": ["users/*"],
       "@animals/*": ["animals/*"],
+      "@applications/*": ["applications/*"],
     },
     "incremental": true,
     "skipLibCheck": true,

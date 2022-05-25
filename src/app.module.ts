@@ -6,6 +6,8 @@ import { AnimalsModule } from '@animals/animals.module';
 import { FeedbackModule } from '@feedback/feedback.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { ApplicationsModule } from '@applications/applications.module';
+import { RequestsModule } from 'requests/requests.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,6 +21,8 @@ import { APP_GUARD } from '@nestjs/core';
     UsersModule,
     AnimalsModule,
     FeedbackModule,
+    ApplicationsModule,
+    RequestsModule,
   ],
   controllers: [],
   providers: [
