@@ -5,7 +5,7 @@ import {
   IsNumber,
   IsString,
 } from 'class-validator';
-import { UserType } from '@users/user-type';
+import { UserTypeEnum } from '@users/user-type.enum';
 
 export class Feedback {
   @IsString()
@@ -20,9 +20,9 @@ export class Feedback {
   @IsNotEmpty()
   creatorId: string;
 
-  @IsEnum(UserType)
+  @IsEnum(UserTypeEnum)
   @IsNotEmpty()
-  userType: UserType;
+  userType: UserTypeEnum;
 
   @IsString()
   @IsNotEmpty()

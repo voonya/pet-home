@@ -1,12 +1,12 @@
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { UserType } from '@users/user-type';
+import { UserTypeEnum } from '@users/user-type.enum';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 export class GetAllFeedbackDto extends PaginationDto {
   @IsString()
   @IsNotEmpty()
   userId: string;
 
-  @IsEnum(UserType)
+  @IsEnum(UserTypeEnum)
   @IsOptional()
-  userType?: UserType;
+  userType?: UserTypeEnum;
 }

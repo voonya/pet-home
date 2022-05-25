@@ -8,11 +8,11 @@ import {
   Max,
   IsEnum,
 } from 'class-validator';
-import { UserType } from '@users/user-type';
+import { UserTypeEnum } from '@users/user-type.enum';
 export class PostFeedbackDto {
-  @IsEnum(UserType)
+  @IsEnum(UserTypeEnum)
   @IsNotEmpty()
-  userType: UserType;
+  userType: UserTypeEnum;
 
   @IsString()
   userId: string;

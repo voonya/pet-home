@@ -1,4 +1,4 @@
-export enum UserType {
+export enum UserTypeEnum {
   Owner = 'HANDLER',
   Handler = 'OWNER',
 }

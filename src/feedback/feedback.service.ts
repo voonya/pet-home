@@ -1,8 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PostFeedbackDto, Feedback } from './dto';
 import { feedbacksMock } from '@feedback/feedbackMock';
 import { randomUUID } from 'crypto';
-import { UserType } from '@users/user-type';
+import { UserTypeEnum } from '@users/user-type.enum';
 @Injectable()
 export class FeedbackService {
   feedbacks: Feedback[] = feedbacksMock;
@@ -11,7 +15,7 @@ export class FeedbackService {
     userId: string,
     offset: number,
     limit: number,
-    userType?: UserType,
+    userType?: UserTypeEnum,
   ) {
     let feedbacks: Feedback[] = [];
     if (userType) {
@@ -40,7 +44,7 @@ export class FeedbackService {
   async getFeedbackById(id: string) {
     const feedback = this.feedbacks.find((el) => el.id === id);
     if (!feedback) {
-      throw new BadRequestException('No feedback with this id!');
+      throw new NotFoundException('No feedback with this id!');
     }
     return feedback;
   }
@@ -61,7 +65,7 @@ export class FeedbackService {
   async deleteFeedback(id: string, userId: string) {
     const feedbackIdx = this.feedbacks.findIndex((el) => el.id === id);
     if (feedbackIdx === -1) {
-      throw new BadRequestException('No feedback with this id!');
+      throw new NotFoundException('No feedback with this id!');
     }
     if (this.feedbacks[feedbackIdx].creatorId !== userId) {
       throw new BadRequestException(
