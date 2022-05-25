@@ -95,9 +95,8 @@ export class RequestService {
   }
 
   private isDateIsUnacceptable(requestDto: RequestDto) {
-    return (
-      requestDto.expirationDate &&
-      requestDto.creationDate > requestDto.expirationDate
-    );
+    return requestDto.expirationDate
+      ? requestDto.creationDate > requestDto.expirationDate
+      : false;
   }
 }
