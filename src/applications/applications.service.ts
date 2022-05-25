@@ -5,9 +5,12 @@ import { BaseApplicationDto } from 'applications/dto/base-application.dto';
 import { ApplicationDto } from 'applications/dto/application.dto';
 import { applications } from 'applications/mock.applications';
 import { UpdateApplicationDto } from 'applications/dto/update-application.dto';
+import { RequestService } from 'requests/requests.service';
 
 @Injectable()
 export class ApplicationService {
+  constructor(private requestService: RequestService) {}
+
   private notFoundMsg = 'Application not found';
 
   private getAll() {
@@ -42,6 +45,8 @@ export class ApplicationService {
   }
 
   create(applicationDto: BaseApplicationDto) {
+    this.requestService.getById(applicationDto.requestId);
+
     const newRecord: ApplicationDto = {
       ...applicationDto,
       id: randomUUID().toString(),
