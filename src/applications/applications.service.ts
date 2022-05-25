@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { ApplicationQueryDto } from 'applications/dto/application-query.dto';
 import { BaseApplicationDto } from 'applications/dto/base-application.dto';
@@ -47,6 +51,10 @@ export class ApplicationService {
   create(applicationDto: BaseApplicationDto) {
     this.requestService.getById(applicationDto.requestId);
 
+    if (!this.requestService.requestIsActual(applicationDto.requestId)) {
+      throw new BadRequestException('Request is expired');
+    }
+
     const newRecord: ApplicationDto = {
       ...applicationDto,
       id: randomUUID().toString(),
@@ -60,10 +68,6 @@ export class ApplicationService {
   remove(id: string) {
     const applicationToRemove = this.getById(id);
 
-    if (!applicationToRemove) {
-      throw new NotFoundException(this.notFoundMsg);
-    }
-
     const index = applications.indexOf(applicationToRemove);
     applications.splice(index, 1);
 
@@ -73,8 +77,8 @@ export class ApplicationService {
   update(id: string, updateApplicationDto: UpdateApplicationDto) {
     const oldApplication = this.getById(id);
 
-    if (!oldApplication) {
-      throw new NotFoundException(this.notFoundMsg);
+    if (!this.requestService.requestIsActual(oldApplication.requestId)) {
+      throw new BadRequestException('Request is expired');
     }
 
     const index = applications.indexOf(oldApplication);

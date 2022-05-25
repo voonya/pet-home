@@ -66,10 +66,6 @@ export class RequestService {
   remove(id: string) {
     const requestToRemove = this.getById(id);
 
-    if (!requestToRemove) {
-      throw new NotFoundException(this.notFoundMsg);
-    }
-
     const index = requests.indexOf(requestToRemove);
     requests.splice(index, 1);
 
@@ -78,10 +74,6 @@ export class RequestService {
 
   update(id: string, updateRequestDto: UpdateRequestDto) {
     const oldRequest = this.getById(id);
-
-    if (!oldRequest) {
-      throw new NotFoundException(this.notFoundMsg);
-    }
 
     const index = requests.indexOf(oldRequest);
     const newRequest = { ...oldRequest, ...updateRequestDto };
@@ -98,5 +90,10 @@ export class RequestService {
     return requestDto.expirationDate
       ? requestDto.creationDate > requestDto.expirationDate
       : false;
+  }
+
+  requestIsActual(id: string) {
+    const request = this.getById(id);
+    return request.expirationDate ? new Date() < request.expirationDate : true;
   }
 }
