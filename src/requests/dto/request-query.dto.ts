@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class RequestQueryDto {
   @IsString()
@@ -14,4 +14,12 @@ export class RequestQueryDto {
   @IsNotEmpty()
   @IsOptional()
   animalId?: string;
+
+  @IsNumber()
+  @IsOptional()
+  offset?: number;
+
+  @IsNumber()
+  @IsOptional()
+  limit?: number;
 }

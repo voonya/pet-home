@@ -25,6 +25,8 @@ export class RequestService {
   }
 
   getFiltered(query: RequestQueryDto) {
+    const limit = query.limit || 10;
+    const offset = query.offset || 0;
     let allRecords = this.getAll();
 
     if (query.id) {
@@ -37,6 +39,7 @@ export class RequestService {
       allRecords = allRecords.filter((p) => p.userId === query.userId);
     }
 
+    allRecords = allRecords.slice(offset, offset + limit);
     return allRecords;
   }
 

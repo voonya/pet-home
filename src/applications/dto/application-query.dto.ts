@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ApplicationQueryDto {
   @IsOptional()
@@ -12,4 +12,12 @@ export class ApplicationQueryDto {
   @IsOptional()
   @IsString()
   userId?: string;
+
+  @IsNumber()
+  @IsOptional()
+  offset?: number;
+
+  @IsNumber()
+  @IsOptional()
+  limit?: number;
 }
