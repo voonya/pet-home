@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Feedback, PostFeedbackDto } from './dto';
+import { Feedback, PostFeedbackDto } from '@feedback/dto';
 import { feedbacksMock } from '@feedback/feedbackMock';
 import { randomUUID } from 'crypto';
 import { UserType } from '@users/user-type';
