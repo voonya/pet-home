@@ -59,3 +59,7 @@ Admin manages the hole system, so he can do all CRUD operations with Users and P
 
 3. Auth: - (3rd party)</br>As a 3rd party auth provider we will use Firebase Auth.
     It's a reliable and easy-to-use solution, especially for small applications.
+## Database schema
+<p align="center">
+  <img width="672" height="532" src="images/Database.drawio.png">
+</p>
