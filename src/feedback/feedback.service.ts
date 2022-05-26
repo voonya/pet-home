@@ -28,7 +28,7 @@ export class FeedbackService {
     if (!feedbacks) {
       throw new InternalServerErrorException();
     }
-    return this.dataServices.feedbacks.getAll(userId, offset, limit, userType);
+    return feedbacks;
   }
 
   async getFeedbackById(id: string) {

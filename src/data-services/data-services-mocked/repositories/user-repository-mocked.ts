@@ -13,8 +13,8 @@ export class UserRepositoryMocked implements IUserRepository {
     return Promise.resolve(dto);
   }
 
-  getAll(): Promise<UserDto[]> {
-    return Promise.resolve(this._array);
+  getAll(offset: number, limit: number): Promise<UserDto[]> {
+    return Promise.resolve(this._array.slice(offset, offset + limit));
   }
 
   getByEmail(email: string): Promise<UserDto | null | undefined> {

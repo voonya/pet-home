@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from 'users/dto';
 import { randomUUID } from 'crypto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
@@ -10,8 +14,14 @@ export class UsersService {
   constructor(private dataServices: IDataServices) {}
 
   async getAll(pagination: PaginationDto) {
-    const users = await this.dataServices.users.getAll();
-    return users.slice(pagination.offset, pagination.offset + pagination.limit);
+    const users = await this.dataServices.users.getAll(
+      pagination.offset,
+      pagination.limit,
+    );
+    if (!users) {
+      throw new InternalServerErrorException();
+    }
+    return users;
   }
 
   async create(createUserDto: BaseUserDto) {
@@ -22,7 +32,10 @@ export class UsersService {
       banned: false,
       roles: [RoleEnum.User],
     };
-    await this.dataServices.users.create(newUser);
+    const userAdded = await this.dataServices.users.create(newUser);
+    if (!userAdded) {
+      throw new InternalServerErrorException();
+    }
     return newUser;
   }
 
@@ -45,7 +58,10 @@ export class UsersService {
   async update(id: string, updateUserDto: BaseUserDto) {
     const oldUser = await this.getById(id);
     const newUser = { ...oldUser, ...updateUserDto };
-    await this.dataServices.users.update(id, newUser);
+    const savedUser = await this.dataServices.users.update(id, newUser);
+    if (!savedUser) {
+      throw new InternalServerErrorException();
+    }
     return newUser;
   }
 
