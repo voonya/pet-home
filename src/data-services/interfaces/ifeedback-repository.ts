@@ -1,5 +1,5 @@
 import { Feedback } from 'feedback/dto';
-import { UserTypeEnum } from '../../users/user-type.enum';
+import { UserTypeEnum } from 'users/user-type.enum';
 
 export interface IFeedbackRepository {
   getAll(
