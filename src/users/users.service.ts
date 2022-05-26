@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from 'users/dto';
+import { AddRoleDto, BanUserDto, BaseUserDto, UserDto } from 'users/dto';
 import { users } from 'users/users';
 import { randomUUID } from 'crypto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
@@ -63,8 +63,8 @@ export class UsersService {
     return user;
   }
 
-  ban(banUserDto: BanUserDto) {
-    const user = this.getById(banUserDto.userId);
+  ban(id: string, banUserDto: BanUserDto) {
+    const user = this.getById(id);
     user.banned = true;
     user.banReason = banUserDto.banReason;
     return user;
