@@ -1,15 +1,15 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Param,
   Body,
-  Query,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
+  Query,
   UsePipes,
 } from '@nestjs/common';
 import { FeedbackService } from 'feedback/feedback.service';
-import { PostFeedbackDto, GetAllFeedbackDto } from 'feedback/dto';
+import { GetAllFeedbackDto, PostFeedbackDto } from 'feedback/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 
 @Controller('feedback')
@@ -41,7 +41,7 @@ export class FeedbackController {
   @Delete(':id')
   deleteFeedback(@Param('id') id: string) {
     console.log(id);
-    const userId = '1'; // get id from auth
-    return this.feedbackService.deleteFeedback(id, userId);
+    const creatorId = '1'; // get id from auth
+    return this.feedbackService.deleteFeedback(id, creatorId);
   }
 }
