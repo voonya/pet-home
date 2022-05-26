@@ -1,6 +1,6 @@
 import { IFeedbackRepository } from 'data-services/interfaces/ifeedback-repository';
-import { Feedback, FeedbackAllResponseDto } from 'feedback/dto';
-import { UserTypeEnum } from '../../../users/user-type.enum';
+import { Feedback } from 'feedback/dto';
+import { UserTypeEnum } from 'users/user-type.enum';
 
 export class FeedbackRepositoryMocked implements IFeedbackRepository {
   constructor(arrayMock: Feedback[]) {
@@ -14,7 +14,7 @@ export class FeedbackRepositoryMocked implements IFeedbackRepository {
     offset: number,
     limit: number,
     userType?: UserTypeEnum,
-  ): Promise<FeedbackAllResponseDto> {
+  ): Promise<Feedback[]> {
     let feedbacks: Feedback[] = [];
     if (userType) {
       feedbacks = this._array.filter(
@@ -24,19 +24,8 @@ export class FeedbackRepositoryMocked implements IFeedbackRepository {
       feedbacks = this._array;
     }
     feedbacks = feedbacks.slice(offset, offset + limit);
-    const averageRate =
-      Math.round(
-        (feedbacks.reduce(
-          (prev: number, curr: Feedback) => prev + curr.rate,
-          0,
-        ) /
-          feedbacks.length) *
-          1e2,
-      ) / 1e2;
-    return Promise.resolve({
-      rate: averageRate,
-      feedbacks,
-    });
+
+    return Promise.resolve(feedbacks);
   }
 
   getById(id: string): Promise<Feedback | null | undefined> {
@@ -54,5 +43,27 @@ export class FeedbackRepositoryMocked implements IFeedbackRepository {
       return Promise.resolve(null);
     }
     return Promise.resolve(this._array.splice(feedbackIdx, 1)[0]);
+  }
+
+  getAverageRate(userId: string, userType?: string): Promise<number> {
+    let feedbacks = this._array;
+    if (userType) {
+      feedbacks = feedbacks.filter(
+        (feedback) => feedback.userType === userType,
+      );
+    }
+    if (feedbacks.length === 0) {
+      return Promise.resolve(0);
+    }
+    const averageRate =
+      Math.round(
+        (feedbacks.reduce(
+          (prev: number, curr: Feedback) => prev + curr.rate,
+          0,
+        ) /
+          feedbacks.length) *
+          1e2,
+      ) / 1e2;
+    return Promise.resolve(averageRate);
   }
 }

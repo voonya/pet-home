@@ -9,7 +9,7 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { FeedbackService } from 'feedback/feedback.service';
-import { GetAllFeedbackDto, PostFeedbackDto } from 'feedback/dto';
+import { GetAllFeedbackDto, GetRateDto, PostFeedbackDto } from 'feedback/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 
 @Controller('feedback')
@@ -40,8 +40,16 @@ export class FeedbackController {
 
   @Delete(':id')
   deleteFeedback(@Param('id') id: string) {
-    console.log(id);
     const creatorId = '1'; // get id from auth
     return this.feedbackService.deleteFeedback(id, creatorId);
+  }
+
+  @Get('rate')
+  getAverageRate(@Query() queryRate: GetRateDto) {
+    console.log('queryRate');
+    return this.feedbackService.getAverageRate(
+      queryRate.userId,
+      queryRate.userType,
+    );
   }
 }

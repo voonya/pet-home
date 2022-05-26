@@ -81,4 +81,10 @@ export class FeedbackService {
     console.log(creatorId, userId);
     return true;
   }
+
+  getAverageRate(userId: string, userType: UserTypeEnum) {
+    return {
+      rate: this.dataServices.feedbacks.getAverageRate(userId, userType),
+    };
+  }
 }
