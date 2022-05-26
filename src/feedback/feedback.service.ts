@@ -32,7 +32,8 @@ export class FeedbackService {
   }
 
   async getFeedbackById(id: string) {
-    const feedback = this.dataServices.feedbacks.getById(id);
+    const feedback = await this.dataServices.feedbacks.getById(id);
+    console.log(feedback);
     if (!feedback) {
       throw new NotFoundException('No feedback with this id!');
     }
@@ -82,9 +83,9 @@ export class FeedbackService {
     return true;
   }
 
-  getAverageRate(userId: string, userType: UserTypeEnum) {
+  async getAverageRate(userId: string, userType: UserTypeEnum) {
     return {
-      rate: this.dataServices.feedbacks.getAverageRate(userId, userType),
+      rate: await this.dataServices.feedbacks.getAverageRate(userId, userType),
     };
   }
 }

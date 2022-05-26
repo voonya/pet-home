@@ -27,6 +27,14 @@ export class FeedbackController {
     );
   }
 
+  @Get('rate')
+  getAverageRate(@Query() queryRate: GetRateDto) {
+    return this.feedbackService.getAverageRate(
+      queryRate.userId,
+      queryRate.userType,
+    );
+  }
+
   @Get(':id')
   async getFeedback(@Param('id') id: string) {
     return this.feedbackService.getFeedbackById(id);
@@ -42,14 +50,5 @@ export class FeedbackController {
   deleteFeedback(@Param('id') id: string) {
     const creatorId = '1'; // get id from auth
     return this.feedbackService.deleteFeedback(id, creatorId);
-  }
-
-  @Get('rate')
-  getAverageRate(@Query() queryRate: GetRateDto) {
-    console.log('queryRate');
-    return this.feedbackService.getAverageRate(
-      queryRate.userId,
-      queryRate.userType,
-    );
   }
 }
