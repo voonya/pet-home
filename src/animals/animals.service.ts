@@ -51,7 +51,7 @@ export class AnimalsService {
   async update(id: string, updateAnimalDto: BaseAnimalDto, userId: string) {
     const oldAnimal = await this.getById(id, userId);
     const newAnimal = { ...oldAnimal, ...updateAnimalDto };
-    await this.dataServices.animals.update(newAnimal.id, newAnimal);
+    await this.dataServices.animals.update(id, newAnimal);
     return newAnimal;
   }
 
