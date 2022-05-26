@@ -8,7 +8,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ApplicationsModule } from 'applications/applications.module';
 import { RequestsModule } from 'requests/requests.module';
-import { RepositoryModule } from 'repository/repository.module';
+import { DataServicesModule } from 'repository/data-services.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -24,7 +24,7 @@ import { RepositoryModule } from 'repository/repository.module';
     FeedbackModule,
     ApplicationsModule,
     RequestsModule,
-    RepositoryModule,
+    DataServicesModule,
   ],
   controllers: [],
   providers: [
