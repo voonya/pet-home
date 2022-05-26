@@ -1,15 +1,18 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { PostFeedbackDto, Feedback } from './dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PostFeedbackDto } from './dto';
 import { feedbacksMock } from 'feedback/feedbackMock';
-import { randomUUID } from 'crypto';
 import { UserTypeEnum } from 'users/user-type.enum';
+import { InjectModel } from '@nestjs/mongoose';
+import { Feedback, FeedbackDocument } from '../database/models/feedback.schema';
+import { Model, Types } from 'mongoose';
+
 @Injectable()
 export class FeedbackService {
   feedbacks: Feedback[] = feedbacksMock;
+
+  constructor(
+    @InjectModel(Feedback.name) private readonly model: Model<FeedbackDocument>,
+  ) {}
 
   async getAllFeedback(
     userId: string,
@@ -17,27 +20,25 @@ export class FeedbackService {
     limit: number,
     userType?: UserTypeEnum,
   ) {
-    let feedbacks: Feedback[] = [];
-    if (userType) {
-      feedbacks = this.feedbacks.filter(
-        (obj) => obj.userType === userType && obj.userId === userId,
-      );
-    } else {
-      feedbacks = this.feedbacks;
-    }
-    feedbacks = feedbacks.slice(offset, offset + limit);
+    const feedbacks = await this.model.find(
+      { userId },
+      {},
+      { offset, limit, userType },
+    );
     const averageRate = (
-      feedbacks.reduce((prev: number, curr: Feedback) => prev + curr.rate, 0) /
-      feedbacks.length
-    ).toFixed(2);
+      await this.model.aggregate([
+        { $match: { userId } },
+        { $group: { _id: null, averageRate: { $avg: '$rate' } } },
+      ])
+    )[0].averageRate;
     return {
-      rate: averageRate,
+      rate: averageRate.toFixed(2),
       feedbacks,
     };
   }
 
-  async getFeedbackById(id: string) {
-    const feedback = this.feedbacks.find((el) => el.id === id);
+  async getFeedbackById(id: Types.ObjectId) {
+    const feedback = await this.model.findById(id);
     if (!feedback) {
       throw new NotFoundException('No feedback with this id!');
     }
@@ -45,28 +46,18 @@ export class FeedbackService {
   }
 
   async createFeedback(creatorId: string, feedback: PostFeedbackDto) {
-    const id = randomUUID();
-    // check if user can create feedback on this user
-    const newFeedback = {
-      id,
+    return this.model.create({
       ...feedback,
       creatorId,
       created_date: new Date(),
-    };
-    this.feedbacks.push(newFeedback);
-    return newFeedback;
+    });
   }
 
-  async deleteFeedback(id: string, userId: string) {
-    const feedbackIdx = this.feedbacks.findIndex((el) => el.id === id);
-    if (feedbackIdx === -1) {
-      throw new NotFoundException('No feedback with this id!');
+  async deleteFeedback(id: Types.ObjectId, userId: string) {
+    const feedback = await this.model.findOneAndRemove({ _id: id, userId });
+    if (!feedback) {
+      throw new NotFoundException('Feedback with this id not found!');
     }
-    if (this.feedbacks[feedbackIdx].creatorId !== userId) {
-      throw new BadRequestException(
-        'User can not delete feedback that is not his!',
-      );
-    }
-    return this.feedbacks.splice(feedbackIdx, 1)[0];
+    return feedback;
   }
 }

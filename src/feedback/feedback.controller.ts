@@ -1,16 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Param,
   Body,
-  Query,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
+  Query,
   UsePipes,
 } from '@nestjs/common';
 import { FeedbackService } from 'feedback/feedback.service';
-import { PostFeedbackDto, GetAllFeedbackDto } from 'feedback/dto';
+import { GetAllFeedbackDto, PostFeedbackDto } from 'feedback/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
+import { ParseObjectIdPipe } from 'middlewares/object-id.pipe';
+import { Types } from 'mongoose';
 
 @Controller('feedback')
 export class FeedbackController {
@@ -28,7 +30,7 @@ export class FeedbackController {
   }
 
   @Get(':id')
-  async getFeedback(@Param('id') id: string) {
+  async getFeedback(@Param('id', ParseObjectIdPipe) id: Types.ObjectId) {
     return this.feedbackService.getFeedbackById(id);
   }
 
@@ -39,7 +41,7 @@ export class FeedbackController {
   }
 
   @Delete(':id')
-  deleteFeedback(@Param('id') id: string) {
+  deleteFeedback(@Param('id', ParseObjectIdPipe) id: Types.ObjectId) {
     console.log(id);
     const userId = '1'; // get id from auth
     return this.feedbackService.deleteFeedback(id, userId);
