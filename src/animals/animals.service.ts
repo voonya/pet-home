@@ -15,14 +15,15 @@ export class AnimalsService {
   constructor(private dataServices: IDataServices) {}
 
   async getAll(pagination: PaginationDto, userId: string) {
-    const allAnimals = await this.dataServices.animals.getAll();
-    return allAnimals
-      .filter((animal) => animal.ownerId == userId)
-      .slice(pagination.offset, pagination.offset + pagination.limit);
+    const animals = await this.dataServices.animals.getAll(userId);
+    return animals.slice(
+      pagination.offset,
+      pagination.offset + pagination.limit,
+    );
   }
 
   async createAnimal(createAnimalDto: CreateAnimalDto, userId: string) {
-    const allAnimals = await this.dataServices.animals.getAll();
+    const allAnimals = await this.dataServices.animals.getAll(userId);
     const currentNumberOfUserAnimals = allAnimals.filter(
       (animal) => animal.ownerId === userId,
     ).length;
@@ -40,12 +41,9 @@ export class AnimalsService {
   }
 
   async getById(id: string, userId: string) {
-    const animal = await this.dataServices.animals.getById(id);
+    const animal = await this.dataServices.animals.getById(id, userId);
     if (!animal) {
       throw new NotFoundException('No animal with this id!');
-    }
-    if (animal.ownerId != userId) {
-      throw new BadRequestException('No animal of this user');
     }
     return animal;
   }
@@ -58,11 +56,7 @@ export class AnimalsService {
   }
 
   async remove(id: string, userId: string) {
-    const animal = await this.getById(id, userId);
-    if (animal.ownerId != userId) {
-      throw new BadRequestException('No animal of this user');
-    }
-    const removedAnimal = await this.dataServices.animals.delete(id);
+    const removedAnimal = await this.dataServices.animals.remove(id, userId);
     if (!removedAnimal) {
       throw new NotFoundException('No animal with this id to remove!');
     }
