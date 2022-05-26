@@ -1,4 +1,4 @@
-import { IGenericRepository } from 'repository/igeneric-repository';
+import { IGenericRepository } from 'data-services/igeneric-repository';
 import { Feedback } from 'feedback/dto';
 import { AnimalDto } from 'animals/dto';
 import { ApplicationDto } from 'applications/dto';

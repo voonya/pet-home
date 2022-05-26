@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PostFeedbackDto, Feedback } from './dto';
-import { feedbackMock } from 'repository/data-services-mocked/data/mock.feedback';
+import { feedbackMock } from 'data-services/data-services-mocked/data/mock.feedback';
 import { randomUUID } from 'crypto';
 import { UserTypeEnum } from 'users/user-type.enum';
 @Injectable()

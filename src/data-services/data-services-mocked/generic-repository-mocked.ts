@@ -1,4 +1,4 @@
-import { IGenericRepository } from 'repository/igeneric-repository';
+import { IGenericRepository } from 'data-services/igeneric-repository';
 
 export class RepositoryMock<T extends { id: string }>
   implements IGenericRepository<T>
@@ -24,8 +24,20 @@ export class RepositoryMock<T extends { id: string }>
 
   async update(id: string, item: T): Promise<T> {
     const oldItem = await this.get(id);
+    if (!oldItem) {
+      return Promise.resolve(null);
+    }
     const index = this._array.indexOf(oldItem);
     this._array[index] = item;
-    return item;
+    return Promise.resolve(item);
+  }
+
+  async delete(id: string): Promise<T> {
+    const oldItem = await this.get(id);
+    if (!oldItem) {
+      return Promise.resolve(null);
+    }
+    const index = this._array.indexOf(oldItem);
+    return Promise.resolve(this._array.splice(index, 1)[0]);
   }
 }
