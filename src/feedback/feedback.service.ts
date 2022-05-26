@@ -4,12 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PostFeedbackDto, Feedback } from './dto';
-import { feedbacksMock } from 'repository/data-services-mocked/data/feedbackMock';
+import { feedbackMock } from 'repository/data-services-mocked/data/mock.feedback';
 import { randomUUID } from 'crypto';
 import { UserTypeEnum } from 'users/user-type.enum';
 @Injectable()
 export class FeedbackService {
-  feedbacks: Feedback[] = feedbacksMock;
+  feedbacks: Feedback[] = feedbackMock;
 
   async getAllFeedback(
     userId: string,

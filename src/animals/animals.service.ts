@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { AnimalDto, BaseAnimalDto } from 'animals/dto';
-import { animals } from 'repository/data-services-mocked/data/animals';
+import { animals } from 'repository/data-services-mocked/data/mock.animals';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { CreateAnimalDto } from 'animals/dto/create-animal.dto';
 import { randomUUID } from 'crypto';

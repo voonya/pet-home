@@ -1,7 +1,7 @@
 import { Feedback } from 'feedback/dto';
 import { UserTypeEnum } from 'users/user-type.enum';
 
-export const feedbacksMock: Feedback[] = [
+export const feedbackMock: Feedback[] = [
   {
     id: '0',
     userId: '1',
