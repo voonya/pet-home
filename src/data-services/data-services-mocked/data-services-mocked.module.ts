@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { IDataServices } from '../idata-services';
-import { DataServicesMocked } from './data-services-mocked';
+import { IDataServices } from 'data-services/idata-services';
+import { DataServicesMocked } from 'data-services/data-services-mocked/data-services-mocked';
 
 @Module({
   providers: [
