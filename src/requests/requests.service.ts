@@ -10,7 +10,7 @@ import {
   RequestDto,
   UpdateRequestDto,
 } from 'requests/dto';
-import { requests } from 'requests/mock.requests';
+import { requests } from 'repository/data-services-mocked/data/mock.requests';
 
 @Injectable()
 export class RequestService {

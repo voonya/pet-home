@@ -10,7 +10,7 @@ import {
   ApplicationDto,
   UpdateApplicationDto,
 } from 'applications/dto';
-import { applications } from 'applications/mock.applications';
+import { applications } from 'repository/data-services-mocked/data/mock.applications';
 import { RequestService } from 'requests/requests.service';
 
 @Injectable()
