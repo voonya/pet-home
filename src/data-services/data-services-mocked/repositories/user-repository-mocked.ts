@@ -1,4 +1,4 @@
-import { IUserRepository } from 'data-services/iuser-repository';
+import { IUserRepository } from 'data-services/interfaces/iuser-repository';
 import { UserDto } from 'users/dto';
 
 export class UserRepositoryMocked implements IUserRepository {

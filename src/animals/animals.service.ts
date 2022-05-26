@@ -7,7 +7,7 @@ import { AnimalDto, BaseAnimalDto } from 'animals/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { CreateAnimalDto } from 'animals/dto/create-animal.dto';
 import { randomUUID } from 'crypto';
-import { IDataServices } from 'data-services/idata-services';
+import { IDataServices } from 'data-services/interfaces/idata-services';
 const maxAnimalsPerUser = 10;
 
 @Injectable()

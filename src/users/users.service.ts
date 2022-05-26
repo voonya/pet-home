@@ -3,7 +3,7 @@ import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from 'users/dto';
 import { randomUUID } from 'crypto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { RoleEnum } from 'users/role.enum';
-import { IDataServices } from 'data-services/idata-services';
+import { IDataServices } from 'data-services/interfaces/idata-services';
 
 @Injectable()
 export class UsersService {

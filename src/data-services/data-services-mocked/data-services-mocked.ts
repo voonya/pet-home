@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { IDataServices } from 'data-services/idata-services';
+import { IDataServices } from 'data-services/interfaces/idata-services';
 import { animals } from 'data-services/data-services-mocked/data/mock.animals';
-import { AnimalRepositoryMocked } from 'data-services/data-services-mocked/animal-repository-mocked';
-import { UserRepositoryMocked } from 'data-services/data-services-mocked/user-repository-mocked';
+import { AnimalRepositoryMocked } from 'data-services/data-services-mocked/repositories/animal-repository-mocked';
+import { UserRepositoryMocked } from 'data-services/data-services-mocked/repositories/user-repository-mocked';
 import { users } from 'data-services/data-services-mocked/data/mock.users';
 
 @Injectable()

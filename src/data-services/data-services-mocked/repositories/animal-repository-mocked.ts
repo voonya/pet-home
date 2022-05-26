@@ -1,4 +1,4 @@
-import { IAnimalRepository } from 'data-services/ianimal-repository';
+import { IAnimalRepository } from 'data-services/interfaces/ianimal-repository';
 import { AnimalDto } from 'animals/dto';
 
 export class AnimalRepositoryMocked implements IAnimalRepository {
