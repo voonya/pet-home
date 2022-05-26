@@ -14,7 +14,7 @@ export class RepositoryMock<T extends { id: string }>
     return Promise.resolve(item);
   }
 
-  get(id: string): Promise<T> {
+  getById(id: string): Promise<T> {
     return Promise.resolve(this._array.find((item) => item.id === id));
   }
 
@@ -23,7 +23,7 @@ export class RepositoryMock<T extends { id: string }>
   }
 
   async update(id: string, item: T): Promise<T> {
-    const oldItem = await this.get(id);
+    const oldItem = await this.getById(id);
     if (!oldItem) {
       return Promise.resolve(null);
     }
@@ -33,7 +33,7 @@ export class RepositoryMock<T extends { id: string }>
   }
 
   async delete(id: string): Promise<T> {
-    const oldItem = await this.get(id);
+    const oldItem = await this.getById(id);
     if (!oldItem) {
       return Promise.resolve(null);
     }

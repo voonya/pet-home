@@ -40,7 +40,7 @@ export class AnimalsService {
   }
 
   async getById(id: string, userId: string) {
-    const animal = await this.dataServices.animals.get(id);
+    const animal = await this.dataServices.animals.getById(id);
     if (!animal) {
       throw new NotFoundException('No animal with this id!');
     }
