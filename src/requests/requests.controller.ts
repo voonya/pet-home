@@ -39,11 +39,11 @@ export class RequestsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.requestsService.remove(id);
+    return this.requestsService.remove(id, '1');
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateRequestDto: UpdateRequestDto) {
-    return this.requestsService.update(id, updateRequestDto);
+    return this.requestsService.update(id, '1', updateRequestDto);
   }
 }

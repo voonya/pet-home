@@ -4,6 +4,10 @@ import { animals } from 'data-services/data-services-mocked/data/mock.animals';
 import { AnimalRepositoryMocked } from 'data-services/data-services-mocked/repositories/animal-repository-mocked';
 import { UserRepositoryMocked } from 'data-services/data-services-mocked/repositories/user-repository-mocked';
 import { users } from 'data-services/data-services-mocked/data/mock.users';
+import { applications } from 'data-services/data-services-mocked/data/mock.applications';
+import { requests } from 'data-services/data-services-mocked/data/mock.requests';
+import { ApplicationRepositoryMocked } from 'data-services/data-services-mocked/repositories/application-repository-mocked';
+import { RequestRepositoryMocked } from 'data-services/data-services-mocked/repositories/request-repository-mocked';
 
 @Injectable()
 export class DataServicesMocked implements IDataServices {
@@ -11,8 +15,14 @@ export class DataServicesMocked implements IDataServices {
 
   users: UserRepositoryMocked;
 
+  applications: ApplicationRepositoryMocked;
+
+  requests: RequestRepositoryMocked;
+
   constructor() {
     this.animals = new AnimalRepositoryMocked(animals);
     this.users = new UserRepositoryMocked(users);
+    this.applications = new ApplicationRepositoryMocked(applications);
+    this.requests = new RequestRepositoryMocked(requests);
   }
 }
