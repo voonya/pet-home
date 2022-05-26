@@ -1,5 +1,5 @@
-import { UserDto } from '@users/dto/user.dto';
-import { RoleEnum } from '@users/role.enum';
+import { UserDto } from 'users/dto/user.dto';
+import { RoleEnum } from 'users/role.enum';
 
 export const users: UserDto[] = [
   {
@@ -40,17 +40,6 @@ export const users: UserDto[] = [
     name: 'Den',
     surname: 'Ostapenko',
     email: 'MyEmail4@gmail.com',
-    birthDate: new Date('2001-10-5'),
-    sex: 'Man',
-    creationDate: new Date('2022-10-5'),
-    banned: false,
-    roles: [RoleEnum.User],
-  },
-  {
-    id: '123e4567-e89b-12d3-a456-426614174000',
-    name: 'Max',
-    surname: 'Petrenko',
-    email: 'MyEmail@gmail.com',
     birthDate: new Date('2001-10-5'),
     sex: 'Man',
     creationDate: new Date('2022-10-5'),

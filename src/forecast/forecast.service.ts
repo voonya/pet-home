@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
-import { ForecastDto } from '@forecast/dto/ForecastDto';
+import { ForecastDto } from 'forecast/dto/ForecastDto';
 
 @Injectable()
 export class ForecastService {

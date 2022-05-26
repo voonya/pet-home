@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from '@users/dto';
-import { users } from '@users/users';
+import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from 'users/dto';
+import { users } from 'users/users';
 import { randomUUID } from 'crypto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
-import { RoleEnum } from '@users/role.enum';
+import { RoleEnum } from 'users/role.enum';
 
 @Injectable()
 export class UsersService {
@@ -40,10 +40,7 @@ export class UsersService {
   }
 
   update(id: string, updateUserDto: BaseUserDto) {
-    const oldUser = users.find((user) => user.id === id);
-    if (!oldUser) {
-      throw new NotFoundException('No user with this id to update!');
-    }
+    const oldUser = this.getById(id);
     const index = users.indexOf(oldUser);
     const newUser = { ...oldUser, ...updateUserDto };
     users[index] = newUser;
@@ -59,10 +56,7 @@ export class UsersService {
   }
 
   addRole(addRoleDto: AddRoleDto) {
-    const user = users.find((el) => el.id === addRoleDto.userId);
-    if (!user) {
-      throw new NotFoundException('No user with this id!');
-    }
+    const user = this.getById(addRoleDto.userId);
     if (user.roles.indexOf(addRoleDto.role) === -1) {
       user.roles.push(addRoleDto.role);
     }
@@ -70,10 +64,7 @@ export class UsersService {
   }
 
   ban(banUserDto: BanUserDto) {
-    const user = users.find((el) => el.id === banUserDto.userId);
-    if (!user) {
-      throw new NotFoundException('No user with this id to ban!');
-    }
+    const user = this.getById(banUserDto.userId);
     user.banned = true;
     user.banReason = banUserDto.banReason;
     return user;

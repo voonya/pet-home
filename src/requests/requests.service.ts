@@ -4,10 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { BaseRequestDto } from 'requests/dto/base-request.dto';
-import { RequestQueryDto } from 'requests/dto/request-query.dto';
-import { RequestDto } from 'requests/dto/request.dto';
-import { UpdateRequestDto } from 'requests/dto/update-request.dto';
+import {
+  BaseRequestDto,
+  RequestQueryDto,
+  RequestDto,
+  UpdateRequestDto,
+} from 'requests/dto';
 import { requests } from 'requests/mock.requests';
 
 @Injectable()

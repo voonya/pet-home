@@ -3,10 +3,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { AnimalDto, BaseAnimalDto } from '@animals/dto';
-import { animals } from '@animals/animals';
+import { AnimalDto, BaseAnimalDto } from 'animals/dto';
+import { animals } from 'animals/animals';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
-import { CreateAnimalDto } from '@animals/dto/create-animal.dto';
+import { CreateAnimalDto } from 'animals/dto/create-animal.dto';
 import { randomUUID } from 'crypto';
 const maxAnimalsPerUser = 10;
 
@@ -44,12 +44,7 @@ export class AnimalsService {
   }
 
   update(id: string, updateAnimalDto: BaseAnimalDto, userId: string) {
-    const oldAnimal = animals.find(
-      (animal) => animal.id === id && animal.ownerId === userId,
-    );
-    if (!oldAnimal) {
-      throw new NotFoundException('No animal with this id to update!');
-    }
+    const oldAnimal = this.getById(id, userId);
     const index = animals.indexOf(oldAnimal);
     const newAnimal = { ...oldAnimal, ...updateAnimalDto };
     animals[index] = newAnimal;

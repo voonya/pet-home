@@ -8,8 +8,8 @@ import {
   Delete,
   UsePipes,
 } from '@nestjs/common';
-import { FeedbackService } from '@feedback/feedback.service';
-import { PostFeedbackDto, GetAllFeedbackDto } from '@feedback/dto';
+import { FeedbackService } from 'feedback/feedback.service';
+import { PostFeedbackDto, GetAllFeedbackDto } from 'feedback/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 
 @Controller('feedback')

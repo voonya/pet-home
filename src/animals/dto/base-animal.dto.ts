@@ -1,4 +1,4 @@
-import { AnimalTypeEnum } from '@animals/animal-type.enum';
+import { AnimalTypeEnum } from 'animals/animal-type.enum';
 import {
   IsEnum,
   IsNotEmpty,

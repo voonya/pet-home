@@ -1,4 +1,4 @@
-import { BaseAnimalDto } from '@animals/dto/base-animal.dto';
+import { BaseAnimalDto } from 'animals/dto/base-animal.dto';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateAnimalDto extends BaseAnimalDto {

@@ -10,9 +10,11 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { RequestService } from 'requests/requests.service';
-import { BaseRequestDto } from 'requests/dto/base-request.dto';
-import { RequestQueryDto } from 'requests/dto/request-query.dto';
-import { UpdateRequestDto } from 'requests/dto/update-request.dto';
+import {
+  BaseRequestDto,
+  RequestQueryDto,
+  UpdateRequestDto,
+} from 'requests/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 
 @Controller('requests')

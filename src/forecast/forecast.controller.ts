@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ForecastService } from '@forecast/forecast.service';
+import { ForecastService } from 'forecast/forecast.service';
 @Controller('forecast')
 export class ForecastController {
   constructor(private forecast: ForecastService) {}
