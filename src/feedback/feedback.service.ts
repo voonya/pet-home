@@ -47,11 +47,11 @@ export class FeedbackService {
       creatorId,
       created_date: new Date(),
     };
-    const feedbackAdded = this.dataServices.feedbacks.create(newFeedback);
+    const feedbackAdded = await this.dataServices.feedbacks.create(newFeedback);
     if (!feedbackAdded) {
       throw new InternalServerErrorException();
     }
-    return newFeedback;
+    return feedbackAdded;
   }
 
   async deleteFeedback(id: string, creatorId: string) {

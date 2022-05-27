@@ -1,8 +1,10 @@
 import { IFeedbackRepository } from 'data-services/interfaces/ifeedback-repository';
-import { FeedbackDocument } from '../schemas/feedback.schema';
+import {
+  Feedback,
+  FeedbackDocument,
+} from 'data-services/data-services-mongo/schemas/feedback.schema';
 import { UserTypeEnum } from 'users/user-type.enum';
 import { Model } from 'mongoose';
-import { Feedback } from 'feedback/dto';
 
 export class FeebackRepositoryMongo implements IFeedbackRepository {
   private _repository: Model<FeedbackDocument>;
@@ -26,8 +28,11 @@ export class FeebackRepositoryMongo implements IFeedbackRepository {
     return this._repository.findById(id).exec();
   }
 
-  create(feedback: Feedback): Promise<Feedback> {
-    return this._repository.create(feedback);
+  async create(feedback: Feedback): Promise<Feedback> {
+    const feedbackCreated = await this._repository.create(feedback);
+    console.log(feedbackCreated);
+    console.log(typeof feedbackCreated._id);
+    return feedbackCreated;
   }
 
   remove(id: string): Promise<Feedback | null | undefined> {
