@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from 'users/dto';
-import { randomUUID } from 'crypto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { RoleEnum } from 'users/role.enum';
 import { IDataServices } from 'data-services/interfaces/idata-services';
@@ -26,7 +25,6 @@ export class UsersService {
 
   async create(createUserDto: BaseUserDto) {
     const newUser: UserDto = {
-      id: randomUUID(),
       ...createUserDto,
       creationDate: new Date(),
       banned: false,
@@ -36,7 +34,7 @@ export class UsersService {
     if (!userAdded) {
       throw new InternalServerErrorException();
     }
-    return newUser;
+    return userAdded;
   }
 
   async getByEmail(email: string) {
@@ -56,13 +54,11 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: BaseUserDto) {
-    const oldUser = await this.getById(id);
-    const newUser = { ...oldUser, ...updateUserDto };
-    const savedUser = await this.dataServices.users.update(id, newUser);
+    const savedUser = await this.dataServices.users.update(id, updateUserDto);
     if (!savedUser) {
       throw new InternalServerErrorException();
     }
-    return newUser;
+    return savedUser;
   }
 
   async remove(id: string) {

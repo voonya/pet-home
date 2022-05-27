@@ -6,13 +6,19 @@ export type AnimalDocument = Animal & Document;
 
 @Schema()
 export class Animal {
-  @Prop()
+  @Prop({
+    required: true,
+  })
   name: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   ownerId: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   type: AnimalTypeEnum;
 
   @Prop()
@@ -21,10 +27,14 @@ export class Animal {
   @Prop()
   breed?: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   description: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   creationDate: Date;
 }
 

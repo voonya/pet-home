@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsMongoId, IsNotEmpty } from 'class-validator';
 import { RoleEnum } from 'users/role.enum';
 
 export class AddRoleDto {
@@ -6,6 +6,7 @@ export class AddRoleDto {
   @IsEnum(RoleEnum)
   readonly role: RoleEnum;
 
-  @IsString()
+  @IsNotEmpty()
+  @IsMongoId()
   readonly userId: string;
 }

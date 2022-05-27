@@ -1,4 +1,4 @@
-import { UserDto } from 'users/dto';
+import { BaseUserDto, UserDto } from 'users/dto';
 
 export interface IUserRepository {
   getAll(offset: number, limit: number): Promise<UserDto[]>;
@@ -9,7 +9,7 @@ export interface IUserRepository {
 
   create(dto: UserDto): Promise<UserDto>;
 
-  update(id: string, dto: UserDto): Promise<UserDto | null | undefined>;
+  update(id: string, dto: BaseUserDto): Promise<UserDto | null | undefined>;
 
   remove(id: string): Promise<UserDto | null | undefined>;
 }
