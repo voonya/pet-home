@@ -1,7 +1,7 @@
 import { AnimalDto } from 'animals/dto';
 
 export interface IAnimalRepository {
-  getAll(userId: string): Promise<AnimalDto[]>;
+  getAll(userId: string, offset?: number, limit?: number): Promise<AnimalDto[]>;
 
   getById(id: string, userId: string): Promise<AnimalDto | null | undefined>;
 

@@ -1,7 +1,7 @@
 import { UserDto } from 'users/dto';
 
 export interface IUserRepository {
-  getAll(): Promise<UserDto[]>;
+  getAll(offset: number, limit: number): Promise<UserDto[]>;
 
   getById(id: string): Promise<UserDto | null | undefined>;
 

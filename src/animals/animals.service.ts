@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { AnimalDto, BaseAnimalDto } from 'animals/dto';
@@ -15,11 +16,15 @@ export class AnimalsService {
   constructor(private dataServices: IDataServices) {}
 
   async getAll(pagination: PaginationDto, userId: string) {
-    const animals = await this.dataServices.animals.getAll(userId);
-    return animals.slice(
+    const animals = await this.dataServices.animals.getAll(
+      userId,
       pagination.offset,
-      pagination.offset + pagination.limit,
+      pagination.limit,
     );
+    if (!animals) {
+      throw new InternalServerErrorException();
+    }
+    return animals;
   }
 
   async createAnimal(createAnimalDto: CreateAnimalDto, userId: string) {
@@ -36,7 +41,10 @@ export class AnimalsService {
       creationDate: new Date(),
       ownerId: userId,
     };
-    await this.dataServices.animals.create(newAnimal);
+    const savedAnimal = await this.dataServices.animals.create(newAnimal);
+    if (!savedAnimal) {
+      throw new InternalServerErrorException();
+    }
     return newAnimal;
   }
 
@@ -51,7 +59,10 @@ export class AnimalsService {
   async update(id: string, updateAnimalDto: BaseAnimalDto, userId: string) {
     const oldAnimal = await this.getById(id, userId);
     const newAnimal = { ...oldAnimal, ...updateAnimalDto };
-    await this.dataServices.animals.update(id, newAnimal);
+    const savedAnimal = await this.dataServices.animals.update(id, newAnimal);
+    if (!savedAnimal) {
+      throw new InternalServerErrorException();
+    }
     return newAnimal;
   }
 

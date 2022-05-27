@@ -8,10 +8,16 @@ export class AnimalRepositoryMocked implements IAnimalRepository {
 
   private readonly _array: AnimalDto[];
 
-  getAll(userId: string): Promise<AnimalDto[]> {
-    return Promise.resolve(
-      this._array.filter((animal) => animal.ownerId == userId),
-    );
+  getAll(
+    userId: string,
+    offset?: number,
+    limit?: number,
+  ): Promise<AnimalDto[]> {
+    let animals = this._array.filter((animal) => animal.ownerId == userId);
+    if (offset && limit) {
+      animals = animals.slice(offset, offset + limit);
+    }
+    return Promise.resolve(animals);
   }
 
   getById(id: string, userId: string): Promise<AnimalDto | null | undefined> {

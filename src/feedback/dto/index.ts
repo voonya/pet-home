@@ -1,3 +1,4 @@
-export * from 'feedback/dto/PostFeedbackDto';
-export * from 'feedback/dto/GetAllFeedbackDto';
-export * from 'feedback/dto/FeedbackDto';
+export * from 'feedback/dto/post-feedback.dto';
+export * from 'feedback/dto/get-all-feedback.dto';
+export * from 'feedback/dto/feedback.dto';
+export * from 'feedback/dto/get-rate.dto';
