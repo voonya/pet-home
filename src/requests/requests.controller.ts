@@ -46,4 +46,17 @@ export class RequestsController {
   update(@Param('id') id: string, @Body() updateRequestDto: UpdateRequestDto) {
     return this.requestsService.update(id, '1', updateRequestDto);
   }
+
+  @Put(':requestId/assign/:applicationId')
+  assign(
+    @Param('requestId') requestId: string,
+    @Param('applicationId') applicationId: string,
+  ) {
+    return this.requestsService.assign(requestId, applicationId, '1');
+  }
+
+  @Put(':requestId/resign')
+  resign(@Param('requestId') requestId: string) {
+    return this.requestsService.resign(requestId, '1');
+  }
 }

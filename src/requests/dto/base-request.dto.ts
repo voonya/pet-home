@@ -29,4 +29,9 @@ export class BaseRequestDto {
   @IsDate()
   @IsOptional()
   expirationDate?: Date;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  assignedApplicationId?: string;
 }
