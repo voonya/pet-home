@@ -13,7 +13,6 @@ export class Feedback {
 
   @Prop({
     required: true,
-    ref: 'User',
   })
   creatorId: string;
 

@@ -31,9 +31,7 @@ export class FeedbackService {
   }
 
   async getFeedbackById(id: string) {
-    console.log(id);
     const feedback = await this.dataServices.feedbacks.getById(id);
-    console.log(feedback);
     if (!feedback) {
       throw new NotFoundException('No feedback with this id!');
     }
