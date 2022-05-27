@@ -10,21 +10,34 @@ import {
   ApplicationDto,
   UpdateApplicationDto,
 } from 'applications/dto';
-import { applications } from 'data-services/data-services-mocked/data/mock.applications';
-import { RequestService } from 'requests/requests.service';
+import { IApplicationRepository } from 'data-services/interfaces/iapplication-repository';
+import { IDataServices } from 'data-services/interfaces/idata-services';
+import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
 
 @Injectable()
 export class ApplicationService {
-  constructor(private requestService: RequestService) {}
+  constructor(dataServices: IDataServices) {
+    this.applications = dataServices.applications;
+    this.requests = dataServices.requests;
+  }
+
+  private applications: IApplicationRepository;
+
+  private requests: IRequestRepository;
 
   private notFoundMsg = 'Application not found';
 
-  private getAll() {
-    return applications;
+  private async getAll() {
+    return this.applications.getAll();
   }
 
-  getById(id: string) {
-    const foundApplication = applications.find((p) => p.id === id);
+  private async isRequestActual(id: string) {
+    const request = await this.requests.getById(id);
+    return request.expirationDate ? new Date() < request.expirationDate : true;
+  }
+
+  async getById(id: string) {
+    const foundApplication = await this.applications.getById(id);
 
     if (!foundApplication) {
       throw new NotFoundException(this.notFoundMsg);
@@ -33,8 +46,8 @@ export class ApplicationService {
     return foundApplication;
   }
 
-  getFiltered(query: ApplicationQueryDto) {
-    let allRecords = this.getAll();
+  async getFiltered(query: ApplicationQueryDto) {
+    let allRecords = await this.getAll();
 
     if (query.id) {
       allRecords = allRecords.filter((p) => p.id === query.id);
@@ -50,10 +63,10 @@ export class ApplicationService {
     return allRecords;
   }
 
-  create(applicationDto: BaseApplicationDto) {
-    this.requestService.getById(applicationDto.requestId);
+  async create(applicationDto: BaseApplicationDto) {
+    this.requests.getById(applicationDto.requestId);
 
-    if (!this.requestService.requestIsActual(applicationDto.requestId)) {
+    if (!this.isRequestActual(applicationDto.requestId)) {
       throw new BadRequestException('Request is expired');
     }
 
@@ -62,30 +75,33 @@ export class ApplicationService {
       id: randomUUID().toString(),
     };
 
-    applications.push(newRecord);
+    await this.applications.create(newRecord);
 
     return newRecord;
   }
 
-  remove(id: string) {
-    const applicationToRemove = this.getById(id);
-
-    const index = applications.indexOf(applicationToRemove);
-    applications.splice(index, 1);
-
-    return applicationToRemove;
-  }
-
-  update(id: string, updateApplicationDto: UpdateApplicationDto) {
-    const oldApplication = this.getById(id);
-
-    if (!this.requestService.requestIsActual(oldApplication.requestId)) {
-      throw new BadRequestException('Request is expired');
+  async remove(id: string, userId: string) {
+    const removedApplication = await this.applications.remove(id, userId);
+    if (!removedApplication) {
+      throw new NotFoundException("Can't be removed!");
     }
 
-    const index = applications.indexOf(oldApplication);
+    return removedApplication;
+  }
+
+  async update(
+    id: string,
+    userId: string,
+    updateApplicationDto: UpdateApplicationDto,
+  ) {
+    const oldApplication = await this.getById(id);
     const newApplication = { ...oldApplication, ...updateApplicationDto };
-    applications[index] = newApplication;
+
+    if (!this.isRequestActual(newApplication.requestId)) {
+      throw new BadRequestException('Request does not exist');
+    }
+
+    await this.applications.update(id, userId, newApplication);
     return newApplication;
   }
 }

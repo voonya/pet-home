@@ -4,26 +4,33 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
+import { IDataServices } from 'data-services/interfaces/idata-services';
+import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
 import {
   BaseRequestDto,
   RequestQueryDto,
   RequestDto,
   UpdateRequestDto,
 } from 'requests/dto';
-import { requests } from 'data-services/data-services-mocked/data/mock.requests';
 
 @Injectable()
 export class RequestService {
+  constructor(dataServices: IDataServices) {
+    this.requests = dataServices.requests;
+  }
+
   private notFoundMsg = 'Request not found';
 
   private dateError = 'expirationDate should later than creationDate';
 
-  private getAll() {
-    return requests;
+  private requests: IRequestRepository;
+
+  private async getAll() {
+    return this.requests.getAll();
   }
 
-  getById(id: string) {
-    const foundRequest = requests.find((p) => p.id === id);
+  async getById(id: string) {
+    const foundRequest = this.requests.getById(id);
 
     if (!foundRequest) {
       throw new NotFoundException(this.notFoundMsg);
@@ -32,8 +39,8 @@ export class RequestService {
     return foundRequest;
   }
 
-  getFiltered(query: RequestQueryDto) {
-    let allRecords = this.getAll();
+  async getFiltered(query: RequestQueryDto) {
+    let allRecords = await this.getAll();
 
     if (query.id) {
       allRecords = allRecords.filter((p) => p.id === query.id);
@@ -49,7 +56,7 @@ export class RequestService {
     return allRecords;
   }
 
-  create(requestDto: BaseRequestDto) {
+  async create(requestDto: BaseRequestDto) {
     const newRecord: RequestDto = {
       ...requestDto,
       id: randomUUID().toString(),
@@ -60,31 +67,29 @@ export class RequestService {
       throw new BadRequestException(this.dateError);
     }
 
-    requests.push(newRecord);
+    await this.requests.create(newRecord);
 
     return newRecord;
   }
 
-  remove(id: string) {
-    const requestToRemove = this.getById(id);
+  async remove(id: string, userId: string) {
+    const removedRequest = await this.requests.remove(id, userId);
+    if (!removedRequest) {
+      throw new NotFoundException("Can't be removed!");
+    }
 
-    const index = requests.indexOf(requestToRemove);
-    requests.splice(index, 1);
-
-    return requestToRemove;
+    return removedRequest;
   }
 
-  update(id: string, updateRequestDto: UpdateRequestDto) {
-    const oldRequest = this.getById(id);
-
-    const index = requests.indexOf(oldRequest);
+  async update(id: string, userId: string, updateRequestDto: UpdateRequestDto) {
+    const oldRequest = await this.getById(id);
     const newRequest = { ...oldRequest, ...updateRequestDto };
 
     if (this.isDateIsUnacceptable(newRequest)) {
       throw new BadRequestException(this.dateError);
     }
 
-    requests[index] = newRequest;
+    await this.requests.update(id, userId, newRequest);
     return newRequest;
   }
 
@@ -92,10 +97,5 @@ export class RequestService {
     return requestDto.expirationDate
       ? requestDto.creationDate > requestDto.expirationDate
       : false;
-  }
-
-  requestIsActual(id: string) {
-    const request = this.getById(id);
-    return request.expirationDate ? new Date() < request.expirationDate : true;
   }
 }
