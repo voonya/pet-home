@@ -3,7 +3,7 @@ import { AnimalTypeEnum } from 'animals/animal-type.enum';
 
 export const animals: AnimalDto[] = [
   {
-    id: '039c2db2-da21-11ec-9d64-0242ac120002',
+    _id: '039c2db2-da21-11ec-9d64-0242ac120002',
     name: 'Bayraktar',
     ownerId: '123e4567-e89b-12d3-a456-426614174000',
     type: AnimalTypeEnum.Dog,
@@ -13,7 +13,7 @@ export const animals: AnimalDto[] = [
     age: 2,
   },
   {
-    id: '039c3118-da21-11ec-9d64-0242ac120002',
+    _id: '039c3118-da21-11ec-9d64-0242ac120002',
     name: 'Kitty',
     ownerId: '123e4567-e89b-12d3-a456-426614174000',
     type: AnimalTypeEnum.Cat,
@@ -23,7 +23,7 @@ export const animals: AnimalDto[] = [
     age: 3,
   },
   {
-    id: '039c3226-da21-11ec-9d64-0242ac120002',
+    _id: '039c3226-da21-11ec-9d64-0242ac120002',
     name: 'Pirate',
     ownerId: '122fe7b0-da0d-11ec-9d64-0242ac120002',
     type: AnimalTypeEnum.Parrot,
@@ -33,7 +33,7 @@ export const animals: AnimalDto[] = [
     age: 5,
   },
   {
-    id: '039c3320-da21-11ec-9d64-0242ac120002',
+    _id: '039c3320-da21-11ec-9d64-0242ac120002',
     name: 'Bobik',
     ownerId: '122fe904-da0d-11ec-9d64-0242ac120002',
     type: AnimalTypeEnum.Dog,

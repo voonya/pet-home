@@ -22,7 +22,7 @@ export class AnimalRepositoryMocked implements IAnimalRepository {
 
   getById(id: string, userId: string): Promise<AnimalDto | null | undefined> {
     return Promise.resolve(
-      this._array.find((el) => el.id === id && el.ownerId === userId),
+      this._array.find((el) => el._id === id && el.ownerId === userId),
     );
   }
 
