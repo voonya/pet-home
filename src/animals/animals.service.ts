@@ -7,7 +7,6 @@ import {
 import { AnimalDto, BaseAnimalDto } from 'animals/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { CreateAnimalDto } from 'animals/dto/create-animal.dto';
-import { randomUUID } from 'crypto';
 import { IDataServices } from 'data-services/interfaces/idata-services';
 const maxAnimalsPerUser = 10;
 
@@ -36,7 +35,6 @@ export class AnimalsService {
       throw new BadRequestException('You have reached maximum number of pets');
     }
     const newAnimal: AnimalDto = {
-      _id: randomUUID(),
       ...createAnimalDto,
       creationDate: new Date(),
       ownerId: userId,
@@ -45,7 +43,7 @@ export class AnimalsService {
     if (!savedAnimal) {
       throw new InternalServerErrorException();
     }
-    return newAnimal;
+    return savedAnimal;
   }
 
   async getById(id: string, userId: string) {
@@ -57,13 +55,15 @@ export class AnimalsService {
   }
 
   async update(id: string, updateAnimalDto: BaseAnimalDto, userId: string) {
-    const oldAnimal = await this.getById(id, userId);
-    const newAnimal = { ...oldAnimal, ...updateAnimalDto };
-    const savedAnimal = await this.dataServices.animals.update(id, newAnimal);
+    const savedAnimal = await this.dataServices.animals.update(
+      id,
+      userId,
+      updateAnimalDto,
+    );
     if (!savedAnimal) {
       throw new InternalServerErrorException();
     }
-    return newAnimal;
+    return savedAnimal;
   }
 
   async remove(id: string, userId: string) {

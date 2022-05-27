@@ -1,5 +1,5 @@
 import { IAnimalRepository } from 'data-services/interfaces/ianimal-repository';
-import { AnimalDto } from 'animals/dto';
+import { AnimalDto, BaseAnimalDto } from 'animals/dto';
 
 export class AnimalRepositoryMocked implements IAnimalRepository {
   constructor(arrayMock: AnimalDto[]) {
@@ -33,15 +33,17 @@ export class AnimalRepositoryMocked implements IAnimalRepository {
 
   async update(
     id: string,
-    dto: AnimalDto,
+    userId: string,
+    dto: BaseAnimalDto,
   ): Promise<AnimalDto | null | undefined> {
-    const oldAnimal = await this.getById(id, dto.ownerId);
+    const oldAnimal = await this.getById(id, userId);
     if (!oldAnimal) {
       return Promise.resolve(null);
     }
     const index = this._array.indexOf(oldAnimal);
-    this._array[index] = dto;
-    return Promise.resolve(dto);
+    const newAnimal = { ...oldAnimal, ...dto };
+    this._array[index] = newAnimal;
+    return Promise.resolve(newAnimal);
   }
 
   async remove(
