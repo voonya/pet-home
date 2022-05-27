@@ -11,6 +11,7 @@ import {
 import { FeedbackService } from 'feedback/feedback.service';
 import { GetAllFeedbackDto, GetRateDto, PostFeedbackDto } from 'feedback/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
+import { ObjectIdValidationPipe } from '../middlewares/objectid-validation.pipe';
 
 @Controller('feedback')
 export class FeedbackController {
@@ -36,7 +37,7 @@ export class FeedbackController {
   }
 
   @Get(':id')
-  async getFeedback(@Param('id') id: string) {
+  async getFeedback(@Param('id', ObjectIdValidationPipe) id: string) {
     return this.feedbackService.getFeedbackById(id);
   }
 
@@ -47,7 +48,7 @@ export class FeedbackController {
   }
 
   @Delete(':id')
-  deleteFeedback(@Param('id') id: string) {
+  deleteFeedback(@Param('id', ObjectIdValidationPipe) id: string) {
     const creatorId = '1'; // get id from auth
     return this.feedbackService.deleteFeedback(id, creatorId);
   }
