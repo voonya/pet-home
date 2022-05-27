@@ -77,9 +77,13 @@ export class RequestService {
   }
 
   async remove(id: string, userId: string) {
-    const removedRequest = await this.requests.remove(id, userId);
+    const removedRequest = await this.requests.remove(id);
     if (!removedRequest) {
       throw new NotFoundException("Can't be removed!");
+    }
+
+    if (removedRequest.userId !== userId) {
+      throw new BadRequestException('Only owner can delete the request');
     }
 
     return removedRequest;
@@ -87,13 +91,31 @@ export class RequestService {
 
   async update(id: string, userId: string, updateRequestDto: UpdateRequestDto) {
     const oldRequest = await this.getById(id);
+
+    if (oldRequest.userId !== userId) {
+      throw new BadRequestException('Only owner can update the request');
+    }
+
+    let applications = await this.applications.getAll();
+    applications = applications.filter((p) => p.requestId == id);
+
+    if (applications.length !== 0) {
+      throw new BadRequestException(
+        "The request already has applications, so it can't be changed",
+      );
+    }
+
+    if (oldRequest.assignedApplicationId) {
+      throw new BadRequestException("Can't change requestn with an assignment");
+    }
+
     const newRequest = { ...oldRequest, ...updateRequestDto };
 
     if (this.isDateUnacceptable(newRequest)) {
       throw new BadRequestException(this.dateError);
     }
 
-    await this.requests.update(id, userId, newRequest);
+    await this.requests.update(id, newRequest);
     return newRequest;
   }
 
@@ -121,7 +143,7 @@ export class RequestService {
 
     const asignment = { assignedApplicationId: applicationId };
     const newRequest = { ...request, ...asignment };
-    await this.requests.update(requestId, userId, newRequest);
+    await this.requests.update(requestId, newRequest);
     return newRequest;
   }
 
@@ -137,7 +159,7 @@ export class RequestService {
     }
 
     delete request.assignedApplicationId;
-    await this.requests.update(requestId, userId, request);
+    await this.requests.update(requestId, request);
     return request;
   }
 

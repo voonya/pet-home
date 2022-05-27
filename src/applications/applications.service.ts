@@ -63,11 +63,19 @@ export class ApplicationService {
     return allRecords;
   }
 
-  async create(applicationDto: BaseApplicationDto) {
-    this.requests.getById(applicationDto.requestId);
-
+  async create(applicationDto: BaseApplicationDto, userId: string) {
     if (!this.isRequestActual(applicationDto.requestId)) {
       throw new BadRequestException('Request is expired');
+    }
+
+    const filteringExpression: ApplicationQueryDto = {
+      userId: userId,
+      requestId: applicationDto.requestId,
+    };
+    const applications = await this.getFiltered(filteringExpression);
+
+    if (applications.length !== 0) {
+      throw new BadRequestException('You has already applied to this request');
     }
 
     const newRecord: ApplicationDto = {
@@ -81,10 +89,13 @@ export class ApplicationService {
   }
 
   async remove(id: string, userId: string) {
-    const removedApplication = await this.applications.remove(id, userId);
-    if (!removedApplication) {
-      throw new NotFoundException("Can't be removed!");
+    const removedApplication = await this.getById(id);
+
+    if (removedApplication.userId !== userId) {
+      throw new BadRequestException('You can remove only own application');
     }
+
+    await this.applications.remove(id);
 
     return removedApplication;
   }
@@ -95,13 +106,18 @@ export class ApplicationService {
     updateApplicationDto: UpdateApplicationDto,
   ) {
     const oldApplication = await this.getById(id);
+
+    if (oldApplication.userId !== userId) {
+      throw new BadRequestException('You can update only own application');
+    }
+
     const newApplication = { ...oldApplication, ...updateApplicationDto };
 
     if (!this.isRequestActual(newApplication.requestId)) {
       throw new BadRequestException('Request does not exist');
     }
 
-    await this.applications.update(id, userId, newApplication);
+    await this.applications.update(id, newApplication);
     return newApplication;
   }
 }

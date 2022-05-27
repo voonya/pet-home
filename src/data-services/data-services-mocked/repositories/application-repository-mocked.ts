@@ -19,28 +19,16 @@ export class ApplicationRepositoryMocked implements IApplicationRepository {
 
   async update(
     id: string,
-    userId: string,
     dto: ApplicationDto,
   ): Promise<ApplicationDto | undefined> {
     const oldApplication = await this.getById(id);
-    if (!this.doesUserOwns(oldApplication, userId)) {
-      return Promise.resolve(undefined);
-    }
-
     const index = this._array.indexOf(oldApplication);
     this._array[index] = dto;
     return Promise.resolve(dto);
   }
 
-  async remove(
-    id: string,
-    userId: string,
-  ): Promise<ApplicationDto | undefined> {
+  async remove(id: string): Promise<ApplicationDto | undefined> {
     const oldApplication = await this.getById(id);
-    if (!this.doesUserOwns(oldApplication, userId)) {
-      return Promise.resolve(undefined);
-    }
-
     const index = this._array.indexOf(oldApplication);
     return Promise.resolve(this._array.splice(index, 1)[0]);
   }

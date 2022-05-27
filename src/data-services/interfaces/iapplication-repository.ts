@@ -9,12 +9,8 @@ export interface IApplicationRepository {
 
   update(
     id: string,
-    userId: string,
     dto: ApplicationDto,
   ): Promise<ApplicationDto | null | undefined>;
 
-  remove(
-    id: string,
-    userId: string,
-  ): Promise<ApplicationDto | null | undefined>;
+  remove(id: string): Promise<ApplicationDto | null | undefined>;
 }
