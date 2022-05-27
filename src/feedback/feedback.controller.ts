@@ -11,7 +11,7 @@ import {
 import { FeedbackService } from 'feedback/feedback.service';
 import { GetAllFeedbackDto, GetRateDto, PostFeedbackDto } from 'feedback/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
-import { ObjectIdValidationPipe } from '../middlewares/objectid-validation.pipe';
+import { ObjectIdValidationPipe } from 'middlewares/objectid-validation.pipe';
 
 @Controller('feedback')
 export class FeedbackController {

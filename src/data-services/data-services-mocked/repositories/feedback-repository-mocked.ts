@@ -24,7 +24,6 @@ export class FeedbackRepositoryMocked implements IFeedbackRepository {
       feedbacks = this._array;
     }
     feedbacks = feedbacks.slice(offset, offset + limit);
-
     return Promise.resolve(feedbacks);
   }
 

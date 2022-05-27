@@ -29,10 +29,7 @@ export class FeebackRepositoryMongo implements IFeedbackRepository {
   }
 
   async create(feedback: Feedback): Promise<Feedback> {
-    const feedbackCreated = await this._repository.create(feedback);
-    console.log(feedbackCreated);
-    console.log(typeof feedbackCreated._id);
-    return feedbackCreated;
+    return this._repository.create(feedback);
   }
 
   remove(id: string): Promise<Feedback | null | undefined> {
@@ -44,12 +41,10 @@ export class FeebackRepositoryMongo implements IFeedbackRepository {
     if (userType) {
       matchQuery.$match.userType = userType;
     }
-    console.log(matchQuery);
     const rate = await this._repository.aggregate([
       matchQuery,
       { $group: { _id: null, averageRate: { $avg: '$rate' } } },
     ]);
-    console.log(rate);
     return rate[0]?.averageRate || null;
   }
 }

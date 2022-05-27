@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { PostFeedbackDto } from './dto';
+import { PostFeedbackDto } from 'feedback/dto';
 import { UserTypeEnum } from 'users/user-type.enum';
 import { IDataServices } from 'data-services/interfaces/idata-services';
 
