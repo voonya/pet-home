@@ -1,5 +1,6 @@
 import {
   IsEnum,
+  IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -15,7 +16,8 @@ export class PostFeedbackDto {
   @IsNotEmpty()
   userType: UserTypeEnum;
 
-  @IsString()
+  @IsMongoId()
+  @IsNotEmpty()
   userId: string;
 
   @MaxLength(75)

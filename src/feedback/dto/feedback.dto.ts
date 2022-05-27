@@ -1,6 +1,7 @@
 import {
   IsDate,
   IsEnum,
+  IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -13,11 +14,11 @@ export class Feedback {
   @IsOptional()
   _id?: string;
 
-  @IsString()
+  @IsMongoId()
   @IsNotEmpty()
   userId: string;
 
-  @IsString()
+  @IsMongoId()
   @IsNotEmpty()
   creatorId: string;
 
