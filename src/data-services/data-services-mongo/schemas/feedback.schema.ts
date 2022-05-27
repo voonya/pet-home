@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 import { UserTypeEnum } from 'users/user-type.enum';
 
 export type FeedbackDocument = Feedback & Document;
@@ -8,7 +8,6 @@ export type FeedbackDocument = Feedback & Document;
 export class Feedback {
   @Prop({
     required: true,
-    type: Types.ObjectId,
   })
   userId: string;
 
