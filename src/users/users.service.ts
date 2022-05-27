@@ -81,8 +81,8 @@ export class UsersService {
     return user;
   }
 
-  async ban(banUserDto: BanUserDto) {
-    const user = await this.getById(banUserDto.userId);
+  async ban(userId: string, banUserDto: BanUserDto) {
+    const user = await this.getById(userId);
     user.banned = true;
     user.banReason = banUserDto.banReason;
     return user;
