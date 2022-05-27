@@ -1,4 +1,4 @@
-import { BaseUserDto, UserDto } from 'users/dto';
+import { AddRoleDto, BanUserDto, BaseUserDto, UserDto } from 'users/dto';
 
 export interface IUserRepository {
   getAll(offset: number, limit: number): Promise<UserDto[]>;
@@ -12,4 +12,8 @@ export interface IUserRepository {
   update(id: string, dto: BaseUserDto): Promise<UserDto | null | undefined>;
 
   remove(id: string): Promise<UserDto | null | undefined>;
+
+  addRole(id: string, addRoleDto: AddRoleDto);
+
+  ban(id: string, banUserDto: BanUserDto);
 }

@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { IUserRepository } from 'data-services/interfaces/iuser-repository';
 import { UserDocument } from 'data-services/data-services-mongo/schemas/user.schema';
-import { BaseUserDto, UserDto } from 'users/dto';
+import { AddRoleDto, BanUserDto, BaseUserDto, UserDto } from 'users/dto';
 
 export class UserRepositoryMongo implements IUserRepository {
   private _repository: Model<UserDocument>;
@@ -33,6 +33,31 @@ export class UserRepositoryMongo implements IUserRepository {
   update(id: string, dto: BaseUserDto): Promise<UserDto | null | undefined> {
     return this._repository
       .findByIdAndUpdate({ _id: id }, dto, { new: true })
+      .exec();
+  }
+
+  async addRole(id: string, addRoleDto: AddRoleDto) {
+    const user = await this.getById(id);
+    if (!user) {
+      return Promise.resolve(null);
+    }
+    if (user.roles.indexOf(addRoleDto.role) === -1) {
+      return this._repository.findOneAndUpdate(
+        { _id: id },
+        { $push: { roles: addRoleDto.role } },
+        { new: true },
+      );
+    }
+    return Promise.resolve(user);
+  }
+
+  ban(id: string, banUserDto: BanUserDto) {
+    return this._repository
+      .findByIdAndUpdate(
+        { _id: id },
+        { banned: true, ...banUserDto },
+        { new: true },
+      )
       .exec();
   }
 }

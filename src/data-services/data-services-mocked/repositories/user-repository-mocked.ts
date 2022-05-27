@@ -1,5 +1,5 @@
 import { IUserRepository } from 'data-services/interfaces/iuser-repository';
-import { BaseUserDto, UserDto } from 'users/dto';
+import { AddRoleDto, BanUserDto, BaseUserDto, UserDto } from 'users/dto';
 
 export class UserRepositoryMocked implements IUserRepository {
   constructor(arrayMock: UserDto[]) {
@@ -46,5 +46,32 @@ export class UserRepositoryMocked implements IUserRepository {
     }
     const index = this._array.indexOf(oldUser);
     return Promise.resolve(this._array.splice(index, 1)[0]);
+  }
+
+  async addRole(
+    id: string,
+    addRoleDto: AddRoleDto,
+  ): Promise<UserDto | null | undefined> {
+    const user = await this.getById(id);
+    if (!user) {
+      return Promise.resolve(null);
+    }
+    if (user.roles.indexOf(addRoleDto.role) === -1) {
+      user.roles.push(addRoleDto.role);
+    }
+    return Promise.resolve(user);
+  }
+
+  async ban(
+    id: string,
+    banUserDto: BanUserDto,
+  ): Promise<UserDto | null | undefined> {
+    const user = await this.getById(id);
+    if (!user) {
+      return Promise.resolve(null);
+    }
+    user.banned = true;
+    user.banReason = banUserDto.banReason;
+    return user;
   }
 }
