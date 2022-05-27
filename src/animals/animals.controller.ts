@@ -14,6 +14,8 @@ import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { BaseAnimalDto } from 'animals/dto/base-animal.dto';
 import { CreateAnimalDto } from 'animals/dto/create-animal.dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
+import { ObjectIdValidationPipe } from 'middlewares/objectid-validation.pipe';
+
 const mockUserId = '123e4567-e89b-12d3-a456-426614174000'; // get id from auth
 
 @Controller('animals')
@@ -32,17 +34,20 @@ export class AnimalsController {
   }
 
   @Get(':id')
-  getById(@Param('id') id: string) {
+  getById(@Param('id', ObjectIdValidationPipe) id: string) {
     return this.animalsService.getById(id, mockUserId);
   }
 
   @Put(':id')
-  update(@Body() updateAnimalDto: BaseAnimalDto, @Param('id') id: string) {
+  update(
+    @Body() updateAnimalDto: BaseAnimalDto,
+    @Param('id', ObjectIdValidationPipe) id: string,
+  ) {
     return this.animalsService.update(id, updateAnimalDto, mockUserId);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ObjectIdValidationPipe) id: string) {
     return this.animalsService.remove(id, mockUserId);
   }
 }
