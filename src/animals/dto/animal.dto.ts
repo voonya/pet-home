@@ -1,7 +1,7 @@
 import { BaseAnimalDto } from 'animals/dto/base-animal.dto';
 
 export class AnimalDto extends BaseAnimalDto {
-  id: string;
+  _id: string;
 
   ownerId: string;
 

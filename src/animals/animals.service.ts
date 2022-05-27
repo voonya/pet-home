@@ -36,7 +36,7 @@ export class AnimalsService {
       throw new BadRequestException('You have reached maximum number of pets');
     }
     const newAnimal: AnimalDto = {
-      id: randomUUID(),
+      _id: randomUUID(),
       ...createAnimalDto,
       creationDate: new Date(),
       ownerId: userId,
