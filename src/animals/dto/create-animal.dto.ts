@@ -1,8 +1,8 @@
 import { BaseAnimalDto } from 'animals/dto/base-animal.dto';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsMongoId, IsNotEmpty } from 'class-validator';
 
 export class CreateAnimalDto extends BaseAnimalDto {
+  @IsMongoId()
   @IsNotEmpty()
-  @IsString()
   ownerId: string;
 }
