@@ -3,7 +3,7 @@ import { UserTypeEnum } from 'users/user-type.enum';
 
 export const feedbackMock: Feedback[] = [
   {
-    id: '0',
+    _id: '0',
     userId: '1',
     creatorId: '2',
     created_date: new Date(),
@@ -13,7 +13,7 @@ export const feedbackMock: Feedback[] = [
     rate: 5,
   },
   {
-    id: '1',
+    _id: '1',
     userId: '1',
     creatorId: '2',
     created_date: new Date(),
@@ -23,7 +23,7 @@ export const feedbackMock: Feedback[] = [
     rate: 10,
   },
   {
-    id: '2',
+    _id: '2',
     userId: '1',
     creatorId: '2',
     created_date: new Date(),
@@ -33,7 +33,7 @@ export const feedbackMock: Feedback[] = [
     rate: 7,
   },
   {
-    id: '3',
+    _id: '3',
     userId: '1',
     creatorId: '2',
     created_date: new Date(),
@@ -43,7 +43,7 @@ export const feedbackMock: Feedback[] = [
     rate: 8,
   },
   {
-    id: '4',
+    _id: '4',
     userId: '1',
     creatorId: '2',
     created_date: new Date(),

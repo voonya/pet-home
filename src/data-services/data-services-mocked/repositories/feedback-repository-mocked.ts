@@ -29,7 +29,7 @@ export class FeedbackRepositoryMocked implements IFeedbackRepository {
   }
 
   getById(id: string): Promise<Feedback | null | undefined> {
-    return Promise.resolve(this._array.find((el) => el.id === id));
+    return Promise.resolve(this._array.find((el) => el._id === id));
   }
 
   create(feedback: Feedback): Promise<Feedback> {
@@ -38,7 +38,7 @@ export class FeedbackRepositoryMocked implements IFeedbackRepository {
   }
 
   remove(id: string): Promise<Feedback | null | undefined> {
-    const feedbackIdx = this._array.findIndex((el) => el.id === id);
+    const feedbackIdx = this._array.findIndex((el) => el._id === id);
     if (feedbackIdx === -1) {
       return Promise.resolve(null);
     }
