@@ -1,25 +1,35 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { AnimalDto, BaseAnimalDto } from 'animals/dto';
-import { animals } from 'animals/animals';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { CreateAnimalDto } from 'animals/dto/create-animal.dto';
 import { randomUUID } from 'crypto';
+import { IDataServices } from 'data-services/interfaces/idata-services';
 const maxAnimalsPerUser = 10;
 
 @Injectable()
 export class AnimalsService {
-  getAll(pagination: PaginationDto, userId: string) {
-    return animals
-      .filter((animal) => animal.ownerId == userId)
-      .slice(pagination.offset, pagination.offset + pagination.limit);
+  constructor(private dataServices: IDataServices) {}
+
+  async getAll(pagination: PaginationDto, userId: string) {
+    const animals = await this.dataServices.animals.getAll(
+      userId,
+      pagination.offset,
+      pagination.limit,
+    );
+    if (!animals) {
+      throw new InternalServerErrorException();
+    }
+    return animals;
   }
 
-  createAnimal(createAnimalDto: CreateAnimalDto, userId: string) {
-    const currentNumberOfUserAnimals = animals.filter(
+  async createAnimal(createAnimalDto: CreateAnimalDto, userId: string) {
+    const allAnimals = await this.dataServices.animals.getAll(userId);
+    const currentNumberOfUserAnimals = allAnimals.filter(
       (animal) => animal.ownerId === userId,
     ).length;
     if (currentNumberOfUserAnimals >= maxAnimalsPerUser) {
@@ -31,33 +41,36 @@ export class AnimalsService {
       creationDate: new Date(),
       ownerId: userId,
     };
-    animals.push(newAnimal);
+    const savedAnimal = await this.dataServices.animals.create(newAnimal);
+    if (!savedAnimal) {
+      throw new InternalServerErrorException();
+    }
     return newAnimal;
   }
 
-  getById(id: string, userId: string) {
-    const animal = animals.find((el) => el.id === id && el.ownerId === userId);
+  async getById(id: string, userId: string) {
+    const animal = await this.dataServices.animals.getById(id, userId);
     if (!animal) {
       throw new NotFoundException('No animal with this id!');
     }
     return animal;
   }
 
-  update(id: string, updateAnimalDto: BaseAnimalDto, userId: string) {
-    const oldAnimal = this.getById(id, userId);
-    const index = animals.indexOf(oldAnimal);
+  async update(id: string, updateAnimalDto: BaseAnimalDto, userId: string) {
+    const oldAnimal = await this.getById(id, userId);
     const newAnimal = { ...oldAnimal, ...updateAnimalDto };
-    animals[index] = newAnimal;
+    const savedAnimal = await this.dataServices.animals.update(id, newAnimal);
+    if (!savedAnimal) {
+      throw new InternalServerErrorException();
+    }
     return newAnimal;
   }
 
-  remove(id: string, userId: string) {
-    const index = animals.findIndex(
-      (animal) => animal.id === id && animal.ownerId === userId,
-    );
-    if (index === -1) {
+  async remove(id: string, userId: string) {
+    const removedAnimal = await this.dataServices.animals.remove(id, userId);
+    if (!removedAnimal) {
       throw new NotFoundException('No animal with this id to remove!');
     }
-    return animals.splice(index, 1)[0];
+    return removedAnimal;
   }
 }

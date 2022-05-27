@@ -39,7 +39,7 @@ export class ApplicationController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.applicationService.remove(id);
+    return this.applicationService.remove(id, '1');
   }
 
   @Put(':id')
@@ -47,6 +47,6 @@ export class ApplicationController {
     @Param('id') id: string,
     @Body() updateApplicationDto: UpdateApplicationDto,
   ) {
-    return this.applicationService.update(id, updateApplicationDto);
+    return this.applicationService.update(id, '1', updateApplicationDto);
   }
 }

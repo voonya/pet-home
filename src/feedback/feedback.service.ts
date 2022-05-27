@@ -1,15 +1,17 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { PostFeedbackDto, Feedback } from './dto';
-import { feedbacksMock } from 'feedback/feedbackMock';
+import { PostFeedbackDto } from './dto';
 import { randomUUID } from 'crypto';
 import { UserTypeEnum } from 'users/user-type.enum';
+import { IDataServices } from 'data-services/interfaces/idata-services';
+
 @Injectable()
 export class FeedbackService {
-  feedbacks: Feedback[] = feedbacksMock;
+  constructor(private dataServices: IDataServices) {}
 
   async getAllFeedback(
     userId: string,
@@ -17,27 +19,21 @@ export class FeedbackService {
     limit: number,
     userType?: UserTypeEnum,
   ) {
-    let feedbacks: Feedback[] = [];
-    if (userType) {
-      feedbacks = this.feedbacks.filter(
-        (obj) => obj.userType === userType && obj.userId === userId,
-      );
-    } else {
-      feedbacks = this.feedbacks;
+    const feedbacks = await this.dataServices.feedbacks.getAll(
+      userId,
+      offset,
+      limit,
+      userType,
+    );
+    if (!feedbacks) {
+      throw new InternalServerErrorException();
     }
-    feedbacks = feedbacks.slice(offset, offset + limit);
-    const averageRate = (
-      feedbacks.reduce((prev: number, curr: Feedback) => prev + curr.rate, 0) /
-      feedbacks.length
-    ).toFixed(2);
-    return {
-      rate: averageRate,
-      feedbacks,
-    };
+    return feedbacks;
   }
 
   async getFeedbackById(id: string) {
-    const feedback = this.feedbacks.find((el) => el.id === id);
+    const feedback = await this.dataServices.feedbacks.getById(id);
+    console.log(feedback);
     if (!feedback) {
       throw new NotFoundException('No feedback with this id!');
     }
@@ -46,27 +42,50 @@ export class FeedbackService {
 
   async createFeedback(creatorId: string, feedback: PostFeedbackDto) {
     const id = randomUUID();
-    // check if user can create feedback on this user
+    if (!this.haveDealWithUser(creatorId, feedback.userId)) {
+      throw new BadRequestException('This user can`t leave a feedback!');
+    }
     const newFeedback = {
       id,
       ...feedback,
       creatorId,
       created_date: new Date(),
     };
-    this.feedbacks.push(newFeedback);
+    const feedbackAdded = this.dataServices.feedbacks.create(newFeedback);
+    if (!feedbackAdded) {
+      throw new InternalServerErrorException();
+    }
     return newFeedback;
   }
 
-  async deleteFeedback(id: string, userId: string) {
-    const feedbackIdx = this.feedbacks.findIndex((el) => el.id === id);
-    if (feedbackIdx === -1) {
+  async deleteFeedback(id: string, creatorId: string) {
+    const feedback = await this.dataServices.feedbacks.getById(id);
+
+    if (!feedback) {
       throw new NotFoundException('No feedback with this id!');
     }
-    if (this.feedbacks[feedbackIdx].creatorId !== userId) {
+    if (feedback.creatorId !== creatorId) {
       throw new BadRequestException(
         'User can not delete feedback that is not his!',
       );
     }
-    return this.feedbacks.splice(feedbackIdx, 1)[0];
+
+    const deletedFeedback = await this.dataServices.feedbacks.remove(id);
+    if (!deletedFeedback) {
+      throw new InternalServerErrorException();
+    }
+    return deletedFeedback;
+  }
+
+  haveDealWithUser(creatorId: string, userId: string) {
+    // add check if creator have deal with userId and does not left feedback before
+    console.log(creatorId, userId);
+    return true;
+  }
+
+  async getAverageRate(userId: string, userType: UserTypeEnum) {
+    return {
+      rate: await this.dataServices.feedbacks.getAverageRate(userId, userType),
+    };
   }
 }

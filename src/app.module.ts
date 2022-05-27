@@ -8,6 +8,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ApplicationsModule } from 'applications/applications.module';
 import { RequestsModule } from 'requests/requests.module';
+import { DataServicesModule } from 'data-services/data-services.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,6 +24,7 @@ import { RequestsModule } from 'requests/requests.module';
     FeedbackModule,
     ApplicationsModule,
     RequestsModule,
+    DataServicesModule,
   ],
   controllers: [],
   providers: [
