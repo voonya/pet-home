@@ -1,6 +1,7 @@
 import { IFeedbackRepository } from 'data-services/interfaces/ifeedback-repository';
 import { Feedback } from 'feedback/dto';
 import { UserTypeEnum } from 'users/user-type.enum';
+import { randomUUID } from 'crypto';
 
 export class FeedbackRepositoryMocked implements IFeedbackRepository {
   constructor(arrayMock: Feedback[]) {
@@ -32,8 +33,9 @@ export class FeedbackRepositoryMocked implements IFeedbackRepository {
   }
 
   create(feedback: Feedback): Promise<Feedback> {
-    this._array.push(feedback);
-    return Promise.resolve(feedback);
+    const feedbackToAdd = { _id: randomUUID(), ...feedback };
+    this._array.push(feedbackToAdd);
+    return Promise.resolve(feedbackToAdd);
   }
 
   remove(id: string): Promise<Feedback | null | undefined> {

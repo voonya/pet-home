@@ -1,5 +1,6 @@
 import { ApplicationDto } from 'applications/dto';
 import { IApplicationRepository } from 'data-services/interfaces/iapplication-repository';
+import { randomUUID } from 'crypto';
 
 export class ApplicationRepositoryMocked implements IApplicationRepository {
   constructor(private _array: ApplicationDto[]) {}
@@ -13,8 +14,9 @@ export class ApplicationRepositoryMocked implements IApplicationRepository {
   }
 
   async create(dto: ApplicationDto): Promise<ApplicationDto> {
-    this._array.push(dto);
-    return Promise.resolve(dto);
+    const application = { _id: randomUUID(), ...dto };
+    this._array.push(application);
+    return Promise.resolve(application);
   }
 
   async update(
