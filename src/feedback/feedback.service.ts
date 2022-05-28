@@ -43,7 +43,7 @@ export class FeedbackService {
   async createFeedback(creatorId: string, feedback: PostFeedbackDto) {
     await this.checkUserValid(creatorId);
     await this.checkUserValid(feedback.userId);
-    if (!this.haveDealWithUser(creatorId, feedback.userId)) {
+    if (creatorId === feedback.userId) {
       throw new BadRequestException('This user can`t leave a feedback!');
     }
     const newFeedback = {
@@ -76,12 +76,6 @@ export class FeedbackService {
       throw new InternalServerErrorException();
     }
     return deletedFeedback;
-  }
-
-  haveDealWithUser(creatorId: string, userId: string) {
-    // add check if creator have deal with userId and does not left feedback before
-    console.log(creatorId, userId);
-    return true;
   }
 
   async getAverageRate(userId: string, userType: UserTypeEnum) {
