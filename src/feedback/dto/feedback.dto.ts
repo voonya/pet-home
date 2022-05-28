@@ -3,14 +3,15 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 import { UserTypeEnum } from 'users/user-type.enum';
 
 export class Feedback {
   @IsString()
-  @IsNotEmpty()
-  id: string;
+  @IsOptional()
+  _id?: string;
 
   @IsString()
   @IsNotEmpty()

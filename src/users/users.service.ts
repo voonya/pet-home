@@ -3,7 +3,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from 'users/dto';
+import { AddRoleDto, BanUserDto, BaseUserDto, UserDto } from 'users/dto';
 import { randomUUID } from 'crypto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { RoleEnum } from 'users/role.enum';
@@ -81,8 +81,8 @@ export class UsersService {
     return user;
   }
 
-  async ban(banUserDto: BanUserDto) {
-    const user = await this.getById(banUserDto.userId);
+  async ban(id: string, banUserDto: BanUserDto) {
+    const user = await this.getById(id);
     user.banned = true;
     user.banReason = banUserDto.banReason;
     return user;

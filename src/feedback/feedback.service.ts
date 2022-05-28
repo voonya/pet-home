@@ -4,8 +4,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { PostFeedbackDto } from './dto';
-import { randomUUID } from 'crypto';
+import { PostFeedbackDto } from 'feedback/dto';
 import { UserTypeEnum } from 'users/user-type.enum';
 import { IDataServices } from 'data-services/interfaces/idata-services';
 
@@ -33,7 +32,6 @@ export class FeedbackService {
 
   async getFeedbackById(id: string) {
     const feedback = await this.dataServices.feedbacks.getById(id);
-    console.log(feedback);
     if (!feedback) {
       throw new NotFoundException('No feedback with this id!');
     }
@@ -41,12 +39,10 @@ export class FeedbackService {
   }
 
   async createFeedback(creatorId: string, feedback: PostFeedbackDto) {
-    const id = randomUUID();
     if (!this.haveDealWithUser(creatorId, feedback.userId)) {
       throw new BadRequestException('This user can`t leave a feedback!');
     }
     const newFeedback = {
-      id,
       ...feedback,
       creatorId,
       created_date: new Date(),
