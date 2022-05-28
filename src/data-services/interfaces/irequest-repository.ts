@@ -9,5 +9,5 @@ export interface IRequestRepository {
 
   update(id: string, dto: RequestDto): Promise<RequestDto | null | undefined>;
 
-  remove(id: string): Promise<RequestDto | null | undefined>;
+  remove(id: string, userId: string): Promise<RequestDto | null | undefined>;
 }

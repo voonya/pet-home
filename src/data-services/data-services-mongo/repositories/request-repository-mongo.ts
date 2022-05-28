@@ -29,7 +29,9 @@ export class RequestRepositoryMongo implements IRequestRepository {
       .exec();
   }
 
-  async remove(id: string): Promise<RequestDto> {
-    return this._repository.findByIdAndRemove({ _id: id }).exec();
+  async remove(id: string, userId: string): Promise<RequestDto> {
+    return this._repository
+      .findOneAndRemove({ _id: id, userId: userId })
+      .exec();
   }
 }

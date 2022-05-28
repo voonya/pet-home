@@ -48,15 +48,10 @@ export class RequestService {
   }
 
   async remove(id: string, userId: string) {
-    const removedRequest = await this.dataServices.requests.remove(id);
+    const removedRequest = await this.dataServices.requests.remove(id, userId);
     if (!removedRequest) {
       throw new NotFoundException("Can't be removed!");
     }
-
-    if (removedRequest.userId !== userId) {
-      throw new BadRequestException('Only owner can delete the request');
-    }
-
     return removedRequest;
   }
 
