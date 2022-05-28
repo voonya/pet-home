@@ -128,6 +128,11 @@ export class ApplicationService {
       throw new BadRequestException('Request does not exist');
     }
 
+    const request = await this.requests.getById(newApplication.requestId);
+    if (request ? request.assignedApplicationId === newApplication.id : true) {
+      throw new BadRequestException("Can't update an assigned application");
+    }
+
     await this.applications.update(id, newApplication);
     return newApplication;
   }
