@@ -27,10 +27,6 @@ export class ApplicationService {
 
   private notFoundMsg = 'Application not found';
 
-  private async getAll() {
-    return this.applications.getAll();
-  }
-
   private async isRequestActual(id: string) {
     const request = await this.requests.getById(id);
     return request.expirationDate ? new Date() < request.expirationDate : true;
@@ -47,20 +43,7 @@ export class ApplicationService {
   }
 
   async getFiltered(query: ApplicationQueryDto) {
-    let allRecords = await this.getAll();
-
-    if (query.id) {
-      allRecords = allRecords.filter((p) => p.id === query.id);
-    }
-    if (query.requestId) {
-      allRecords = allRecords.filter((p) => p.requestId === query.requestId);
-    }
-    if (query.userId) {
-      allRecords = allRecords.filter((p) => p.userId === query.userId);
-    }
-
-    allRecords = allRecords.slice(query.offset, query.offset + query.limit);
-    return allRecords;
+    return this.applications.getAll(query);
   }
 
   async create(applicationDto: BaseApplicationDto, userId: string) {
@@ -100,9 +83,7 @@ export class ApplicationService {
     }
 
     const request = await this.requests.getById(removedApplication.requestId);
-    if (
-      request ? request.assignedApplicationId === removedApplication.id : true
-    ) {
+    if (request?.assignedApplicationId === removedApplication.id) {
       throw new BadRequestException("Can't delete an assigned application");
     }
 

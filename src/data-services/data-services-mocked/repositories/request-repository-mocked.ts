@@ -1,11 +1,24 @@
 import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
-import { RequestDto } from 'requests/dto';
+import { RequestDto, RequestQueryDto } from 'requests/dto';
 
 export class RequestRepositoryMocked implements IRequestRepository {
   constructor(private _array: RequestDto[]) {}
 
-  async getAll(): Promise<RequestDto[]> {
-    return Promise.resolve(this._array);
+  async getAll(filter: RequestQueryDto = {}): Promise<RequestDto[]> {
+    let allRecords = this._array;
+
+    if (filter.id) {
+      allRecords = allRecords.filter((p) => p.id === filter.id);
+    }
+    if (filter.animalId) {
+      allRecords = allRecords.filter((p) => p.animalId === filter.animalId);
+    }
+    if (filter.userId) {
+      allRecords = allRecords.filter((p) => p.userId === filter.userId);
+    }
+
+    allRecords = allRecords.slice(filter.offset, filter.offset + filter.limit);
+    return allRecords;
   }
 
   async getById(id: string): Promise<RequestDto> {

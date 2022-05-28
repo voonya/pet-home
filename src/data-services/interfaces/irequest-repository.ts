@@ -1,7 +1,7 @@
-import { RequestDto } from 'requests/dto';
+import { RequestDto, RequestQueryDto } from 'requests/dto';
 
 export interface IRequestRepository {
-  getAll(): Promise<RequestDto[]>;
+  getAll(filter?: RequestQueryDto): Promise<RequestDto[]>;
 
   getById(id: string): Promise<RequestDto | null | undefined>;
 

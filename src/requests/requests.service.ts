@@ -29,10 +29,6 @@ export class RequestService {
 
   private applications: IApplicationRepository;
 
-  private async getAll() {
-    return this.requests.getAll();
-  }
-
   async getById(id: string) {
     const foundRequest = await this.requests.getById(id);
 
@@ -44,20 +40,7 @@ export class RequestService {
   }
 
   async getFiltered(query: RequestQueryDto) {
-    let allRecords = await this.getAll();
-
-    if (query.id) {
-      allRecords = allRecords.filter((p) => p.id === query.id);
-    }
-    if (query.animalId) {
-      allRecords = allRecords.filter((p) => p.animalId === query.animalId);
-    }
-    if (query.userId) {
-      allRecords = allRecords.filter((p) => p.userId === query.userId);
-    }
-
-    allRecords = allRecords.slice(query.offset, query.offset + query.limit);
-    return allRecords;
+    return this.requests.getAll(query);
   }
 
   async create(requestDto: BaseRequestDto) {
