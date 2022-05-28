@@ -4,12 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
+  ApplicationDto,
   ApplicationQueryDto,
   BaseApplicationDto,
   UpdateApplicationDto,
 } from 'applications/dto';
 import { IDataServices } from 'data-services/interfaces/idata-services';
-import { randomUUID } from 'crypto';
 
 @Injectable()
 export class ApplicationService {
@@ -56,7 +56,6 @@ export class ApplicationService {
     const filteringExpression: ApplicationQueryDto = {
       userId: userId,
       requestId: applicationDto.requestId,
-      id: randomUUID(),
     };
     const applications = await this.getFiltered(filteringExpression);
 
@@ -64,8 +63,7 @@ export class ApplicationService {
       throw new BadRequestException('You has already applied to this request');
     }
 
-    const newApplication = {
-      id: randomUUID(),
+    const newApplication: ApplicationDto = {
       ...applicationDto,
       userId: userId,
     };
@@ -81,7 +79,7 @@ export class ApplicationService {
     const request = await this.dataServices.requests.getById(
       removedApplication.requestId,
     );
-    if (request?.assignedApplicationId === removedApplication.id) {
+    if (request?.assignedApplicationId === removedApplication._id) {
       throw new BadRequestException("Can't delete an assigned application");
     }
 
@@ -108,7 +106,7 @@ export class ApplicationService {
     const request = await this.dataServices.requests.getById(
       newApplication.requestId,
     );
-    if (request ? request.assignedApplicationId === newApplication.id : true) {
+    if (request ? request.assignedApplicationId === newApplication._id : true) {
       throw new BadRequestException("Can't update an assigned application");
     }
 

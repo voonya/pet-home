@@ -10,9 +10,10 @@ import {
 } from '@nestjs/common';
 import { FeedbackService } from 'feedback/feedback.service';
 import { GetAllFeedbackDto, GetRateDto, PostFeedbackDto } from 'feedback/dto';
+import { ObjectIdValidationPipe } from 'middlewares/objectid-validation.pipe';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 
-const user = '0bdc5c68-da0d-11ec-9d64-0242ac120002';
+const user = '62911966a7afaf9b1059a301';
 
 @Controller('feedback')
 export class FeedbackController {
@@ -38,7 +39,7 @@ export class FeedbackController {
   }
 
   @Get(':id')
-  async getFeedback(@Param('id') id: string) {
+  async getFeedback(@Param('id', ObjectIdValidationPipe) id: string) {
     return this.feedbackService.getFeedbackById(id);
   }
 
@@ -48,7 +49,7 @@ export class FeedbackController {
   }
 
   @Delete(':id')
-  deleteFeedback(@Param('id') id: string) {
+  deleteFeedback(@Param('id', ObjectIdValidationPipe) id: string) {
     return this.feedbackService.deleteFeedback(id, user);
   }
 }

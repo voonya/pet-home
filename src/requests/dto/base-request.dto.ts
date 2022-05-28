@@ -1,5 +1,6 @@
 import {
   IsDate,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -8,7 +9,7 @@ import {
 } from 'class-validator';
 
 export class BaseRequestDto {
-  @IsString()
+  @IsMongoId()
   @IsNotEmpty()
   animalId: string;
 

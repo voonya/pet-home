@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from 'users/dto';
-import { randomUUID } from 'crypto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { RoleEnum } from 'users/role.enum';
 import { IDataServices } from 'data-services/interfaces/idata-services';
@@ -26,7 +25,6 @@ export class UsersService {
 
   async create(createUserDto: BaseUserDto) {
     const newUser: UserDto = {
-      id: randomUUID(),
       ...createUserDto,
       creationDate: new Date(),
       banned: false,

@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { AnimalDto, BaseAnimalDto } from 'animals/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
-import { randomUUID } from 'crypto';
 import { IDataServices } from 'data-services/interfaces/idata-services';
 const maxAnimalsPerUser = 10;
 
@@ -35,7 +34,6 @@ export class AnimalsService {
       throw new BadRequestException('You have reached maximum number of pets');
     }
     const newAnimal: AnimalDto = {
-      id: randomUUID(),
       ...createAnimalDto,
       creationDate: new Date(),
       ownerId: userId,

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DataServicesMockedModule } from 'data-services/data-services-mocked/data-services-mocked.module';
+import { DataServicesMongoModule } from 'data-services/data-services-mongo/data-services-mongo.module';
 
 @Module({
-  imports: [DataServicesMockedModule],
-  exports: [DataServicesMockedModule],
+  imports: [DataServicesMongoModule],
+  exports: [DataServicesMongoModule],
 })
 export class DataServicesModule {}
