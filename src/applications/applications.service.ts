@@ -36,7 +36,7 @@ export class ApplicationService {
   }
 
   async create(applicationDto: BaseApplicationDto, userId: string) {
-    if (!this.isRequestActual(applicationDto.requestId)) {
+    if (!(await this.isRequestActual(applicationDto.requestId))) {
       throw new BadRequestException('Request is expired');
     }
 
@@ -53,7 +53,6 @@ export class ApplicationService {
     };
     const applications = await this.getFiltered(filteringExpression);
 
-    console.log(applications);
     if (applications.length !== 0) {
       throw new BadRequestException('You has already applied to this request');
     }

@@ -7,15 +7,12 @@ export class ApplicationRepositoryMongo implements IApplicationRepository {
   constructor(private _repository: Model<ApplicationDocument>) {}
 
   async getAll(filter: ApplicationQueryDto = {}): Promise<ApplicationDto[]> {
-    const filteringObject = filter;
-    delete filteringObject.limit;
-    delete filteringObject.offset;
+    const offset = filter.offset;
+    const limit = filter.limit;
+    delete filter.limit;
+    delete filter.offset;
 
-    return this._repository
-      .find(filteringObject)
-      .skip(filter.offset)
-      .limit(filter.limit)
-      .exec();
+    return this._repository.find(filter).skip(offset).limit(limit).exec();
   }
 
   async getById(id: string): Promise<ApplicationDto> {
@@ -23,7 +20,6 @@ export class ApplicationRepositoryMongo implements IApplicationRepository {
   }
 
   async create(dto: ApplicationDto): Promise<ApplicationDto> {
-    
     return this._repository.create(dto);
   }
 
