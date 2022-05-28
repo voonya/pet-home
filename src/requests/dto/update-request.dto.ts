@@ -15,6 +15,11 @@ export class UpdateRequestDto {
   details?: string;
 
   @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  assignedApplicationId?: string;
+
+  @IsOptional()
   @IsDate()
   @IsNotEmpty()
   expirationDate?: Date;

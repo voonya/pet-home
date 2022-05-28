@@ -1,48 +1,47 @@
+import { randomUUID } from 'crypto';
 import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
-import { RequestDto } from 'requests/dto';
+import { RequestDto, RequestQueryDto } from 'requests/dto';
 
 export class RequestRepositoryMocked implements IRequestRepository {
   constructor(private _array: RequestDto[]) {}
 
-  async getAll(): Promise<RequestDto[]> {
-    return Promise.resolve(this._array);
+  async getAll(filter: RequestQueryDto = {}): Promise<RequestDto[]> {
+    let allRecords = this._array;
+
+    if (filter.id) {
+      allRecords = allRecords.filter((p) => p._id === filter.id);
+    }
+    if (filter.animalId) {
+      allRecords = allRecords.filter((p) => p.animalId === filter.animalId);
+    }
+    if (filter.userId) {
+      allRecords = allRecords.filter((p) => p.userId === filter.userId);
+    }
+
+    allRecords = allRecords.slice(filter.offset, filter.offset + filter.limit);
+    return allRecords;
   }
 
   async getById(id: string): Promise<RequestDto> {
-    return Promise.resolve(this._array.find((p) => p.id === id));
+    return Promise.resolve(this._array.find((p) => p._id === id));
   }
 
   async create(dto: RequestDto): Promise<RequestDto> {
-    this._array.push(dto);
-    return Promise.resolve(dto);
+    const newDto = { ...dto, _id: randomUUID().toString() };
+    this._array.push(newDto);
+    return Promise.resolve(newDto);
   }
 
-  async update(
-    id: string,
-    userId: string,
-    dto: RequestDto,
-  ): Promise<RequestDto | undefined> {
+  async update(id: string, dto: RequestDto): Promise<RequestDto | undefined> {
     const oldrequest = await this.getById(id);
-    if (!this.doesUserOwns(oldrequest, userId)) {
-      return Promise.resolve(undefined);
-    }
-
     const index = this._array.indexOf(oldrequest);
     this._array[index] = dto;
     return Promise.resolve(dto);
   }
 
-  async remove(id: string, userId: string): Promise<RequestDto | undefined> {
+  async remove(id: string): Promise<RequestDto | undefined> {
     const oldrequest = await this.getById(id);
-    if (!this.doesUserOwns(oldrequest, userId)) {
-      return Promise.resolve(undefined);
-    }
-
     const index = this._array.indexOf(oldrequest);
     return Promise.resolve(this._array.splice(index, 1)[0]);
-  }
-
-  private doesUserOwns(request: RequestDto | undefined, userId: string) {
-    return request ? request.userId === userId : false;
   }
 }

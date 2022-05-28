@@ -1,5 +1,6 @@
 import {
   IsDate,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -8,11 +9,7 @@ import {
 } from 'class-validator';
 
 export class BaseRequestDto {
-  @IsString()
-  @IsNotEmpty()
-  userId: string;
-
-  @IsString()
+  @IsMongoId()
   @IsNotEmpty()
   animalId: string;
 
@@ -29,4 +26,9 @@ export class BaseRequestDto {
   @IsDate()
   @IsOptional()
   expirationDate?: Date;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  assignedApplicationId?: string;
 }

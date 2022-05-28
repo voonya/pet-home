@@ -7,15 +7,21 @@ import {
   AnimalDocument,
 } from 'data-services/data-services-mongo/schemas/animal.schema';
 import { Model } from 'mongoose';
-import { RequestRepositoryMocked } from 'data-services/data-services-mocked/repositories/request-repository-mocked';
-import { requests } from 'data-services/data-services-mocked/data/mock.requests';
-import { ApplicationRepositoryMocked } from 'data-services/data-services-mocked/repositories/application-repository-mocked';
-import { applications } from 'data-services/data-services-mocked/data/mock.applications';
 import { FeebackRepositoryMongo } from 'data-services/data-services-mongo/repositories/feedback-repository-mongo';
 import {
   Feedback,
   FeedbackDocument,
 } from 'data-services/data-services-mongo/schemas/feedback.schema';
+import { RequestRepositoryMongo } from 'data-services/data-services-mongo/repositories/request-repository-mongo';
+import {
+  Requests,
+  RequestDocument,
+} from 'data-services/data-services-mongo/schemas/requests.schema';
+import { ApplicationRepositoryMongo } from 'data-services/data-services-mongo/repositories/application-repository-mongo';
+import {
+  Application,
+  ApplicationDocument,
+} from './schemas/applications.schema';
 import { UserRepositoryMongo } from 'data-services/data-services-mongo/repositories/user-repository-mongo';
 import {
   User,
@@ -30,9 +36,9 @@ export class DataServicesMongo
 
   users: UserRepositoryMongo;
 
-  requests: RequestRepositoryMocked;
+  requests: RequestRepositoryMongo;
 
-  applications: ApplicationRepositoryMocked;
+  applications: ApplicationRepositoryMongo;
 
   feedbacks: FeebackRepositoryMongo;
 
@@ -43,14 +49,19 @@ export class DataServicesMongo
     private FeedbackRepository: Model<FeedbackDocument>,
     @InjectModel(User.name)
     private UserRepository: Model<UserDocument>,
-  ) {
-    this.requests = new RequestRepositoryMocked(requests);
-    this.applications = new ApplicationRepositoryMocked(applications);
-  }
+    @InjectModel(Requests.name)
+    private RequestRepository: Model<RequestDocument>,
+    @InjectModel(Application.name)
+    private ApplicationRepository: Model<ApplicationDocument>,
+  ) {}
 
   onApplicationBootstrap(): any {
     this.animals = new AnimalRepositoryMongo(this.AnimalRepository);
     this.feedbacks = new FeebackRepositoryMongo(this.FeedbackRepository);
+    this.requests = new RequestRepositoryMongo(this.RequestRepository);
+    this.applications = new ApplicationRepositoryMongo(
+      this.ApplicationRepository,
+    );
     this.users = new UserRepositoryMongo(this.UserRepository);
   }
 }
