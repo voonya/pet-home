@@ -12,7 +12,7 @@ import { FeedbackService } from 'feedback/feedback.service';
 import { GetAllFeedbackDto, GetRateDto, PostFeedbackDto } from 'feedback/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 
-const user = 'c7146c3c-de38-432d-9edc-970e04f31fa3';
+const user = '0bdc5c68-da0d-11ec-9d64-0242ac120002';
 
 @Controller('feedback')
 export class FeedbackController {

@@ -34,7 +34,7 @@ export class FeedbackRepositoryMocked implements IFeedbackRepository {
   }
 
   create(feedback: Feedback): Promise<Feedback> {
-    const newFeedback = { ...feedback, _id: randomUUID() };
+    const newFeedback = { _id: randomUUID(), ...feedback };
     this._array.push(newFeedback);
     return Promise.resolve(newFeedback);
   }

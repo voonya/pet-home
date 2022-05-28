@@ -2,13 +2,16 @@ import { Feedback } from 'feedback/dto';
 import { UserTypeEnum } from 'users/user-type.enum';
 import { randomUUID } from 'crypto';
 
-const user1 = '123e4567-e89b-12d3-a456-426614174000';
-const user2 = 'c7146c3c-de38-432d-9edc-970e04f31fa3';
+const users = [
+  '122fe7b0-da0d-11ec-9d64-0242ac120002',
+  '0bdc5c68-da0d-11ec-9d64-0242ac120002',
+  '122fe904-da0d-11ec-9d64-0242ac120002',
+];
 export const feedbackMock: Feedback[] = [
   {
     _id: randomUUID(),
-    userId: user1,
-    creatorId: user2,
+    userId: users[0],
+    creatorId: users[1],
     created_date: new Date(),
     userType: UserTypeEnum.Owner,
     title: 'My feedback1',
@@ -17,8 +20,8 @@ export const feedbackMock: Feedback[] = [
   },
   {
     _id: randomUUID(),
-    userId: user1,
-    creatorId: randomUUID(),
+    userId: users[0],
+    creatorId: users[1],
     created_date: new Date(),
     userType: UserTypeEnum.Owner,
     title: 'My feedback2',
@@ -27,8 +30,8 @@ export const feedbackMock: Feedback[] = [
   },
   {
     _id: randomUUID(),
-    userId: user1,
-    creatorId: randomUUID(),
+    userId: users[0],
+    creatorId: users[1],
     created_date: new Date(),
     userType: UserTypeEnum.Owner,
     title: 'My feedback3',
@@ -37,8 +40,8 @@ export const feedbackMock: Feedback[] = [
   },
   {
     _id: randomUUID(),
-    userId: user1,
-    creatorId: randomUUID(),
+    userId: users[0],
+    creatorId: users[2],
     created_date: new Date(),
     userType: UserTypeEnum.Handler,
     title: 'My feedback4',
@@ -47,8 +50,8 @@ export const feedbackMock: Feedback[] = [
   },
   {
     _id: randomUUID(),
-    userId: user1,
-    creatorId: randomUUID(),
+    userId: users[0],
+    creatorId: users[2],
     created_date: new Date(),
     userType: UserTypeEnum.Handler,
     title: 'My feedback5',
