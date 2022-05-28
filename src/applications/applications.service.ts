@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
+  ApplicationDto,
   ApplicationQueryDto,
   BaseApplicationDto,
   UpdateApplicationDto,
@@ -57,11 +58,11 @@ export class ApplicationService {
       throw new BadRequestException('You has already applied to this request');
     }
 
-    const newApplication = {
+    const newApplication: ApplicationDto = {
       ...applicationDto,
       userId: userId,
     };
-    console.log(newApplication);
+
     await this.dataServices.applications.create(newApplication);
 
     return applicationDto;
