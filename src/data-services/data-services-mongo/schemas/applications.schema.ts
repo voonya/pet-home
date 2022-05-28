@@ -4,16 +4,24 @@ import { Document } from 'mongoose';
 export type ApplicationDocument = Application & Document;
 
 export class Application {
-  @Prop()
+  @Prop({
+    required: true,
+  })
   requestId: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   userId: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   description: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   price: number;
 }
 

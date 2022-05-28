@@ -5,25 +5,35 @@ export type RequestDocument = Requests & Document;
 
 @Schema()
 export class Requests {
-  @Prop()
+  @Prop({
+    required: true,
+  })
   userId: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   animalId: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   details: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   adress: string;
 
   @Prop()
-  expirationDate?: Date;
+  expirationDate: Date;
 
   @Prop()
-  assignedApplicationId?: string;
+  assignedApplicationId: string;
 
-  @Prop()
+  @Prop({
+    required: true,
+  })
   creationDate: Date;
 }
 
