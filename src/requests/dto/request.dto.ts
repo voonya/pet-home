@@ -4,7 +4,7 @@ import { BaseRequestDto } from 'requests/dto/base-request.dto';
 export class RequestDto extends BaseRequestDto {
   @IsString()
   @IsNotEmpty()
-  id: string;
+  _id: string;
 
   @IsDate()
   creationDate: Date;

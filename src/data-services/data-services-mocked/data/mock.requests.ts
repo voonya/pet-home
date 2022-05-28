@@ -2,7 +2,7 @@ import { RequestDto } from 'requests/dto';
 
 export const requests: RequestDto[] = [
   {
-    id: '1',
+    _id: '1',
     userId: '1',
     animalId: '11',
     details: 'dsjf jkdsfsdjkhf dskjhfbdskjfh',
@@ -11,7 +11,7 @@ export const requests: RequestDto[] = [
     expirationDate: new Date('2022-06-20'),
   },
   {
-    id: '2',
+    _id: '2',
     userId: '13',
     animalId: '221',
     details: 'dsjf jkdsfsdsdjkhf dskjhfbdskjfh',
@@ -20,7 +20,7 @@ export const requests: RequestDto[] = [
     expirationDate: new Date('2022-06-21'),
   },
   {
-    id: '3',
+    _id: '3',
     userId: '121',
     animalId: '13',
     details: 'dsjf jkdsfsdjkhf dskdsjhfbdskjfh',

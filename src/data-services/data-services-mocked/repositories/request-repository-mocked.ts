@@ -8,7 +8,7 @@ export class RequestRepositoryMocked implements IRequestRepository {
     let allRecords = this._array;
 
     if (filter.id) {
-      allRecords = allRecords.filter((p) => p.id === filter.id);
+      allRecords = allRecords.filter((p) => p._id === filter.id);
     }
     if (filter.animalId) {
       allRecords = allRecords.filter((p) => p.animalId === filter.animalId);
@@ -22,7 +22,7 @@ export class RequestRepositoryMocked implements IRequestRepository {
   }
 
   async getById(id: string): Promise<RequestDto> {
-    return Promise.resolve(this._array.find((p) => p.id === id));
+    return Promise.resolve(this._array.find((p) => p._id === id));
   }
 
   async create(dto: RequestDto): Promise<RequestDto> {

@@ -46,7 +46,7 @@ export class RequestService {
   async create(requestDto: BaseRequestDto) {
     const newRecord: RequestDto = {
       ...requestDto,
-      id: randomUUID().toString(),
+      _id: randomUUID().toString(),
       creationDate: new Date(),
     };
 

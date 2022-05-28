@@ -11,6 +11,7 @@ import {
   Feedback,
   FeedbackSchema,
 } from 'data-services/data-services-mongo/schemas/feedback.schema';
+import { Requests, RequestSchema } from './schemas/requests.schema';
 
 @Module({
   providers: [
@@ -24,10 +25,17 @@ import {
       envFilePath: 'src/.env',
     }),
     MongooseModule.forFeature([
-      { name: Animal.name, schema: AnimalSchema },
+      {
+        name: Animal.name,
+        schema: AnimalSchema,
+      },
       {
         name: Feedback.name,
         schema: FeedbackSchema,
+      },
+      {
+        name: Requests.name,
+        schema: RequestSchema,
       },
     ]),
     MongooseModule.forRoot(process.env.DB_URL),

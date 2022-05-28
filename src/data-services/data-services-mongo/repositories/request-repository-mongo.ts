@@ -1,28 +1,38 @@
-// import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
-// import { Model } from 'mongoose';
-// import { RequestDocument } from 'data-services/data-services-mongo/schemas/requests.schema';
-// import { RequestDto } from 'requests/dto';
+import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
+import { Model } from 'mongoose';
+import { RequestDocument } from 'data-services/data-services-mongo/schemas/requests.schema';
+import { RequestDto, RequestQueryDto } from 'requests/dto';
 
-// export class RequestRepositoryMongo implements IRequestRepository {
-//   constructor(private _repository: Model<RequestDocument>) {}
+export class RequestRepositoryMongo implements IRequestRepository {
+  constructor(private _repository: Model<RequestDocument>) {}
 
-//   async getAll(): Promise<RequestDto[]> {
-//     return this._repository.find().exec();
-//   }
+  async getAll(filter: RequestQueryDto = {}): Promise<RequestDto[]> {
+    const filteringObject = filter;
+    delete filteringObject.limit;
+    delete filteringObject.offset;
 
-//   getById(id: string): Promise<RequestDto> {
-//     throw new Error('Method not implemented.');
-//   }
+    return this._repository
+      .find(filteringObject)
+      .skip(filter.offset)
+      .limit(filter.limit)
+      .exec();
+  }
 
-//   create(dto: RequestDto): Promise<RequestDto> {
-//     throw new Error('Method not implemented.');
-//   }
+  getById(id: string): Promise<RequestDto> {
+    return this._repository.findById({ _id: id }).exec();
+  }
 
-//   update(id: string, dto: RequestDto): Promise<RequestDto> {
-//     throw new Error('Method not implemented.');
-//   }
+  create(dto: RequestDto): Promise<RequestDto> {
+    return this._repository.create(dto);
+  }
 
-//   remove(id: string): Promise<RequestDto> {
-//     throw new Error('Method not implemented.');
-//   }
-// }
+  update(id: string, dto: RequestDto): Promise<RequestDto> {
+    return this._repository
+      .findByIdAndUpdate({ _id: id }, dto, { new: true })
+      .exec();
+  }
+
+  remove(id: string): Promise<RequestDto> {
+    return this._repository.findByIdAndRemove({ _id: id }).exec();
+  }
+}
