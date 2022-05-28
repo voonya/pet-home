@@ -23,17 +23,15 @@ export class UserRepositoryMongo implements IUserRepository {
   }
 
   getById(id: string): Promise<UserDto | null | undefined> {
-    return this._repository.findById({ _id: id }).exec();
+    return this._repository.findById(id).exec();
   }
 
   remove(id: string): Promise<UserDto | null | undefined> {
-    return this._repository.findByIdAndRemove({ _id: id }).exec();
+    return this._repository.findByIdAndRemove(id).exec();
   }
 
   update(id: string, dto: BaseUserDto): Promise<UserDto | null | undefined> {
-    return this._repository
-      .findByIdAndUpdate({ _id: id }, dto, { new: true })
-      .exec();
+    return this._repository.findByIdAndUpdate(id, dto, { new: true }).exec();
   }
 
   async addRole(id: string, addRoleDto: AddRoleDto) {
@@ -42,8 +40,8 @@ export class UserRepositoryMongo implements IUserRepository {
       return Promise.resolve(null);
     }
     if (user.roles.indexOf(addRoleDto.role) === -1) {
-      return this._repository.findOneAndUpdate(
-        { _id: id },
+      return this._repository.findByIdAndUpdate(
+        id,
         { $push: { roles: addRoleDto.role } },
         { new: true },
       );
@@ -53,11 +51,7 @@ export class UserRepositoryMongo implements IUserRepository {
 
   ban(id: string, banUserDto: BanUserDto) {
     return this._repository
-      .findByIdAndUpdate(
-        { _id: id },
-        { banned: true, ...banUserDto },
-        { new: true },
-      )
+      .findByIdAndUpdate(id, { banned: true, ...banUserDto }, { new: true })
       .exec();
   }
 }

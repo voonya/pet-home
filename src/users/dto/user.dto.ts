@@ -3,6 +3,7 @@ import { RoleEnum } from 'users/role.enum';
 import {
   IsBoolean,
   IsDate,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -11,6 +12,7 @@ import {
 } from 'class-validator';
 
 export class UserDto extends BaseUserDto {
+  @IsMongoId()
   @IsString()
   @IsOptional()
   _id?: string;
