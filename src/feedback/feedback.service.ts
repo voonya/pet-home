@@ -18,12 +18,14 @@ export class FeedbackService {
     limit: number,
     userType?: UserTypeEnum,
   ) {
+    await this.checkUserValid(userId);
     const feedbacks = await this.dataServices.feedbacks.getAll(
       userId,
       offset,
       limit,
       userType,
     );
+
     if (!feedbacks) {
       throw new InternalServerErrorException();
     }
@@ -39,6 +41,8 @@ export class FeedbackService {
   }
 
   async createFeedback(creatorId: string, feedback: PostFeedbackDto) {
+    await this.checkUserValid(creatorId);
+    await this.checkUserValid(feedback.userId);
     if (!this.haveDealWithUser(creatorId, feedback.userId)) {
       throw new BadRequestException('This user can`t leave a feedback!');
     }
@@ -55,6 +59,7 @@ export class FeedbackService {
   }
 
   async deleteFeedback(id: string, creatorId: string) {
+    await this.checkUserValid(creatorId);
     const feedback = await this.dataServices.feedbacks.getById(id);
 
     if (!feedback) {
@@ -80,8 +85,21 @@ export class FeedbackService {
   }
 
   async getAverageRate(userId: string, userType: UserTypeEnum) {
+    await this.checkUserValid(userId);
     return {
       rate: await this.dataServices.feedbacks.getAverageRate(userId, userType),
     };
+  }
+
+  async checkUserValid(userId) {
+    const user = await this.dataServices.users.getById(userId);
+
+    if (!user) {
+      throw new BadRequestException('No user with this id!');
+    }
+
+    if (user.banned) {
+      throw new BadRequestException('User is banned!');
+    }
   }
 }
