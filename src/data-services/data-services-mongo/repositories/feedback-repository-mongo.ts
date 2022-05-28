@@ -20,7 +20,7 @@ export class FeebackRepositoryMongo implements IFeedbackRepository {
     userType?: UserTypeEnum,
   ): Promise<Feedback[]> {
     return this._repository
-      .find({ userId }, {}, { offset, limit, userType })
+      .find({ userId, userType }, {}, { offset, limit })
       .exec();
   }
 
