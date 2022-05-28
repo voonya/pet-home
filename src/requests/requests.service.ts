@@ -40,7 +40,7 @@ export class RequestService {
       userId: userId,
     };
 
-    if (this.isDateUnacceptable(newRecord)) {
+    if (this.isDateUnacceptable(newRecord, newRecord.creationDate)) {
       throw new BadRequestException(this.dateError);
     }
 
@@ -72,16 +72,14 @@ export class RequestService {
     }
 
     if (oldRequest.assignedApplicationId) {
-      throw new BadRequestException("Can't change requestn with an assignment");
+      throw new BadRequestException("Can't change request with an assignment");
     }
 
-    const newRequest = { ...oldRequest, ...updateRequestDto };
-
-    if (this.isDateUnacceptable(newRequest)) {
+    if (this.isDateUnacceptable(updateRequestDto, oldRequest.creationDate)) {
       throw new BadRequestException(this.dateError);
     }
 
-    return this.dataServices.requests.update(id, newRequest);
+    return this.dataServices.requests.update(id, updateRequestDto);
   }
 
   async assign(requestId: string, applicationId: string, userId: string) {
@@ -128,9 +126,9 @@ export class RequestService {
     return this.dataServices.requests.update(requestId, request);
   }
 
-  private isDateUnacceptable(requestDto: RequestDto) {
+  private isDateUnacceptable(requestDto: UpdateRequestDto, creationDate: Date) {
     return requestDto.expirationDate
-      ? requestDto.creationDate > requestDto.expirationDate
+      ? creationDate > requestDto.expirationDate
       : false;
   }
 }

@@ -1,7 +1,7 @@
 import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
 import { Model } from 'mongoose';
 import { RequestDocument } from 'data-services/data-services-mongo/schemas/requests.schema';
-import { RequestDto, RequestQueryDto } from 'requests/dto';
+import { RequestDto, RequestQueryDto, UpdateRequestDto } from 'requests/dto';
 
 export class RequestRepositoryMongo implements IRequestRepository {
   constructor(private _repository: Model<RequestDocument>) {}
@@ -23,7 +23,7 @@ export class RequestRepositoryMongo implements IRequestRepository {
     return this._repository.create(dto);
   }
 
-  async update(id: string, dto: RequestDto): Promise<RequestDto> {
+  async update(id: string, dto: UpdateRequestDto): Promise<RequestDto> {
     return this._repository
       .findOneAndUpdate({ _id: id }, dto, { new: true })
       .exec();
