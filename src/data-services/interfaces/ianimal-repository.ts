@@ -1,4 +1,4 @@
-import { AnimalDto } from 'animals/dto';
+import { AnimalDto, BaseAnimalDto } from 'animals/dto';
 
 export interface IAnimalRepository {
   getAll(userId: string, offset?: number, limit?: number): Promise<AnimalDto[]>;
@@ -7,7 +7,11 @@ export interface IAnimalRepository {
 
   create(dto: AnimalDto): Promise<AnimalDto>;
 
-  update(id: string, dto: AnimalDto): Promise<AnimalDto | null | undefined>;
+  update(
+    id: string,
+    userId: string,
+    dto: BaseAnimalDto,
+  ): Promise<AnimalDto | null | undefined>;
 
   remove(id: string, userId: string): Promise<AnimalDto | null | undefined>;
 }

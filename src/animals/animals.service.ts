@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { AnimalDto, BaseAnimalDto } from 'animals/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
-import { CreateAnimalDto } from 'animals/dto/create-animal.dto';
 import { randomUUID } from 'crypto';
 import { IDataServices } from 'data-services/interfaces/idata-services';
 const maxAnimalsPerUser = 10;
@@ -27,7 +26,7 @@ export class AnimalsService {
     return animals;
   }
 
-  async createAnimal(createAnimalDto: CreateAnimalDto, userId: string) {
+  async createAnimal(createAnimalDto: BaseAnimalDto, userId: string) {
     const allAnimals = await this.dataServices.animals.getAll(userId);
     const currentNumberOfUserAnimals = allAnimals.filter(
       (animal) => animal.ownerId === userId,
@@ -45,7 +44,7 @@ export class AnimalsService {
     if (!savedAnimal) {
       throw new InternalServerErrorException();
     }
-    return newAnimal;
+    return savedAnimal;
   }
 
   async getById(id: string, userId: string) {
@@ -57,13 +56,21 @@ export class AnimalsService {
   }
 
   async update(id: string, updateAnimalDto: BaseAnimalDto, userId: string) {
-    const oldAnimal = await this.getById(id, userId);
-    const newAnimal = { ...oldAnimal, ...updateAnimalDto };
-    const savedAnimal = await this.dataServices.animals.update(id, newAnimal);
+    const animal = await this.getById(id, userId);
+    if (animal.ownerId !== userId) {
+      throw new BadRequestException(
+        'User cannot delete this animal, it not his',
+      );
+    }
+    const savedAnimal = await this.dataServices.animals.update(
+      id,
+      userId,
+      updateAnimalDto,
+    );
     if (!savedAnimal) {
       throw new InternalServerErrorException();
     }
-    return newAnimal;
+    return savedAnimal;
   }
 
   async remove(id: string, userId: string) {
