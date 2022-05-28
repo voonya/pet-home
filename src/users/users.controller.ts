@@ -44,9 +44,9 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
-  @Post('/role')
-  addRole(@Body() addRoleDto: AddRoleDto) {
-    return this.usersService.addRole(addRoleDto);
+  @Post(':id/role')
+  addRole(@Param('id') id: string, @Body() addRoleDto: AddRoleDto) {
+    return this.usersService.addRole(id, addRoleDto);
   }
 
   @Post(':id/ban')

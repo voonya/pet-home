@@ -12,7 +12,6 @@ import {
 import { AnimalsService } from 'animals/animals.service';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { BaseAnimalDto } from 'animals/dto/base-animal.dto';
-import { CreateAnimalDto } from 'animals/dto/create-animal.dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 const mockUserId = '123e4567-e89b-12d3-a456-426614174000'; // get id from auth
 
@@ -21,7 +20,7 @@ export class AnimalsController {
   constructor(private animalsService: AnimalsService) {}
 
   @Post()
-  create(@Body() createAnimalDto: CreateAnimalDto) {
+  create(@Body() createAnimalDto: BaseAnimalDto) {
     return this.animalsService.createAnimal(createAnimalDto, mockUserId);
   }
 
