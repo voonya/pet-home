@@ -11,7 +11,7 @@ import {
 import { FeedbackService } from 'feedback/feedback.service';
 import { GetAllFeedbackDto, GetRateDto, PostFeedbackDto } from 'feedback/dto';
 import { ObjectIdValidationPipe } from 'middlewares/objectid-validation.pipe';
-import { PaginationPipe } from '../pagination/pagination.pipe';
+import { PaginationPipe } from 'pagination/pagination.pipe';
 
 const user = '62911966a7afaf9b1059a301';
 
