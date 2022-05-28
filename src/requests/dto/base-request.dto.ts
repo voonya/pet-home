@@ -10,10 +10,6 @@ import {
 export class BaseRequestDto {
   @IsString()
   @IsNotEmpty()
-  userId: string;
-
-  @IsString()
-  @IsNotEmpty()
   animalId: string;
 
   @IsString()
@@ -29,4 +25,9 @@ export class BaseRequestDto {
   @IsDate()
   @IsOptional()
   expirationDate?: Date;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  assignedApplicationId?: string;
 }

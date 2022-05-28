@@ -3,34 +3,25 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 import { IDataServices } from 'data-services/interfaces/idata-services';
-import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
 import {
   BaseRequestDto,
   RequestQueryDto,
   RequestDto,
   UpdateRequestDto,
 } from 'requests/dto';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class RequestService {
-  constructor(dataServices: IDataServices) {
-    this.requests = dataServices.requests;
-  }
+  constructor(private dataServices: IDataServices) {}
 
   private notFoundMsg = 'Request not found';
 
   private dateError = 'expirationDate should later than creationDate';
 
-  private requests: IRequestRepository;
-
-  private async getAll() {
-    return this.requests.getAll();
-  }
-
   async getById(id: string) {
-    const foundRequest = this.requests.getById(id);
+    const foundRequest = await this.dataServices.requests.getById(id);
 
     if (!foundRequest) {
       throw new NotFoundException(this.notFoundMsg);
@@ -40,42 +31,32 @@ export class RequestService {
   }
 
   async getFiltered(query: RequestQueryDto) {
-    let allRecords = await this.getAll();
-
-    if (query.id) {
-      allRecords = allRecords.filter((p) => p.id === query.id);
-    }
-    if (query.animalId) {
-      allRecords = allRecords.filter((p) => p.animalId === query.animalId);
-    }
-    if (query.userId) {
-      allRecords = allRecords.filter((p) => p.userId === query.userId);
-    }
-
-    allRecords = allRecords.slice(query.offset, query.offset + query.limit);
-    return allRecords;
+    return this.dataServices.requests.getAll(query);
   }
 
-  async create(requestDto: BaseRequestDto) {
+  async create(requestDto: BaseRequestDto, userId: string) {
     const newRecord: RequestDto = {
       ...requestDto,
-      id: randomUUID().toString(),
       creationDate: new Date(),
+      userId: userId,
+      id: randomUUID(),
     };
 
-    if (this.isDateIsUnacceptable(newRecord)) {
+    if (this.isDateUnacceptable(newRecord)) {
       throw new BadRequestException(this.dateError);
     }
 
-    await this.requests.create(newRecord);
-
-    return newRecord;
+    return this.dataServices.requests.create(newRecord);
   }
 
   async remove(id: string, userId: string) {
-    const removedRequest = await this.requests.remove(id, userId);
+    const removedRequest = await this.dataServices.requests.remove(id, userId);
     if (!removedRequest) {
       throw new NotFoundException("Can't be removed!");
+    }
+
+    if (removedRequest.userId !== userId) {
+      throw new BadRequestException('Only owner can delete the request');
     }
 
     return removedRequest;
@@ -83,17 +64,78 @@ export class RequestService {
 
   async update(id: string, userId: string, updateRequestDto: UpdateRequestDto) {
     const oldRequest = await this.getById(id);
+
+    if (oldRequest.userId !== userId) {
+      throw new BadRequestException('Only owner can update the request');
+    }
+
+    let applications = await this.dataServices.applications.getAll();
+    applications = applications.filter((p) => p.requestId == id);
+
+    if (applications.length !== 0) {
+      throw new BadRequestException(
+        "The request already has applications, so it can't be changed",
+      );
+    }
+
+    if (oldRequest.assignedApplicationId) {
+      throw new BadRequestException("Can't change requestn with an assignment");
+    }
+
     const newRequest = { ...oldRequest, ...updateRequestDto };
 
-    if (this.isDateIsUnacceptable(newRequest)) {
+    if (this.isDateUnacceptable(newRequest)) {
       throw new BadRequestException(this.dateError);
     }
 
-    await this.requests.update(id, userId, newRequest);
-    return newRequest;
+    return this.dataServices.requests.update(id, newRequest);
   }
 
-  private isDateIsUnacceptable(requestDto: RequestDto) {
+  async assign(requestId: string, applicationId: string, userId: string) {
+    const request = await this.getById(requestId);
+
+    if (request.assignedApplicationId) {
+      throw new BadRequestException('Requesst already has an assignee');
+    }
+
+    if (request.userId !== userId) {
+      throw new BadRequestException('You can assign only to own request');
+    }
+
+    const application = await this.dataServices.applications.getById(
+      applicationId,
+    );
+    if (!application) {
+      throw new NotFoundException('Application not found');
+    }
+
+    if (application.requestId !== requestId) {
+      throw new BadRequestException(
+        'The application does not match the request',
+      );
+    }
+
+    const asignment = { assignedApplicationId: applicationId };
+    const newRequest = { ...request, ...asignment };
+    return this.dataServices.requests.update(requestId, newRequest);
+  }
+
+  async resign(requestId: string, userId: string) {
+    const request = await this.getById(requestId);
+
+    if (request.userId !== userId) {
+      throw new BadRequestException('You can resignonly own request');
+    }
+
+    if (!request.assignedApplicationId) {
+      throw new BadRequestException('The request has no assigned application');
+    }
+
+    delete request.assignedApplicationId;
+    return this.dataServices.requests.update(requestId, request);
+  }
+
+  private isDateUnacceptable(requestDto: RequestDto) {
     return requestDto.expirationDate
       ? requestDto.creationDate > requestDto.expirationDate
       : false;

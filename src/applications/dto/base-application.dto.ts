@@ -13,10 +13,6 @@ export class BaseApplicationDto {
   requestId: string;
 
   @IsString()
-  @IsNotEmpty()
-  userId: string;
-
-  @IsString()
   @MinLength(10)
   @MaxLength(240)
   description: string;

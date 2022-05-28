@@ -1,7 +1,7 @@
-import { ApplicationDto } from 'applications/dto';
+import { ApplicationDto, ApplicationQueryDto } from 'applications/dto';
 
 export interface IApplicationRepository {
-  getAll(): Promise<ApplicationDto[]>;
+  getAll(filter?: ApplicationQueryDto): Promise<ApplicationDto[]>;
 
   getById(id: string): Promise<ApplicationDto | null | undefined>;
 
@@ -9,12 +9,8 @@ export interface IApplicationRepository {
 
   update(
     id: string,
-    userId: string,
     dto: ApplicationDto,
   ): Promise<ApplicationDto | null | undefined>;
 
-  remove(
-    id: string,
-    userId: string,
-  ): Promise<ApplicationDto | null | undefined>;
+  remove(id: string): Promise<ApplicationDto | null | undefined>;
 }

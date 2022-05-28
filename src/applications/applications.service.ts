@@ -3,41 +3,27 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 import {
   ApplicationQueryDto,
   BaseApplicationDto,
-  ApplicationDto,
   UpdateApplicationDto,
 } from 'applications/dto';
-import { IApplicationRepository } from 'data-services/interfaces/iapplication-repository';
 import { IDataServices } from 'data-services/interfaces/idata-services';
-import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class ApplicationService {
-  constructor(dataServices: IDataServices) {
-    this.applications = dataServices.applications;
-    this.requests = dataServices.requests;
-  }
-
-  private applications: IApplicationRepository;
-
-  private requests: IRequestRepository;
+  constructor(private dataServices: IDataServices) {}
 
   private notFoundMsg = 'Application not found';
 
-  private async getAll() {
-    return this.applications.getAll();
-  }
-
   private async isRequestActual(id: string) {
-    const request = await this.requests.getById(id);
-    return request.expirationDate ? new Date() < request.expirationDate : true;
+    const request = await this.dataServices.requests.getById(id);
+    return request?.expirationDate ? new Date() < request.expirationDate : true;
   }
 
   async getById(id: string) {
-    const foundApplication = await this.applications.getById(id);
+    const foundApplication = await this.dataServices.applications.getById(id);
 
     if (!foundApplication) {
       throw new NotFoundException(this.notFoundMsg);
@@ -47,46 +33,59 @@ export class ApplicationService {
   }
 
   async getFiltered(query: ApplicationQueryDto) {
-    let allRecords = await this.getAll();
-
-    if (query.id) {
-      allRecords = allRecords.filter((p) => p.id === query.id);
-    }
-    if (query.requestId) {
-      allRecords = allRecords.filter((p) => p.requestId === query.requestId);
-    }
-    if (query.userId) {
-      allRecords = allRecords.filter((p) => p.userId === query.userId);
-    }
-
-    allRecords = allRecords.slice(query.offset, query.offset + query.limit);
-    return allRecords;
+    return this.dataServices.applications.getAll(query);
   }
 
-  async create(applicationDto: BaseApplicationDto) {
-    this.requests.getById(applicationDto.requestId);
+  async create(applicationDto: BaseApplicationDto, userId: string) {
+    const request = await this.dataServices.requests.getById(
+      applicationDto.requestId,
+    );
 
-    if (!this.isRequestActual(applicationDto.requestId)) {
+    if (!request) {
+      throw new NotFoundException('Requst not found');
+    }
+
+    if (!(await this.isRequestActual(applicationDto.requestId))) {
       throw new BadRequestException('Request is expired');
     }
 
-    const newRecord: ApplicationDto = {
-      ...applicationDto,
-      id: randomUUID().toString(),
+    if (request.userId === userId) {
+      throw new BadRequestException("Can't apply to own request");
+    }
+
+    const filteringExpression: ApplicationQueryDto = {
+      userId: userId,
+      requestId: applicationDto.requestId,
+      id: randomUUID(),
     };
+    const applications = await this.getFiltered(filteringExpression);
 
-    await this.applications.create(newRecord);
+    if (applications.length !== 0) {
+      throw new BadRequestException('You has already applied to this request');
+    }
 
-    return newRecord;
+    const newApplication = {
+      id: randomUUID(),
+      ...applicationDto,
+      userId: userId,
+    };
+    return this.dataServices.applications.create(newApplication);
   }
 
   async remove(id: string, userId: string) {
-    const removedApplication = await this.applications.remove(id, userId);
-    if (!removedApplication) {
-      throw new NotFoundException("Can't be removed!");
+    const removedApplication = await this.getById(id);
+    if (removedApplication.userId !== userId) {
+      throw new BadRequestException('You can remove only own application');
     }
 
-    return removedApplication;
+    const request = await this.dataServices.requests.getById(
+      removedApplication.requestId,
+    );
+    if (request?.assignedApplicationId === removedApplication.id) {
+      throw new BadRequestException("Can't delete an assigned application");
+    }
+
+    return this.dataServices.applications.remove(id);
   }
 
   async update(
@@ -95,13 +94,24 @@ export class ApplicationService {
     updateApplicationDto: UpdateApplicationDto,
   ) {
     const oldApplication = await this.getById(id);
+
+    if (oldApplication.userId !== userId) {
+      throw new BadRequestException('You can update only own application');
+    }
+
     const newApplication = { ...oldApplication, ...updateApplicationDto };
 
     if (!this.isRequestActual(newApplication.requestId)) {
       throw new BadRequestException('Request does not exist');
     }
 
-    await this.applications.update(id, userId, newApplication);
-    return newApplication;
+    const request = await this.dataServices.requests.getById(
+      newApplication.requestId,
+    );
+    if (request ? request.assignedApplicationId === newApplication.id : true) {
+      throw new BadRequestException("Can't update an assigned application");
+    }
+
+    return this.dataServices.applications.update(id, newApplication);
   }
 }

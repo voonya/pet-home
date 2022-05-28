@@ -8,4 +8,8 @@ export class RequestDto extends BaseRequestDto {
 
   @IsDate()
   creationDate: Date;
+
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
 }
