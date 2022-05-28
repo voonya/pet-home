@@ -68,6 +68,11 @@ export class ApplicationService {
       throw new BadRequestException('Request is expired');
     }
 
+    const request = await this.requests.getById(applicationDto.requestId);
+    if (request.userId === userId) {
+      throw new BadRequestException("Can't apply to own request");
+    }
+
     const filteringExpression: ApplicationQueryDto = {
       userId: userId,
       requestId: applicationDto.requestId,
@@ -90,9 +95,15 @@ export class ApplicationService {
 
   async remove(id: string, userId: string) {
     const removedApplication = await this.getById(id);
-
     if (removedApplication.userId !== userId) {
       throw new BadRequestException('You can remove only own application');
+    }
+
+    const request = await this.requests.getById(removedApplication.requestId);
+    if (
+      request ? request.assignedApplicationId === removedApplication.id : true
+    ) {
+      throw new BadRequestException("Can't delete an assigned application");
     }
 
     await this.applications.remove(id);
