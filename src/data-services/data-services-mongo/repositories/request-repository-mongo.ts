@@ -18,21 +18,21 @@ export class RequestRepositoryMongo implements IRequestRepository {
       .exec();
   }
 
-  getById(id: string): Promise<RequestDto> {
-    return this._repository.findById({ _id: id }).exec();
+  async getById(id: string): Promise<RequestDto> {
+    return this._repository.findById(id).exec();
   }
 
-  create(dto: RequestDto): Promise<RequestDto> {
+  async create(dto: RequestDto): Promise<RequestDto> {
     return this._repository.create(dto);
   }
 
-  update(id: string, dto: RequestDto): Promise<RequestDto> {
+  async update(id: string, dto: RequestDto): Promise<RequestDto> {
     return this._repository
       .findByIdAndUpdate({ _id: id }, dto, { new: true })
       .exec();
   }
 
-  remove(id: string): Promise<RequestDto> {
+  async remove(id: string): Promise<RequestDto> {
     return this._repository.findByIdAndRemove({ _id: id }).exec();
   }
 }

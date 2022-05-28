@@ -12,6 +12,7 @@ import {
   FeedbackSchema,
 } from 'data-services/data-services-mongo/schemas/feedback.schema';
 import { Requests, RequestSchema } from './schemas/requests.schema';
+import { Application, ApplicationSchema } from './schemas/applications.schema';
 
 @Module({
   providers: [
@@ -36,6 +37,10 @@ import { Requests, RequestSchema } from './schemas/requests.schema';
       {
         name: Requests.name,
         schema: RequestSchema,
+      },
+      {
+        name: Application.name,
+        schema: ApplicationSchema,
       },
     ]),
     MongooseModule.forRoot(process.env.DB_URL),

@@ -33,10 +33,11 @@ export class RequestService {
     return this.dataServices.requests.getAll(query);
   }
 
-  async create(requestDto: BaseRequestDto) {
+  async create(requestDto: BaseRequestDto, userId: string) {
     const newRecord: RequestDto = {
       ...requestDto,
       creationDate: new Date(),
+      userId: userId,
     };
 
     if (this.isDateUnacceptable(newRecord)) {

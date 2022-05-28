@@ -3,37 +3,26 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 import {
   ApplicationQueryDto,
   BaseApplicationDto,
-  ApplicationDto,
   UpdateApplicationDto,
 } from 'applications/dto';
-import { IApplicationRepository } from 'data-services/interfaces/iapplication-repository';
 import { IDataServices } from 'data-services/interfaces/idata-services';
-import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
 
 @Injectable()
 export class ApplicationService {
-  constructor(dataServices: IDataServices) {
-    this.applications = dataServices.applications;
-    this.requests = dataServices.requests;
-  }
-
-  private applications: IApplicationRepository;
-
-  private requests: IRequestRepository;
+  constructor(private dataServices: IDataServices) {}
 
   private notFoundMsg = 'Application not found';
 
   private async isRequestActual(id: string) {
-    const request = await this.requests.getById(id);
+    const request = await this.dataServices.requests.getById(id);
     return request.expirationDate ? new Date() < request.expirationDate : true;
   }
 
   async getById(id: string) {
-    const foundApplication = await this.applications.getById(id);
+    const foundApplication = await this.dataServices.applications.getById(id);
 
     if (!foundApplication) {
       throw new NotFoundException(this.notFoundMsg);
@@ -43,7 +32,7 @@ export class ApplicationService {
   }
 
   async getFiltered(query: ApplicationQueryDto) {
-    return this.applications.getAll(query);
+    return this.dataServices.applications.getAll(query);
   }
 
   async create(applicationDto: BaseApplicationDto, userId: string) {
@@ -51,7 +40,9 @@ export class ApplicationService {
       throw new BadRequestException('Request is expired');
     }
 
-    const request = await this.requests.getById(applicationDto.requestId);
+    const request = await this.dataServices.requests.getById(
+      applicationDto.requestId,
+    );
     if (request.userId === userId) {
       throw new BadRequestException("Can't apply to own request");
     }
@@ -62,18 +53,19 @@ export class ApplicationService {
     };
     const applications = await this.getFiltered(filteringExpression);
 
+    console.log(applications);
     if (applications.length !== 0) {
       throw new BadRequestException('You has already applied to this request');
     }
 
-    const newRecord: ApplicationDto = {
+    const newApplication = {
       ...applicationDto,
-      id: randomUUID().toString(),
+      userId: userId,
     };
+    console.log(newApplication);
+    await this.dataServices.applications.create(newApplication);
 
-    await this.applications.create(newRecord);
-
-    return newRecord;
+    return applicationDto;
   }
 
   async remove(id: string, userId: string) {
@@ -82,12 +74,14 @@ export class ApplicationService {
       throw new BadRequestException('You can remove only own application');
     }
 
-    const request = await this.requests.getById(removedApplication.requestId);
-    if (request?.assignedApplicationId === removedApplication.id) {
+    const request = await this.dataServices.requests.getById(
+      removedApplication.requestId,
+    );
+    if (request?.assignedApplicationId === removedApplication._id) {
       throw new BadRequestException("Can't delete an assigned application");
     }
 
-    await this.applications.remove(id);
+    await this.dataServices.applications.remove(id);
 
     return removedApplication;
   }
@@ -109,12 +103,14 @@ export class ApplicationService {
       throw new BadRequestException('Request does not exist');
     }
 
-    const request = await this.requests.getById(newApplication.requestId);
-    if (request ? request.assignedApplicationId === newApplication.id : true) {
+    const request = await this.dataServices.requests.getById(
+      newApplication.requestId,
+    );
+    if (request ? request.assignedApplicationId === newApplication._id : true) {
       throw new BadRequestException("Can't update an assigned application");
     }
 
-    await this.applications.update(id, newApplication);
+    await this.dataServices.applications.update(id, newApplication);
     return newApplication;
   }
 }

@@ -34,7 +34,7 @@ export class ApplicationController {
 
   @Post()
   create(@Body() createApplicationDto: BaseApplicationDto) {
-    return this.applicationService.create(createApplicationDto, '1');
+    return this.applicationService.create(createApplicationDto, '2');
   }
 
   @Delete(':id')

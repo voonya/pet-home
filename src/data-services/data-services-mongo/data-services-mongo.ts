@@ -9,12 +9,15 @@ import {
 } from 'data-services/data-services-mongo/schemas/animal.schema';
 import { Model } from 'mongoose';
 import { users } from 'data-services/data-services-mocked/data/mock.users';
-import { ApplicationRepositoryMocked } from 'data-services/data-services-mocked/repositories/application-repository-mocked';
-import { applications } from 'data-services/data-services-mocked/data/mock.applications';
 import { FeebackRepositoryMongo } from 'data-services/data-services-mongo/repositories/feedback-repository-mongo';
 import { Feedback, FeedbackDocument } from './schemas/feedback.schema';
 import { RequestRepositoryMongo } from './repositories/request-repository-mongo';
 import { Requests, RequestDocument } from './schemas/requests.schema';
+import { ApplicationRepositoryMongo } from './repositories/application-repository-mongo';
+import {
+  Application,
+  ApplicationDocument,
+} from './schemas/applications.schema';
 
 @Injectable()
 export class DataServicesMongo
@@ -26,7 +29,7 @@ export class DataServicesMongo
 
   requests: RequestRepositoryMongo;
 
-  applications: ApplicationRepositoryMocked;
+  applications: ApplicationRepositoryMongo;
 
   feedbacks: FeebackRepositoryMongo;
 
@@ -37,14 +40,18 @@ export class DataServicesMongo
     private FeedbackRepository: Model<FeedbackDocument>,
     @InjectModel(Requests.name)
     private RequestRepository: Model<RequestDocument>,
+    @InjectModel(Application.name)
+    private ApplicationRepository: Model<ApplicationDocument>,
   ) {
     this.users = new UserRepositoryMocked(users);
-    this.applications = new ApplicationRepositoryMocked(applications);
   }
 
   onApplicationBootstrap(): any {
     this.animals = new AnimalRepositoryMongo(this.AnimalRepository);
     this.feedbacks = new FeebackRepositoryMongo(this.FeedbackRepository);
     this.requests = new RequestRepositoryMongo(this.RequestRepository);
+    this.applications = new ApplicationRepositoryMongo(
+      this.ApplicationRepository,
+    );
   }
 }

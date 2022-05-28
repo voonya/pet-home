@@ -1,4 +1,5 @@
 import { ApplicationDto, ApplicationQueryDto } from 'applications/dto';
+import { randomUUID } from 'crypto';
 import { IApplicationRepository } from 'data-services/interfaces/iapplication-repository';
 
 export class ApplicationRepositoryMocked implements IApplicationRepository {
@@ -8,7 +9,7 @@ export class ApplicationRepositoryMocked implements IApplicationRepository {
     let allRecords = this._array;
 
     if (filter.id) {
-      allRecords = allRecords.filter((p) => p.id === filter.id);
+      allRecords = allRecords.filter((p) => p._id === filter.id);
     }
     if (filter.requestId) {
       allRecords = allRecords.filter((p) => p.requestId === filter.requestId);
@@ -22,11 +23,11 @@ export class ApplicationRepositoryMocked implements IApplicationRepository {
   }
 
   async getById(id: string): Promise<ApplicationDto> {
-    return Promise.resolve(this._array.find((p) => p.id === id));
+    return Promise.resolve(this._array.find((p) => p._id === id));
   }
 
   async create(dto: ApplicationDto): Promise<ApplicationDto> {
-    this._array.push(dto);
+    this._array.push({ ...dto, _id: randomUUID().toString() });
     return Promise.resolve(dto);
   }
 

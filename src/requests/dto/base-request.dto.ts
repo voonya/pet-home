@@ -10,10 +10,6 @@ import {
 export class BaseRequestDto {
   @IsString()
   @IsNotEmpty()
-  userId: string;
-
-  @IsString()
-  @IsNotEmpty()
   animalId: string;
 
   @IsString()
