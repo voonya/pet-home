@@ -3,13 +3,12 @@ import { UserTypeEnum } from 'users/user-type.enum';
 import { randomUUID } from 'crypto';
 
 const user1 = '123e4567-e89b-12d3-a456-426614174000';
-const user2 = randomUUID();
 
 export const feedbackMock: Feedback[] = [
   {
     _id: randomUUID(),
     userId: user1,
-    creatorId: user2,
+    creatorId: randomUUID(),
     created_date: new Date(),
     userType: UserTypeEnum.Owner,
     title: 'My feedback1',
@@ -19,7 +18,7 @@ export const feedbackMock: Feedback[] = [
   {
     _id: randomUUID(),
     userId: user1,
-    creatorId: user2,
+    creatorId: randomUUID(),
     created_date: new Date(),
     userType: UserTypeEnum.Owner,
     title: 'My feedback2',
@@ -29,7 +28,7 @@ export const feedbackMock: Feedback[] = [
   {
     _id: randomUUID(),
     userId: user1,
-    creatorId: user2,
+    creatorId: randomUUID(),
     created_date: new Date(),
     userType: UserTypeEnum.Owner,
     title: 'My feedback3',
@@ -39,7 +38,7 @@ export const feedbackMock: Feedback[] = [
   {
     _id: randomUUID(),
     userId: user1,
-    creatorId: '2',
+    creatorId: randomUUID(),
     created_date: new Date(),
     userType: UserTypeEnum.Handler,
     title: 'My feedback4',
@@ -49,7 +48,7 @@ export const feedbackMock: Feedback[] = [
   {
     _id: randomUUID(),
     userId: user1,
-    creatorId: user2,
+    creatorId: randomUUID(),
     created_date: new Date(),
     userType: UserTypeEnum.Handler,
     title: 'My feedback5',
