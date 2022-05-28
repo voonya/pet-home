@@ -37,16 +37,18 @@ export class ApplicationService {
   }
 
   async create(applicationDto: BaseApplicationDto, userId: string) {
+    const request = await this.dataServices.requests.getById(
+      applicationDto.requestId,
+    );
+
+    if (!request) {
+      throw new NotFoundException('Requst not found');
+    }
+
     if (!(await this.isRequestActual(applicationDto.requestId))) {
       throw new BadRequestException('Request is expired');
     }
 
-    const request = await this.dataServices.requests.getById(
-      applicationDto.requestId,
-    );
-    if (!request) {
-      throw new NotFoundException('Request is not found');
-    }
     if (request.userId === userId) {
       throw new BadRequestException("Can't apply to own request");
     }
@@ -65,7 +67,6 @@ export class ApplicationService {
       ...applicationDto,
       userId: userId,
     };
-
     return this.dataServices.applications.create(newApplication);
   }
 
