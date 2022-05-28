@@ -10,8 +10,10 @@ import {
 } from '@nestjs/common';
 import { FeedbackService } from 'feedback/feedback.service';
 import { GetAllFeedbackDto, GetRateDto, PostFeedbackDto } from 'feedback/dto';
-import { PaginationPipe } from 'pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'middlewares/objectid-validation.pipe';
+import { PaginationPipe } from '../pagination/pagination.pipe';
+
+const user = '62911966a7afaf9b1059a301';
 
 @Controller('feedback')
 export class FeedbackController {
@@ -43,13 +45,11 @@ export class FeedbackController {
 
   @Post()
   leftFeedback(@Body() feedback: PostFeedbackDto) {
-    const creatorId = '1';
-    return this.feedbackService.createFeedback(creatorId, feedback);
+    return this.feedbackService.createFeedback(user, feedback);
   }
 
   @Delete(':id')
   deleteFeedback(@Param('id', ObjectIdValidationPipe) id: string) {
-    const creatorId = '1'; // get id from auth
-    return this.feedbackService.deleteFeedback(id, creatorId);
+    return this.feedbackService.deleteFeedback(id, user);
   }
 }

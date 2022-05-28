@@ -19,9 +19,11 @@ export class FeebackRepositoryMongo implements IFeedbackRepository {
     limit: number,
     userType?: UserTypeEnum,
   ): Promise<Feedback[]> {
-    return this._repository
-      .find({ userId, userType }, {}, { offset, limit })
-      .exec();
+    const filter: any = { userId };
+    if (userType) {
+      filter.userType = userType;
+    }
+    return this._repository.find(filter, {}, { offset, limit }).exec();
   }
 
   getById(id: string): Promise<Feedback | null | undefined> {
