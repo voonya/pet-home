@@ -12,6 +12,8 @@ import { FeedbackService } from 'feedback/feedback.service';
 import { GetAllFeedbackDto, GetRateDto, PostFeedbackDto } from 'feedback/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
 
+const user = 'c7146c3c-de38-432d-9edc-970e04f31fa3';
+
 @Controller('feedback')
 export class FeedbackController {
   constructor(private feedbackService: FeedbackService) {}
@@ -42,13 +44,11 @@ export class FeedbackController {
 
   @Post()
   leftFeedback(@Body() feedback: PostFeedbackDto) {
-    const creatorId = '1';
-    return this.feedbackService.createFeedback(creatorId, feedback);
+    return this.feedbackService.createFeedback(user, feedback);
   }
 
   @Delete(':id')
   deleteFeedback(@Param('id') id: string) {
-    const creatorId = '1'; // get id from auth
-    return this.feedbackService.deleteFeedback(id, creatorId);
+    return this.feedbackService.deleteFeedback(id, user);
   }
 }

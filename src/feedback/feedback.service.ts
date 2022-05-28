@@ -51,7 +51,7 @@ export class FeedbackService {
     if (!feedbackAdded) {
       throw new InternalServerErrorException();
     }
-    return newFeedback;
+    return feedbackAdded;
   }
 
   async deleteFeedback(id: string, creatorId: string) {

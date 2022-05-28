@@ -3,12 +3,12 @@ import { UserTypeEnum } from 'users/user-type.enum';
 import { randomUUID } from 'crypto';
 
 const user1 = '123e4567-e89b-12d3-a456-426614174000';
-
+const user2 = 'c7146c3c-de38-432d-9edc-970e04f31fa3';
 export const feedbackMock: Feedback[] = [
   {
     _id: randomUUID(),
     userId: user1,
-    creatorId: randomUUID(),
+    creatorId: user2,
     created_date: new Date(),
     userType: UserTypeEnum.Owner,
     title: 'My feedback1',
