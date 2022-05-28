@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
 import { RequestDto, RequestQueryDto } from 'requests/dto';
 
@@ -26,8 +27,9 @@ export class RequestRepositoryMocked implements IRequestRepository {
   }
 
   async create(dto: RequestDto): Promise<RequestDto> {
-    this._array.push(dto);
-    return Promise.resolve(dto);
+    const newDto = { ...dto, _id: randomUUID().toString() };
+    this._array.push(newDto);
+    return Promise.resolve(newDto);
   }
 
   async update(id: string, dto: RequestDto): Promise<RequestDto | undefined> {

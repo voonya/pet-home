@@ -3,10 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { randomUUID } from 'crypto';
-import { IApplicationRepository } from 'data-services/interfaces/iapplication-repository';
 import { IDataServices } from 'data-services/interfaces/idata-services';
-import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
 import {
   BaseRequestDto,
   RequestQueryDto,
@@ -16,21 +13,14 @@ import {
 
 @Injectable()
 export class RequestService {
-  constructor(dataServices: IDataServices) {
-    this.requests = dataServices.requests;
-    this.applications = dataServices.applications;
-  }
+  constructor(private dataServices: IDataServices) {}
 
   private notFoundMsg = 'Request not found';
 
   private dateError = 'expirationDate should later than creationDate';
 
-  private requests: IRequestRepository;
-
-  private applications: IApplicationRepository;
-
   async getById(id: string) {
-    const foundRequest = await this.requests.getById(id);
+    const foundRequest = await this.dataServices.requests.getById(id);
 
     if (!foundRequest) {
       throw new NotFoundException(this.notFoundMsg);
@@ -40,13 +30,12 @@ export class RequestService {
   }
 
   async getFiltered(query: RequestQueryDto) {
-    return this.requests.getAll(query);
+    return this.dataServices.requests.getAll(query);
   }
 
   async create(requestDto: BaseRequestDto) {
     const newRecord: RequestDto = {
       ...requestDto,
-      _id: randomUUID().toString(),
       creationDate: new Date(),
     };
 
@@ -54,13 +43,13 @@ export class RequestService {
       throw new BadRequestException(this.dateError);
     }
 
-    await this.requests.create(newRecord);
+    await this.dataServices.requests.create(newRecord);
 
     return newRecord;
   }
 
   async remove(id: string, userId: string) {
-    const removedRequest = await this.requests.remove(id);
+    const removedRequest = await this.dataServices.requests.remove(id);
     if (!removedRequest) {
       throw new NotFoundException("Can't be removed!");
     }
@@ -79,7 +68,7 @@ export class RequestService {
       throw new BadRequestException('Only owner can update the request');
     }
 
-    let applications = await this.applications.getAll();
+    let applications = await this.dataServices.applications.getAll();
     applications = applications.filter((p) => p.requestId == id);
 
     if (applications.length !== 0) {
@@ -98,7 +87,7 @@ export class RequestService {
       throw new BadRequestException(this.dateError);
     }
 
-    await this.requests.update(id, newRequest);
+    await this.dataServices.requests.update(id, newRequest);
     return newRequest;
   }
 
@@ -113,7 +102,9 @@ export class RequestService {
       throw new BadRequestException('You can assign only to own request');
     }
 
-    const application = await this.applications.getById(applicationId);
+    const application = await this.dataServices.applications.getById(
+      applicationId,
+    );
     if (!application) {
       throw new NotFoundException('Application not found');
     }
@@ -126,7 +117,7 @@ export class RequestService {
 
     const asignment = { assignedApplicationId: applicationId };
     const newRequest = { ...request, ...asignment };
-    await this.requests.update(requestId, newRequest);
+    await this.dataServices.requests.update(requestId, newRequest);
     return newRequest;
   }
 
@@ -142,7 +133,7 @@ export class RequestService {
     }
 
     delete request.assignedApplicationId;
-    await this.requests.update(requestId, request);
+    await this.dataServices.requests.update(requestId, request);
     return request;
   }
 
