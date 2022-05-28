@@ -16,6 +16,9 @@ import {
   UpdateApplicationDto,
 } from 'applications/dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
+import { ObjectIdValidationPipe } from 'middlewares/objectid-validation.pipe';
+
+const mockUserId = '62911966a7afaf9b1059a301';
 
 @Controller('applications')
 export class ApplicationController {
@@ -34,19 +37,19 @@ export class ApplicationController {
 
   @Post()
   create(@Body() createApplicationDto: BaseApplicationDto) {
-    return this.applicationService.create(createApplicationDto, '2');
+    return this.applicationService.create(createApplicationDto, mockUserId);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.applicationService.remove(id, '1');
+  remove(@Param('id', ObjectIdValidationPipe) id: string) {
+    return this.applicationService.remove(id, mockUserId);
   }
 
   @Put(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ObjectIdValidationPipe) id: string,
     @Body() updateApplicationDto: UpdateApplicationDto,
   ) {
-    return this.applicationService.update(id, '1', updateApplicationDto);
+    return this.applicationService.update(id, mockUserId, updateApplicationDto);
   }
 }

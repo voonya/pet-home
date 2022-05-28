@@ -25,7 +25,7 @@ export class RequestRepositoryMongo implements IRequestRepository {
 
   async update(id: string, dto: RequestDto): Promise<RequestDto> {
     return this._repository
-      .findByIdAndUpdate({ _id: id }, dto, { new: true })
+      .findOneAndUpdate({ _id: id }, dto, { new: true })
       .exec();
   }
 

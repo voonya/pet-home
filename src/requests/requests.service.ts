@@ -44,9 +44,7 @@ export class RequestService {
       throw new BadRequestException(this.dateError);
     }
 
-    await this.dataServices.requests.create(newRecord);
-
-    return newRecord;
+    return this.dataServices.requests.create(newRecord);
   }
 
   async remove(id: string, userId: string) {
@@ -88,8 +86,7 @@ export class RequestService {
       throw new BadRequestException(this.dateError);
     }
 
-    await this.dataServices.requests.update(id, newRequest);
-    return newRequest;
+    return this.dataServices.requests.update(id, newRequest);
   }
 
   async assign(requestId: string, applicationId: string, userId: string) {
@@ -118,8 +115,7 @@ export class RequestService {
 
     const asignment = { assignedApplicationId: applicationId };
     const newRequest = { ...request, ...asignment };
-    await this.dataServices.requests.update(requestId, newRequest);
-    return newRequest;
+    return this.dataServices.requests.update(requestId, newRequest);
   }
 
   async resign(requestId: string, userId: string) {
@@ -134,8 +130,7 @@ export class RequestService {
     }
 
     delete request.assignedApplicationId;
-    await this.dataServices.requests.update(requestId, request);
-    return request;
+    return this.dataServices.requests.update(requestId, request);
   }
 
   private isDateUnacceptable(requestDto: RequestDto) {

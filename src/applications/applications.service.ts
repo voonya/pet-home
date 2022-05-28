@@ -19,7 +19,7 @@ export class ApplicationService {
 
   private async isRequestActual(id: string) {
     const request = await this.dataServices.requests.getById(id);
-    return request.expirationDate ? new Date() < request.expirationDate : true;
+    return request?.expirationDate ? new Date() < request.expirationDate : true;
   }
 
   async getById(id: string) {
@@ -44,6 +44,9 @@ export class ApplicationService {
     const request = await this.dataServices.requests.getById(
       applicationDto.requestId,
     );
+    if (!request) {
+      throw new NotFoundException('Request is not found');
+    }
     if (request.userId === userId) {
       throw new BadRequestException("Can't apply to own request");
     }
@@ -63,9 +66,7 @@ export class ApplicationService {
       userId: userId,
     };
 
-    await this.dataServices.applications.create(newApplication);
-
-    return applicationDto;
+    return this.dataServices.applications.create(newApplication);
   }
 
   async remove(id: string, userId: string) {
@@ -81,9 +82,7 @@ export class ApplicationService {
       throw new BadRequestException("Can't delete an assigned application");
     }
 
-    await this.dataServices.applications.remove(id);
-
-    return removedApplication;
+    return this.dataServices.applications.remove(id);
   }
 
   async update(
@@ -110,7 +109,6 @@ export class ApplicationService {
       throw new BadRequestException("Can't update an assigned application");
     }
 
-    await this.dataServices.applications.update(id, newApplication);
-    return newApplication;
+    return this.dataServices.applications.update(id, newApplication);
   }
 }

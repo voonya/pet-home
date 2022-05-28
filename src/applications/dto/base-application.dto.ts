@@ -1,4 +1,5 @@
 import {
+  IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -8,7 +9,7 @@ import {
 } from 'class-validator';
 
 export class BaseApplicationDto {
-  @IsString()
+  @IsMongoId()
   @IsNotEmpty()
   requestId: string;
 
