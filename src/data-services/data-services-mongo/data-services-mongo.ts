@@ -1,6 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { IDataServices } from 'data-services/interfaces/idata-services';
-import { UserRepositoryMocked } from 'data-services/data-services-mocked/repositories/user-repository-mocked';
 import { AnimalRepositoryMongo } from 'data-services/data-services-mongo/repositories/animal-repository-mongo';
 import { InjectModel } from '@nestjs/mongoose';
 import {
@@ -8,13 +7,20 @@ import {
   AnimalDocument,
 } from 'data-services/data-services-mongo/schemas/animal.schema';
 import { Model } from 'mongoose';
-import { users } from 'data-services/data-services-mocked/data/mock.users';
 import { RequestRepositoryMocked } from 'data-services/data-services-mocked/repositories/request-repository-mocked';
 import { requests } from 'data-services/data-services-mocked/data/mock.requests';
 import { ApplicationRepositoryMocked } from 'data-services/data-services-mocked/repositories/application-repository-mocked';
 import { applications } from 'data-services/data-services-mocked/data/mock.applications';
 import { FeebackRepositoryMongo } from 'data-services/data-services-mongo/repositories/feedback-repository-mongo';
-import { Feedback, FeedbackDocument } from './schemas/feedback.schema';
+import {
+  Feedback,
+  FeedbackDocument,
+} from 'data-services/data-services-mongo/schemas/feedback.schema';
+import { UserRepositoryMongo } from 'data-services/data-services-mongo/repositories/user-repository-mongo';
+import {
+  User,
+  UserDocument,
+} from 'data-services/data-services-mongo/schemas/user.schema';
 
 @Injectable()
 export class DataServicesMongo
@@ -22,7 +28,7 @@ export class DataServicesMongo
 {
   animals: AnimalRepositoryMongo;
 
-  users: UserRepositoryMocked;
+  users: UserRepositoryMongo;
 
   requests: RequestRepositoryMocked;
 
@@ -35,8 +41,9 @@ export class DataServicesMongo
     private AnimalRepository: Model<AnimalDocument>,
     @InjectModel(Feedback.name)
     private FeedbackRepository: Model<FeedbackDocument>,
+    @InjectModel(User.name)
+    private UserRepository: Model<UserDocument>,
   ) {
-    this.users = new UserRepositoryMocked(users);
     this.requests = new RequestRepositoryMocked(requests);
     this.applications = new ApplicationRepositoryMocked(applications);
   }
@@ -44,5 +51,6 @@ export class DataServicesMongo
   onApplicationBootstrap(): any {
     this.animals = new AnimalRepositoryMongo(this.AnimalRepository);
     this.feedbacks = new FeebackRepositoryMongo(this.FeedbackRepository);
+    this.users = new UserRepositoryMongo(this.UserRepository);
   }
 }

@@ -8,6 +8,7 @@ import {
 } from 'class-validator';
 
 export class AnimalDto extends BaseAnimalDto {
+  @IsMongoId()
   @IsString()
   @IsOptional()
   _id?: string;

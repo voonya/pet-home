@@ -1,5 +1,6 @@
 import { IAnimalRepository } from 'data-services/interfaces/ianimal-repository';
 import { AnimalDto, BaseAnimalDto } from 'animals/dto';
+import { randomUUID } from 'crypto';
 
 export class AnimalRepositoryMocked implements IAnimalRepository {
   constructor(arrayMock: AnimalDto[]) {
@@ -27,8 +28,9 @@ export class AnimalRepositoryMocked implements IAnimalRepository {
   }
 
   create(dto: AnimalDto): Promise<AnimalDto> {
-    this._array.push(dto);
-    return Promise.resolve(dto);
+    const animal = { _id: randomUUID(), ...dto };
+    this._array.push(animal);
+    return Promise.resolve(animal);
   }
 
   async update(

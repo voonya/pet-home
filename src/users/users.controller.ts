@@ -13,6 +13,7 @@ import { UsersService } from 'users/users.service';
 import { AddRoleDto, BanUserDto, BaseUserDto } from 'users/dto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { PaginationPipe } from 'pagination/pagination.pipe';
+import { ObjectIdValidationPipe } from 'middlewares/objectid-validation.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -30,27 +31,36 @@ export class UsersController {
   }
 
   @Get(':id')
-  getById(@Param('id') id: string) {
+  getById(@Param('id', ObjectIdValidationPipe) id: string) {
     return this.usersService.getById(id);
   }
 
   @Put(':id')
-  update(@Body() updateUserDto: BaseUserDto, @Param('id') id: string) {
+  update(
+    @Body() updateUserDto: BaseUserDto,
+    @Param('id', ObjectIdValidationPipe) id: string,
+  ) {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ObjectIdValidationPipe) id: string) {
     return this.usersService.remove(id);
   }
 
-  @Post('/role')
-  addRole(@Body() addRoleDto: AddRoleDto) {
-    return this.usersService.addRole(addRoleDto);
+  @Post(':id/role')
+  addRole(
+    @Param('id', ObjectIdValidationPipe) id: string,
+    @Body() addRoleDto: AddRoleDto,
+  ) {
+    return this.usersService.addRole(id, addRoleDto);
   }
 
   @Post(':id/ban')
-  ban(@Param('id') id: string, @Body() banUserDto: BanUserDto) {
+  ban(
+    @Param('id', ObjectIdValidationPipe) id: string,
+    @Body() banUserDto: BanUserDto,
+  ) {
     return this.usersService.ban(id, banUserDto);
   }
 }

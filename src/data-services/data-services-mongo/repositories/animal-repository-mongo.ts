@@ -15,7 +15,7 @@ export class AnimalRepositoryMongo implements IAnimalRepository {
   }
 
   getById(id: string, userId: string): Promise<AnimalDto> {
-    return this._repository.findById({ _id: id, ownerId: userId }).exec();
+    return this._repository.findOne({ _id: id, ownerId: userId }).exec();
   }
 
   create(dto: AnimalDto): Promise<AnimalDto> {
@@ -24,13 +24,13 @@ export class AnimalRepositoryMongo implements IAnimalRepository {
 
   update(id: string, userId: string, dto: BaseAnimalDto): Promise<AnimalDto> {
     return this._repository
-      .findByIdAndUpdate({ _id: id, ownerId: userId }, dto, { new: true })
+      .findOneAndUpdate({ _id: id, ownerId: userId }, dto, { new: true })
       .exec();
   }
 
   remove(id: string, userId: string): Promise<AnimalDto> {
     return this._repository
-      .findByIdAndRemove({ _id: id, ownerId: userId })
+      .findOneAndRemove({ _id: id, ownerId: userId })
       .exec();
   }
 }

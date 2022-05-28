@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { AddRoleDto, BaseUserDto, UserDto, BanUserDto } from 'users/dto';
-import { randomUUID } from 'crypto';
 import { PaginationDto } from 'pagination/dto/pagination.dto';
 import { RoleEnum } from 'users/role.enum';
 import { IDataServices } from 'data-services/interfaces/idata-services';
@@ -26,7 +25,6 @@ export class UsersService {
 
   async create(createUserDto: BaseUserDto) {
     const newUser: UserDto = {
-      id: randomUUID(),
       ...createUserDto,
       creationDate: new Date(),
       banned: false,
@@ -36,7 +34,7 @@ export class UsersService {
     if (!userAdded) {
       throw new InternalServerErrorException();
     }
-    return newUser;
+    return userAdded;
   }
 
   async getByEmail(email: string) {
@@ -56,13 +54,11 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: BaseUserDto) {
-    const oldUser = await this.getById(id);
-    const newUser = { ...oldUser, ...updateUserDto };
-    const savedUser = await this.dataServices.users.update(id, newUser);
+    const savedUser = await this.dataServices.users.update(id, updateUserDto);
     if (!savedUser) {
       throw new InternalServerErrorException();
     }
-    return newUser;
+    return savedUser;
   }
 
   async remove(id: string) {
@@ -73,18 +69,19 @@ export class UsersService {
     return removedUser;
   }
 
-  async addRole(addRoleDto: AddRoleDto) {
-    const user = await this.getById(addRoleDto.userId);
-    if (user.roles.indexOf(addRoleDto.role) === -1) {
-      user.roles.push(addRoleDto.role);
+  async addRole(userId: string, addRoleDto: AddRoleDto) {
+    const savedUser = await this.dataServices.users.addRole(userId, addRoleDto);
+    if (!savedUser) {
+      throw new NotFoundException('No user with this id to add role!');
     }
-    return user;
+    return savedUser;
   }
 
   async ban(userId: string, banUserDto: BanUserDto) {
-    const user = await this.getById(userId);
-    user.banned = true;
-    user.banReason = banUserDto.banReason;
-    return user;
+    const bannedUser = await this.dataServices.users.ban(userId, banUserDto);
+    if (!bannedUser) {
+      throw new NotFoundException('No user with this id to ban!');
+    }
+    return bannedUser;
   }
 }
