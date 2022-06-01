@@ -1,5 +1,5 @@
 import { IAnimalRepository } from 'data-services/interfaces/ianimal-repository';
-import { AnimalDto, BaseAnimalDto } from 'animals/dto';
+import { AnimalDto, BaseAnimalDto } from 'common/models/animals/dto';
 import { Model } from 'mongoose';
 import { AnimalDocument } from '../schemas/animal.schema';
 

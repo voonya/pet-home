@@ -1,7 +1,11 @@
 import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
 import { Model } from 'mongoose';
 import { RequestDocument } from 'data-services/data-services-mongo/schemas/requests.schema';
-import { RequestDto, RequestQueryDto, UpdateRequestDto } from 'requests/dto';
+import {
+  RequestDto,
+  RequestQueryDto,
+  UpdateRequestDto,
+} from 'common/models/requests/dto';
 
 export class RequestRepositoryMongo implements IRequestRepository {
   constructor(private _repository: Model<RequestDocument>) {}
@@ -9,8 +13,6 @@ export class RequestRepositoryMongo implements IRequestRepository {
   async getAll(filter: RequestQueryDto = {}): Promise<RequestDto[]> {
     const offset = filter.offset;
     const limit = filter.limit;
-    delete filter.limit;
-    delete filter.offset;
 
     return this._repository.find(filter).skip(offset).limit(limit).exec();
   }
@@ -33,5 +35,12 @@ export class RequestRepositoryMongo implements IRequestRepository {
     return this._repository
       .findOneAndRemove({ _id: id, userId: userId })
       .exec();
+  }
+
+  async resign(id: string) {
+    return this._repository.findOneAndUpdate(
+      { _id: id },
+      { $unset: { assignedApplicationId: 1 } },
+    );
   }
 }

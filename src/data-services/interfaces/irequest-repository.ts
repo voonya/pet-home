@@ -1,4 +1,8 @@
-import { RequestDto, RequestQueryDto, UpdateRequestDto } from 'requests/dto';
+import {
+  RequestDto,
+  RequestQueryDto,
+  UpdateRequestDto,
+} from 'common/models/requests/dto';
 
 export interface IRequestRepository {
   getAll(filter?: RequestQueryDto): Promise<RequestDto[]>;
@@ -13,4 +17,6 @@ export interface IRequestRepository {
   ): Promise<RequestDto | null | undefined>;
 
   remove(id: string, userId: string): Promise<RequestDto | null | undefined>;
+
+  resign(id: string): Promise<RequestDto | null | undefined>;
 }

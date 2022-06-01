@@ -1,4 +1,4 @@
-import { AnimalDto, BaseAnimalDto } from 'animals/dto';
+import { AnimalDto, BaseAnimalDto } from 'common/models/animals/dto';
 
 export interface IAnimalRepository {
   getAll(userId: string, offset?: number, limit?: number): Promise<AnimalDto[]>;

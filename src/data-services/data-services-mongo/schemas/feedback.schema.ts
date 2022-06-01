@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { UserTypeEnum } from 'users/user-type.enum';
+import { UserTypeEnum } from 'common/models/users/user-type.enum';
 
 export type FeedbackDocument = Feedback & Document;
 
