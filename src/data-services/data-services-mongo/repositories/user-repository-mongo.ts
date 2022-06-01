@@ -1,7 +1,12 @@
 import { Model } from 'mongoose';
 import { IUserRepository } from 'data-services/interfaces/iuser-repository';
 import { UserDocument } from 'data-services/data-services-mongo/schemas/user.schema';
-import { AddRoleDto, BanUserDto, BaseUserDto, UserDto } from 'users/dto';
+import {
+  AddRoleDto,
+  BanUserDto,
+  BaseUserDto,
+  UserDto,
+} from 'common/models/users/dto';
 
 export class UserRepositoryMongo implements IUserRepository {
   private _repository: Model<UserDocument>;

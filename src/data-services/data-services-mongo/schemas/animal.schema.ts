@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { AnimalTypeEnum } from 'animals/animal-type.enum';
+import { AnimalTypeEnum } from 'common/models/animals/animal-type.enum';
 
 export type AnimalDocument = Animal & Document;
 

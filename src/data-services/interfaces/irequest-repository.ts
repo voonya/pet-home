@@ -1,4 +1,8 @@
-import { RequestDto, RequestQueryDto, UpdateRequestDto } from 'requests/dto';
+import {
+  RequestDto,
+  RequestQueryDto,
+  UpdateRequestDto,
+} from 'common/models/requests/dto';
 
 export interface IRequestRepository {
   getAll(filter?: RequestQueryDto): Promise<RequestDto[]>;

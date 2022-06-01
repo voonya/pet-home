@@ -3,7 +3,7 @@ import {
   Feedback,
   FeedbackDocument,
 } from 'data-services/data-services-mongo/schemas/feedback.schema';
-import { UserTypeEnum } from 'users/user-type.enum';
+import { UserTypeEnum } from 'common/models/users/user-type.enum';
 import { Model } from 'mongoose';
 
 export class FeebackRepositoryMongo implements IFeedbackRepository {
