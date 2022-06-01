@@ -1,6 +1,7 @@
 import {
   ApplicationDto,
   ApplicationQueryDto,
+  UpdateApplicationDto,
 } from 'common/models/applications/dto';
 import { IApplicationRepository } from 'data-services/interfaces/iapplication-repository';
 import { Model } from 'mongoose';
@@ -12,8 +13,6 @@ export class ApplicationRepositoryMongo implements IApplicationRepository {
   async getAll(filter: ApplicationQueryDto = {}): Promise<ApplicationDto[]> {
     const offset = filter.offset;
     const limit = filter.limit;
-    delete filter.limit;
-    delete filter.offset;
 
     return this._repository.find(filter).skip(offset).limit(limit).exec();
   }
@@ -26,7 +25,7 @@ export class ApplicationRepositoryMongo implements IApplicationRepository {
     return this._repository.create(dto);
   }
 
-  async update(id: string, dto: ApplicationDto): Promise<ApplicationDto> {
+  async update(id: string, dto: UpdateApplicationDto): Promise<ApplicationDto> {
     return this._repository
       .findByIdAndUpdate({ _id: id }, dto, { new: true })
       .exec();

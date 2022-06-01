@@ -110,6 +110,6 @@ export class ApplicationService {
       throw new BadRequestException("Can't update an assigned application");
     }
 
-    return this.dataServices.applications.update(id, newApplication);
+    return this.dataServices.applications.update(id, updateApplicationDto);
   }
 }
