@@ -18,7 +18,7 @@ import {
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
 
-const mockUserId = '62911966a7afaf9b1059a301';
+const mockUserId = '6292196de24c7a0c498c3a7b';
 
 @Controller('applications')
 export class ApplicationController {

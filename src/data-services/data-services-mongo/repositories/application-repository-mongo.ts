@@ -12,8 +12,6 @@ export class ApplicationRepositoryMongo implements IApplicationRepository {
   async getAll(filter: ApplicationQueryDto = {}): Promise<ApplicationDto[]> {
     const offset = filter.offset;
     const limit = filter.limit;
-    delete filter.limit;
-    delete filter.offset;
 
     return this._repository.find(filter).skip(offset).limit(limit).exec();
   }

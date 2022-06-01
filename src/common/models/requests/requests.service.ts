@@ -44,6 +44,14 @@ export class RequestService {
       throw new BadRequestException(this.dateError);
     }
 
+    const animal = await this.dataServices.animals.getById(
+      requestDto.animalId,
+      userId,
+    );
+    if (!animal) {
+      throw new NotFoundException('Animal not found');
+    }
+
     return this.dataServices.requests.create(newRecord);
   }
 
@@ -107,8 +115,7 @@ export class RequestService {
     }
 
     const asignment = { assignedApplicationId: applicationId };
-    const newRequest = { ...request, ...asignment };
-    return this.dataServices.requests.update(requestId, newRequest);
+    return this.dataServices.requests.update(requestId, asignment);
   }
 
   async resign(requestId: string, userId: string) {
@@ -122,8 +129,7 @@ export class RequestService {
       throw new BadRequestException('The request has no assigned application');
     }
 
-    delete request.assignedApplicationId;
-    return this.dataServices.requests.update(requestId, request);
+    return this.dataServices.requests.resign(requestId);
   }
 
   private isDateUnacceptable(requestDto: UpdateRequestDto, creationDate: Date) {

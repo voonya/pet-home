@@ -1,6 +1,7 @@
 import {
   ApplicationDto,
   ApplicationQueryDto,
+  UpdateApplicationDto,
 } from 'common/models/applications/dto';
 
 export interface IApplicationRepository {
@@ -12,7 +13,7 @@ export interface IApplicationRepository {
 
   update(
     id: string,
-    dto: ApplicationDto,
+    dto: UpdateApplicationDto,
   ): Promise<ApplicationDto | null | undefined>;
 
   remove(id: string): Promise<ApplicationDto | null | undefined>;

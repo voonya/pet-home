@@ -17,4 +17,6 @@ export interface IRequestRepository {
   ): Promise<RequestDto | null | undefined>;
 
   remove(id: string, userId: string): Promise<RequestDto | null | undefined>;
+
+  resign(id: string): Promise<RequestDto | null | undefined>;
 }
