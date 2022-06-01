@@ -63,4 +63,9 @@ export class UsersController {
   ) {
     return this.usersService.ban(id, banUserDto);
   }
+
+  @Put('password')
+  changePassword() {
+    return { message: 'Change Password' };
+  }
 }

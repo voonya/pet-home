@@ -14,8 +14,8 @@ import {
 } from 'data-services/data-services-mongo/schemas/feedback.schema';
 import { RequestRepositoryMongo } from 'data-services/data-services-mongo/repositories/request-repository-mongo';
 import {
-  Requests,
   RequestDocument,
+  Requests,
 } from 'data-services/data-services-mongo/schemas/requests.schema';
 import { ApplicationRepositoryMongo } from 'data-services/data-services-mongo/repositories/application-repository-mongo';
 import {
@@ -27,6 +27,8 @@ import {
   User,
   UserDocument,
 } from 'data-services/data-services-mongo/schemas/user.schema';
+import { Token, TokenDocument } from './schemas/token.schema';
+import { TokenRepositoryMongo } from './repositories/token-repository-mongo';
 
 @Injectable()
 export class DataServicesMongo
@@ -42,6 +44,8 @@ export class DataServicesMongo
 
   feedbacks: FeebackRepositoryMongo;
 
+  tokens: TokenRepositoryMongo;
+
   constructor(
     @InjectModel(Animal.name)
     private AnimalRepository: Model<AnimalDocument>,
@@ -53,6 +57,8 @@ export class DataServicesMongo
     private RequestRepository: Model<RequestDocument>,
     @InjectModel(Application.name)
     private ApplicationRepository: Model<ApplicationDocument>,
+    @InjectModel(Token.name)
+    private TokenRepository: Model<TokenDocument>,
   ) {}
 
   onApplicationBootstrap(): any {
@@ -63,5 +69,6 @@ export class DataServicesMongo
       this.ApplicationRepository,
     );
     this.users = new UserRepositoryMongo(this.UserRepository);
+    this.tokens = new TokenRepositoryMongo(this.TokenRepository);
   }
 }

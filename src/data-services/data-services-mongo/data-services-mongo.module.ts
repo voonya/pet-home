@@ -17,6 +17,7 @@ import {
   User,
   UserSchema,
 } from 'data-services/data-services-mongo/schemas/user.schema';
+import { Token, TokenSchema } from './schemas/token.schema';
 
 @Module({
   providers: [
@@ -46,6 +47,10 @@ import {
       {
         name: Application.name,
         schema: ApplicationSchema,
+      },
+      {
+        name: Token.name,
+        schema: TokenSchema,
       },
     ]),
     MongooseModule.forRoot(process.env.DB_URL),
