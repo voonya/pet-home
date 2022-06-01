@@ -1,4 +1,9 @@
-import { AddRoleDto, BanUserDto, BaseUserDto, UserDto } from 'users/dto';
+import {
+  AddRoleDto,
+  BanUserDto,
+  BaseUserDto,
+  UserDto,
+} from 'common/models/users/dto';
 
 export interface IUserRepository {
   getAll(offset: number, limit: number): Promise<UserDto[]>;

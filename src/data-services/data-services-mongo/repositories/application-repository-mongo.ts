@@ -1,4 +1,7 @@
-import { ApplicationQueryDto, ApplicationDto } from 'applications/dto';
+import {
+  ApplicationDto,
+  ApplicationQueryDto,
+} from 'common/models/applications/dto';
 import { IApplicationRepository } from 'data-services/interfaces/iapplication-repository';
 import { Model } from 'mongoose';
 import { ApplicationDocument } from 'data-services/data-services-mongo/schemas/applications.schema';

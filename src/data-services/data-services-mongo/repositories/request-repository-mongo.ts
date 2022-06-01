@@ -1,7 +1,11 @@
 import { IRequestRepository } from 'data-services/interfaces/irequest-repository';
 import { Model } from 'mongoose';
 import { RequestDocument } from 'data-services/data-services-mongo/schemas/requests.schema';
-import { RequestDto, RequestQueryDto, UpdateRequestDto } from 'requests/dto';
+import {
+  RequestDto,
+  RequestQueryDto,
+  UpdateRequestDto,
+} from 'common/models/requests/dto';
 
 export class RequestRepositoryMongo implements IRequestRepository {
   constructor(private _repository: Model<RequestDocument>) {}

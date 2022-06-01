@@ -1,4 +1,7 @@
-import { ApplicationDto, ApplicationQueryDto } from 'applications/dto';
+import {
+  ApplicationDto,
+  ApplicationQueryDto,
+} from 'common/models/applications/dto';
 
 export interface IApplicationRepository {
   getAll(filter?: ApplicationQueryDto): Promise<ApplicationDto[]>;
