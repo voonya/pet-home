@@ -1,6 +1,7 @@
 import {
   ApplicationDto,
   ApplicationQueryDto,
+  UpdateApplicationDto,
 } from 'common/models/applications/dto';
 import { IApplicationRepository } from 'data-services/interfaces/iapplication-repository';
 import { Model } from 'mongoose';
@@ -24,7 +25,7 @@ export class ApplicationRepositoryMongo implements IApplicationRepository {
     return this._repository.create(dto);
   }
 
-  async update(id: string, dto: ApplicationDto): Promise<ApplicationDto> {
+  async update(id: string, dto: UpdateApplicationDto): Promise<ApplicationDto> {
     return this._repository
       .findByIdAndUpdate({ _id: id }, dto, { new: true })
       .exec();
