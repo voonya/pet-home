@@ -36,7 +36,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     };
 
     const loggerService = new LoggerService(request.url);
-    const stack = (exception as Error).stack ?? 'no stack';
+    const stack = (exception as Error)?.stack ?? 'no stack';
     loggerService.error(
       `${method} ${status} url: ${url}, msg: ${message}, stack: ${stack}`,
     );
