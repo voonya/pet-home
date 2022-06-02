@@ -29,7 +29,7 @@ export class TokenService {
 
   verifyAccessToken(token: string) {
     try {
-      return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+      return jwt.verify(token, process.env.JWT_ACCESS_SECRET).payload;
     } catch {
       return null;
     }
@@ -37,7 +37,7 @@ export class TokenService {
 
   verifyRefreshToken(token: string) {
     try {
-      return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+      return jwt.verify(token, process.env.JWT_REFRESH_SECRET).payload;
     } catch {
       return null;
     }

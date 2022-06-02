@@ -20,7 +20,9 @@ export class AuthService {
     if (!isPasswordCorrect) {
       throw new BadRequestException('Incorrect password!');
     }
-    return this.generateTokens(user);
+    const tokens = this.generateTokens(user);
+    await this.tokenService.saveToken(tokens.refreshToken, user._id);
+    return tokens;
   }
 
   async registration(user: BaseUserDto) {
@@ -33,7 +35,11 @@ export class AuthService {
     const refreshTokenInDb = await this.tokenService.getTokenById(
       userData?._id,
     );
-    if (!userData || !refreshTokenInDb) {
+    if (
+      !userData ||
+      !refreshTokenInDb ||
+      refreshToken !== refreshTokenInDb.token
+    ) {
       throw new BadRequestException('Refresh token is invalid!');
     }
     const user = await this.userService.getById(userData._id);
@@ -54,9 +60,9 @@ export class AuthService {
     return bcrypt.compare(givenPassword, databasePassword);
   }
 
-  generateTokens(payload: any) {
-    const accessToken = this.tokenService.generateAccessToken(payload._doc);
-    const refreshToken = this.tokenService.generateRefreshToken(payload._doc);
+  generateTokens(payload: UserDto) {
+    const accessToken = this.tokenService.generateAccessToken({ payload });
+    const refreshToken = this.tokenService.generateRefreshToken({ payload });
 
     return {
       accessToken,

@@ -19,6 +19,7 @@ export class JwtAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
     const authorization = req?.headers?.authorization?.split(' ');
+    console.log(authorization);
     if (!authorization) {
       throw new UnauthorizedException('Jwt should be provided!');
     }
@@ -30,7 +31,7 @@ export class JwtAuthGuard implements CanActivate {
     if (!user) {
       throw new UnauthorizedException('Invalid jwt!');
     }
-
+    console.log(user);
     const userInDb = await this.userService.getById(user._id);
     if (!userInDb) {
       throw new BadRequestException('User does not exist!');
