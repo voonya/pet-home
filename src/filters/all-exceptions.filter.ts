@@ -35,13 +35,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
       error: message,
     };
 
-    const loggerService = new LoggerService(request.url.slice(1).split('/')[0]);
+    const loggerService = new LoggerService(request.url);
     const stack = (exception as Error).stack ?? 'no stack';
     loggerService.error(
-      `${method} ${status} url: ${url}, msg: ${message}, stack: ${stack}`.replace(
-        /\\/,
-        '',
-      ),
+      `${method} ${status} url: ${url}, msg: ${message}, stack: ${stack}`,
     );
 
     response.status(status).json(errorResponse);

@@ -7,7 +7,9 @@ const { errors, combine, json, timestamp } = winston.format;
 export class LoggerService implements LS {
   private readonly logger: winston.Logger;
 
-  constructor(service: string) {
+  constructor(url: string) {
+    const service = url.slice(1).split('/')[0];
+
     this.logger = winston.createLogger({
       format: combine(
         errors({ stack: true }),
@@ -34,22 +36,26 @@ export class LoggerService implements LS {
   }
 
   log(message: string) {
-    this.logger.info(message);
+    this.logger.info(this.sanitize(message));
   }
 
   error(message: string) {
-    this.logger.error(message);
+    this.logger.error(this.sanitize(message));
   }
 
   warn(message: string) {
-    this.logger.warning(message);
+    this.logger.warning(this.sanitize(message));
   }
 
   debug(message: string) {
-    this.logger.debug(message);
+    this.logger.debug(this.sanitize(message));
   }
 
   verbose(message: string) {
-    this.logger.verbose(message);
+    this.logger.verbose(this.sanitize(message));
+  }
+
+  private sanitize(message: string) {
+    return message.replace(/\\/, '');
   }
 }
