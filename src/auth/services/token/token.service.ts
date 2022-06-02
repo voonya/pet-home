@@ -28,11 +28,19 @@ export class TokenService {
   }
 
   verifyAccessToken(token: string) {
-    return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    try {
+      return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    } catch {
+      return null;
+    }
   }
 
   verifyRefreshToken(token: string) {
-    return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+    try {
+      return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+    } catch {
+      return null;
+    }
   }
 
   removeToken(userId: string) {
@@ -41,5 +49,9 @@ export class TokenService {
 
   getTokenById(userId: string) {
     return this.dataService.tokens.getByUserId(userId);
+  }
+
+  saveToken(token: string, userId: string) {
+    return this.dataService.tokens.create(token, userId);
   }
 }

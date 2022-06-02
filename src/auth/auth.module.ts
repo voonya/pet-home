@@ -9,5 +9,6 @@ import { DataServicesModule } from 'data-services/data-services.module';
   imports: [UsersModule, DataServicesModule],
   controllers: [AuthController],
   providers: [AuthService, TokenService],
+  exports: [TokenService],
 })
 export class AuthModule {}

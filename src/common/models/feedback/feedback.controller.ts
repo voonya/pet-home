@@ -6,6 +6,8 @@ import {
   Param,
   Post,
   Query,
+  Req,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { FeedbackService } from 'common/models/feedback/feedback.service';
@@ -16,9 +18,9 @@ import {
 } from 'common/models/feedback/dto';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
+import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
 
-const user = '62911966a7afaf9b1059a301';
-
+@UseGuards(JwtAuthGuard)
 @Controller('feedback')
 export class FeedbackController {
   constructor(private feedbackService: FeedbackService) {}
@@ -48,12 +50,14 @@ export class FeedbackController {
   }
 
   @Post()
-  leftFeedback(@Body() feedback: PostFeedbackDto) {
-    return this.feedbackService.createFeedback(user, feedback);
+  leftFeedback(@Body() feedback: PostFeedbackDto, @Req() req) {
+    const userId = req.user._id;
+    return this.feedbackService.createFeedback(userId, feedback);
   }
 
   @Delete(':id')
-  deleteFeedback(@Param('id', ObjectIdValidationPipe) id: string) {
-    return this.feedbackService.deleteFeedback(id, user);
+  deleteFeedback(@Param('id', ObjectIdValidationPipe) id: string, @Req() req) {
+    const userId = req.user._id;
+    return this.feedbackService.deleteFeedback(id, userId);
   }
 }

@@ -10,12 +10,12 @@ export class Token {
     type: Types.ObjectId,
     ref: 'User',
   })
-  userId;
+  userId: string;
 
   @Prop({
     required: true,
   })
-  tokens: string;
+  token: string;
 }
 
 export const TokenSchema = SchemaFactory.createForClass(Token);

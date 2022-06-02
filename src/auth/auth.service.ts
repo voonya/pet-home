@@ -12,9 +12,7 @@ export class AuthService {
   ) {}
 
   async login(email: string, password: string) {
-    // add guard that user is in DB and user is OK
     const user: UserDto = await this.userService.getByEmail(email);
-    console.log(user);
     const isPasswordCorrect = await this.checkPasswords(
       password,
       user.password,
@@ -30,9 +28,22 @@ export class AuthService {
     return this.userService.create({ ...user, password: hashedPassword });
   }
 
-  refresh(refreshToken: string) {
-    console.log(refreshToken);
-    return 'ok';
+  async refresh(refreshToken: string) {
+    const userData = this.tokenService.verifyRefreshToken(refreshToken);
+    const refreshTokenInDb = await this.tokenService.getTokenById(
+      userData?._id,
+    );
+    if (!userData || !refreshTokenInDb) {
+      throw new BadRequestException('Refresh token is invalid!');
+    }
+    const user = await this.userService.getById(userData._id);
+    const tokens = this.generateTokens(user);
+    await this.tokenService.saveToken(tokens.refreshToken, user._id);
+    return tokens;
+  }
+
+  async logout(userId: string) {
+    await this.tokenService.removeToken(userId);
   }
 
   hashPassword(password: string) {
