@@ -21,6 +21,11 @@ export class User {
   })
   email: string;
 
+  @Prop({
+    required: true,
+  })
+  password: string;
+
   @Prop()
   birthDate: Date;
 

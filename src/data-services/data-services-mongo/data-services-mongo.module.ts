@@ -11,12 +11,22 @@ import {
   Feedback,
   FeedbackSchema,
 } from 'data-services/data-services-mongo/schemas/feedback.schema';
-import { Requests, RequestSchema } from './schemas/requests.schema';
-import { Application, ApplicationSchema } from './schemas/applications.schema';
+import {
+  Requests,
+  RequestSchema,
+} from 'data-services/data-services-mongo//schemas/requests.schema';
+import {
+  Application,
+  ApplicationSchema,
+} from 'data-services/data-services-mongo/schemas/applications.schema';
 import {
   User,
   UserSchema,
 } from 'data-services/data-services-mongo/schemas/user.schema';
+import {
+  Token,
+  TokenSchema,
+} from 'data-services/data-services-mongo/schemas/token.schema';
 
 @Module({
   providers: [
@@ -46,6 +56,10 @@ import {
       {
         name: Application.name,
         schema: ApplicationSchema,
+      },
+      {
+        name: Token.name,
+        schema: TokenSchema,
       },
     ]),
     MongooseModule.forRoot(process.env.DB_URL),

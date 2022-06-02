@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ApplicationsModule } from 'common/models/applications/applications.module';
 import { RequestsModule } from 'common/models/requests/requests.module';
 import { DataServicesModule } from 'data-services/data-services.module';
+import { AuthModule } from 'auth/auth.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DataServicesModule } from 'data-services/data-services.module';
     ApplicationsModule,
     RequestsModule,
     DataServicesModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [

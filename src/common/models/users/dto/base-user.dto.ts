@@ -25,6 +25,12 @@ export class BaseUserDto {
   @IsNotEmpty()
   email: string;
 
+  @MaxLength(30)
+  @MinLength(5)
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+
   @IsOptional()
   @IsDate()
   birthDate?: Date;
