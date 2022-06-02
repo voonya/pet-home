@@ -13,6 +13,7 @@ import {
 import { PaginationDto } from 'common/pipes/pagination/dto/pagination.dto';
 import { RoleEnum } from 'common/models/users/role.enum';
 import { IDataServices } from 'data-services/interfaces/idata-services';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -34,8 +35,10 @@ export class UsersService {
     if (user) {
       throw new BadRequestException('This email is already registered');
     }
+    const hashedPassword = this.hashPassword(user.password);
     const newUser: UserDto = {
       ...createUserDto,
+      password: hashedPassword,
       creationDate: new Date(),
       banned: false,
       roles: [RoleEnum.User],
@@ -93,5 +96,9 @@ export class UsersService {
       throw new NotFoundException('No user with this id to ban!');
     }
     return bannedUser;
+  }
+
+  private hashPassword(password: string) {
+    return bcrypt.hash(password, Number(process.env.PASSWORD_SALT));
   }
 }

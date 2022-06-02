@@ -26,8 +26,7 @@ export class AuthService {
   }
 
   async registration(user: BaseUserDto) {
-    const hashedPassword = await this.hashPassword(user.password);
-    return this.userService.create({ ...user, password: hashedPassword });
+    return this.userService.create(user);
   }
 
   async refresh(refreshToken: string) {
@@ -50,10 +49,6 @@ export class AuthService {
 
   async logout(userId: string) {
     await this.tokenService.removeToken(userId);
-  }
-
-  hashPassword(password: string) {
-    return bcrypt.hash(password, Number(process.env.PASSWORD_SALT));
   }
 
   checkPasswords(givenPassword, databasePassword) {
