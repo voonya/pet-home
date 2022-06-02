@@ -21,14 +21,17 @@ import { ApplicationRepositoryMongo } from 'data-services/data-services-mongo/re
 import {
   Application,
   ApplicationDocument,
-} from './schemas/applications.schema';
+} from 'data-services/data-services-mongo/schemas/applications.schema';
 import { UserRepositoryMongo } from 'data-services/data-services-mongo/repositories/user-repository-mongo';
 import {
   User,
   UserDocument,
 } from 'data-services/data-services-mongo/schemas/user.schema';
-import { Token, TokenDocument } from './schemas/token.schema';
-import { TokenRepositoryMongo } from './repositories/token-repository-mongo';
+import {
+  Token,
+  TokenDocument,
+} from 'data-services/data-services-mongo/schemas/token.schema';
+import { TokenRepositoryMongo } from 'data-services/data-services-mongo/repositories/token-repository-mongo';
 
 @Injectable()
 export class DataServicesMongo

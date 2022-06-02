@@ -11,8 +11,14 @@ import {
   Feedback,
   FeedbackSchema,
 } from 'data-services/data-services-mongo/schemas/feedback.schema';
-import { Requests, RequestSchema } from './schemas/requests.schema';
-import { Application, ApplicationSchema } from './schemas/applications.schema';
+import {
+  Requests,
+  RequestSchema,
+} from 'data-services/data-services-mongo//schemas/requests.schema';
+import {
+  Application,
+  ApplicationSchema,
+} from 'data-services/data-services-mongo/schemas/applications.schema';
 import {
   User,
   UserSchema,
