@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -29,6 +30,10 @@ export class UsersService {
   }
 
   async create(createUserDto: BaseUserDto) {
+    const user = await this.dataServices.users.getByEmail(createUserDto.email);
+    if (user) {
+      throw new BadRequestException('This email is already registered');
+    }
     const newUser: UserDto = {
       ...createUserDto,
       creationDate: new Date(),
