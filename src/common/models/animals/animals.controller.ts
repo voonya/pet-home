@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { AnimalsService } from 'common/models/animals/animals.service';
@@ -14,10 +15,12 @@ import { PaginationDto } from 'common/pipes/pagination/dto/pagination.dto';
 import { BaseAnimalDto } from 'common/models/animals/dto/base-animal.dto';
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
+import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
 
 const mockUserId = '62911964a7afaf9b1059a2ff'; // get id from auth
 
 @Controller('animals')
+@UseGuards(JwtAuthGuard)
 export class AnimalsController {
   constructor(private animalsService: AnimalsService) {}
 

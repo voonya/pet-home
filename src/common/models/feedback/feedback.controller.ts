@@ -20,8 +20,8 @@ import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validati
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
 @Controller('feedback')
+@UseGuards(JwtAuthGuard)
 export class FeedbackController {
   constructor(private feedbackService: FeedbackService) {}
 

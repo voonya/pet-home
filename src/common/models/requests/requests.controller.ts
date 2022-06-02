@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { RequestService } from 'common/models/requests/requests.service';
@@ -17,10 +18,12 @@ import {
 } from 'common/models/requests/dto';
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
+import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
 
 const mockUserId = '62911964a7afaf9b1059a2ff';
 
 @Controller('requests')
+@UseGuards(JwtAuthGuard)
 export class RequestsController {
   constructor(private requestsService: RequestService) {}
 
