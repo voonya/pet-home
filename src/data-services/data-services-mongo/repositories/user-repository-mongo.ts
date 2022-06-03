@@ -52,18 +52,11 @@ export class UserRepositoryMongo implements IUserRepository {
     id: string,
     addRoleDto: AddRoleDto,
   ): Promise<UserDto | null | undefined> {
-    const user = await this.getById(id);
-    if (!user) {
-      return Promise.resolve(null);
-    }
-    if (user.roles.indexOf(addRoleDto.role) === -1) {
-      return this._repository.findByIdAndUpdate(
-        id,
-        { $push: { roles: addRoleDto.role } },
-        { new: true },
-      );
-    }
-    return Promise.resolve(user);
+    return this._repository.findByIdAndUpdate(
+      id,
+      { $addToSet: { roles: addRoleDto.role } },
+      { new: true },
+    );
   }
 
   ban(id: string, banUserDto: BanUserDto): Promise<UserDto | null | undefined> {
