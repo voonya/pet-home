@@ -53,12 +53,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
 
     const loggerService = new LoggerService(request.url);
-    const errorBody = JSON.stringify(errorResponse);
     const stack = (exception as Error)?.stack ?? 'no stack';
-    loggerService.error(
-      `${method} ${status} url: ${url}, response: ${errorBody}, stack: ${stack}`,
-    );
 
+    console.error(exception);
+    loggerService.error({ ...errorResponse, stack: stack });
     response.status(status).json(errorResponse);
   }
 }
