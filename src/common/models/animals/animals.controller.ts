@@ -16,7 +16,8 @@ import { BaseAnimalDto } from 'common/models/animals/dto/base-animal.dto';
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
-import { UserId } from 'common/decorators/userId.decorator';
+import { User } from 'common/decorators/user.decorator';
+import { UserDto } from 'common/models/users/dto';
 
 @Controller('animals')
 @UseGuards(JwtAuthGuard)
@@ -24,38 +25,38 @@ export class AnimalsController {
   constructor(private animalsService: AnimalsService) {}
 
   @Post()
-  create(@Body() createAnimalDto: BaseAnimalDto, @UserId() userId: string) {
-    return this.animalsService.createAnimal(createAnimalDto, userId);
+  create(@Body() createAnimalDto: BaseAnimalDto, @User() user: UserDto) {
+    return this.animalsService.createAnimal(createAnimalDto, user._id);
   }
 
   @Get()
   @UsePipes(new PaginationPipe(0, 10))
-  getAll(@Query() pagination: PaginationDto, @UserId() userId: string) {
-    return this.animalsService.getAll(pagination, userId);
+  getAll(@Query() pagination: PaginationDto, @User() user: UserDto) {
+    return this.animalsService.getAll(pagination, user._id);
   }
 
   @Get(':id')
   getById(
     @Param('id', ObjectIdValidationPipe) id: string,
-    @UserId() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.animalsService.getById(id, userId);
+    return this.animalsService.getById(id, user._id);
   }
 
   @Put(':id')
   update(
     @Body() updateAnimalDto: BaseAnimalDto,
     @Param('id', ObjectIdValidationPipe) id: string,
-    @UserId() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.animalsService.update(id, updateAnimalDto, userId);
+    return this.animalsService.update(id, updateAnimalDto, user._id);
   }
 
   @Delete(':id')
   remove(
     @Param('id', ObjectIdValidationPipe) id: string,
-    @UserId() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.animalsService.remove(id, userId);
+    return this.animalsService.remove(id, user._id);
   }
 }

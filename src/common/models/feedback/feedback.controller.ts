@@ -18,7 +18,8 @@ import {
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
-import { UserId } from 'common/decorators/userId.decorator';
+import { User } from 'common/decorators/user.decorator';
+import { UserDto } from 'common/models/users/dto';
 
 @Controller('feedback')
 @UseGuards(JwtAuthGuard)
@@ -50,15 +51,15 @@ export class FeedbackController {
   }
 
   @Post()
-  leftFeedback(@Body() feedback: PostFeedbackDto, @UserId() userId: string) {
-    return this.feedbackService.createFeedback(userId, feedback);
+  leftFeedback(@Body() feedback: PostFeedbackDto, @User() user: UserDto) {
+    return this.feedbackService.createFeedback(user._id, feedback);
   }
 
   @Delete(':id')
   deleteFeedback(
     @Param('id', ObjectIdValidationPipe) id: string,
-    @UserId() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.feedbackService.deleteFeedback(id, userId);
+    return this.feedbackService.deleteFeedback(id, user._id);
   }
 }

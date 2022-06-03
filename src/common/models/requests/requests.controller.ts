@@ -19,7 +19,7 @@ import {
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
-import { UserId } from 'common/decorators/userId.decorator';
+import { User } from 'common/decorators/user.decorator';
 
 @Controller('requests')
 @UseGuards(JwtAuthGuard)
@@ -38,14 +38,14 @@ export class RequestsController {
   }
 
   @Post()
-  create(@Body() createRequestDto: BaseRequestDto, @UserId() userId: string) {
+  create(@Body() createRequestDto: BaseRequestDto, @User() userId: string) {
     return this.requestsService.create(createRequestDto, userId);
   }
 
   @Delete(':id')
   remove(
     @Param('id', ObjectIdValidationPipe) id: string,
-    @UserId() userId: string,
+    @User() userId: string,
   ) {
     return this.requestsService.remove(id, userId);
   }
@@ -54,7 +54,7 @@ export class RequestsController {
   update(
     @Param('id', ObjectIdValidationPipe) id: string,
     @Body() updateRequestDto: UpdateRequestDto,
-    @UserId() userId: string,
+    @User() userId: string,
   ) {
     return this.requestsService.update(id, userId, updateRequestDto);
   }
@@ -63,7 +63,7 @@ export class RequestsController {
   assign(
     @Param('requestId', ObjectIdValidationPipe) requestId: string,
     @Param('applicationId', ObjectIdValidationPipe) applicationId: string,
-    @UserId() userId: string,
+    @User() userId: string,
   ) {
     return this.requestsService.assign(requestId, applicationId, userId);
   }
@@ -71,7 +71,7 @@ export class RequestsController {
   @Put(':requestId/resign')
   resign(
     @Param('requestId', ObjectIdValidationPipe) requestId: string,
-    @UserId() userId: string,
+    @User() userId: string,
   ) {
     return this.requestsService.resign(requestId, userId);
   }

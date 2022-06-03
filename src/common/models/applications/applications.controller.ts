@@ -19,7 +19,8 @@ import {
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
-import { UserId } from 'common/decorators/userId.decorator';
+import { User } from 'common/decorators/user.decorator';
+import { UserDto } from 'common/models/users/dto';
 
 @Controller('applications')
 @UseGuards(JwtAuthGuard)
@@ -40,25 +41,25 @@ export class ApplicationController {
   @Post()
   create(
     @Body() createApplicationDto: BaseApplicationDto,
-    @UserId() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.applicationService.create(createApplicationDto, userId);
+    return this.applicationService.create(createApplicationDto, user._id);
   }
 
   @Delete(':id')
   remove(
     @Param('id', ObjectIdValidationPipe) id: string,
-    @UserId() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.applicationService.remove(id, userId);
+    return this.applicationService.remove(id, user._id);
   }
 
   @Put(':id')
   update(
     @Param('id', ObjectIdValidationPipe) id: string,
     @Body() updateApplicationDto: UpdateApplicationDto,
-    @UserId() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.applicationService.update(id, userId, updateApplicationDto);
+    return this.applicationService.update(id, user._id, updateApplicationDto);
   }
 }

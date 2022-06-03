@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   Post,
@@ -11,7 +12,12 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { UsersService } from 'common/models/users/users.service';
-import { AddRoleDto, BanUserDto, BaseUserDto } from 'common/models/users/dto';
+import {
+  AddRoleDto,
+  BanUserDto,
+  BaseUserDto,
+  UserDto,
+} from 'common/models/users/dto';
 import { PaginationDto } from 'common/pipes/pagination/dto/pagination.dto';
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
@@ -20,16 +26,20 @@ import { Roles } from 'common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
 import { ResponseUserDto } from 'common/models/users/dto/response-user.dto';
 import { RoleGuard } from 'auth/guards/role.guard';
+import { User } from 'common/decorators/user.decorator';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RoleGuard)
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Post()
-  @Roles(RoleEnum.Admin)
-  async create(@Body() createUserDto: BaseUserDto) {
-    return new ResponseUserDto(await this.usersService.create(createUserDto));
+  private static checkIfUserIsAllowed(userId: string, authUser: UserDto): void {
+    if (userId == authUser._id) {
+      return;
+    }
+    if (!authUser.roles.includes(RoleEnum.Admin)) {
+      throw new ForbiddenException();
+    }
   }
 
   @Get()
@@ -41,25 +51,28 @@ export class UsersController {
   }
 
   @Get(':id')
-  @Roles(RoleEnum.Admin)
   async getById(@Param('id', ObjectIdValidationPipe) id: string) {
     return new ResponseUserDto(await this.usersService.getById(id));
   }
 
   @Put(':id')
-  @Roles(RoleEnum.Admin)
   async update(
     @Body() updateUserDto: BaseUserDto,
     @Param('id', ObjectIdValidationPipe) id: string,
+    @User() authUser: UserDto,
   ) {
+    UsersController.checkIfUserIsAllowed(id, authUser);
     return new ResponseUserDto(
       await this.usersService.update(id, updateUserDto),
     );
   }
 
   @Delete(':id')
-  @Roles(RoleEnum.Admin)
-  async remove(@Param('id', ObjectIdValidationPipe) id: string) {
+  async remove(
+    @Param('id', ObjectIdValidationPipe) id: string,
+    @User() authUser: UserDto,
+  ) {
+    UsersController.checkIfUserIsAllowed(id, authUser);
     return new ResponseUserDto(await this.usersService.remove(id));
   }
 
