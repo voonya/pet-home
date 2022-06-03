@@ -19,8 +19,7 @@ import {
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
-
-const mockUserId = '6292196de24c7a0c498c3a7b';
+import { UserId } from 'common/decorators/userId.decorator';
 
 @Controller('applications')
 @UseGuards(JwtAuthGuard)
@@ -39,20 +38,27 @@ export class ApplicationController {
   }
 
   @Post()
-  create(@Body() createApplicationDto: BaseApplicationDto) {
-    return this.applicationService.create(createApplicationDto, mockUserId);
+  create(
+    @Body() createApplicationDto: BaseApplicationDto,
+    @UserId() userId: string,
+  ) {
+    return this.applicationService.create(createApplicationDto, userId);
   }
 
   @Delete(':id')
-  remove(@Param('id', ObjectIdValidationPipe) id: string) {
-    return this.applicationService.remove(id, mockUserId);
+  remove(
+    @Param('id', ObjectIdValidationPipe) id: string,
+    @UserId() userId: string,
+  ) {
+    return this.applicationService.remove(id, userId);
   }
 
   @Put(':id')
   update(
     @Param('id', ObjectIdValidationPipe) id: string,
     @Body() updateApplicationDto: UpdateApplicationDto,
+    @UserId() userId: string,
   ) {
-    return this.applicationService.update(id, mockUserId, updateApplicationDto);
+    return this.applicationService.update(id, userId, updateApplicationDto);
   }
 }

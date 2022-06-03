@@ -19,8 +19,7 @@ import {
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
-
-const mockUserId = '62911964a7afaf9b1059a2ff';
+import { UserId } from 'common/decorators/userId.decorator';
 
 @Controller('requests')
 @UseGuards(JwtAuthGuard)
@@ -39,33 +38,41 @@ export class RequestsController {
   }
 
   @Post()
-  create(@Body() createRequestDto: BaseRequestDto) {
-    return this.requestsService.create(createRequestDto, mockUserId);
+  create(@Body() createRequestDto: BaseRequestDto, @UserId() userId: string) {
+    return this.requestsService.create(createRequestDto, userId);
   }
 
   @Delete(':id')
-  remove(@Param('id', ObjectIdValidationPipe) id: string) {
-    return this.requestsService.remove(id, mockUserId);
+  remove(
+    @Param('id', ObjectIdValidationPipe) id: string,
+    @UserId() userId: string,
+  ) {
+    return this.requestsService.remove(id, userId);
   }
 
   @Put(':id')
   update(
     @Param('id', ObjectIdValidationPipe) id: string,
     @Body() updateRequestDto: UpdateRequestDto,
+    @UserId() userId: string,
   ) {
-    return this.requestsService.update(id, mockUserId, updateRequestDto);
+    return this.requestsService.update(id, userId, updateRequestDto);
   }
 
   @Put(':requestId/assign/:applicationId')
   assign(
     @Param('requestId', ObjectIdValidationPipe) requestId: string,
     @Param('applicationId', ObjectIdValidationPipe) applicationId: string,
+    @UserId() userId: string,
   ) {
-    return this.requestsService.assign(requestId, applicationId, mockUserId);
+    return this.requestsService.assign(requestId, applicationId, userId);
   }
 
   @Put(':requestId/resign')
-  resign(@Param('requestId', ObjectIdValidationPipe) requestId: string) {
-    return this.requestsService.resign(requestId, mockUserId);
+  resign(
+    @Param('requestId', ObjectIdValidationPipe) requestId: string,
+    @UserId() userId: string,
+  ) {
+    return this.requestsService.resign(requestId, userId);
   }
 }
