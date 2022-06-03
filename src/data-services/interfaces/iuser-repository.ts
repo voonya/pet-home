@@ -18,7 +18,10 @@ export interface IUserRepository {
 
   remove(id: string): Promise<UserDto | null | undefined>;
 
-  addRole(id: string, addRoleDto: AddRoleDto);
+  addRole(
+    id: string,
+    addRoleDto: AddRoleDto,
+  ): Promise<UserDto | null | undefined>;
 
-  ban(id: string, banUserDto: BanUserDto);
+  ban(id: string, banUserDto: BanUserDto): Promise<UserDto | null | undefined>;
 }

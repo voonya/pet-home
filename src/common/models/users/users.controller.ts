@@ -18,6 +18,7 @@ import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validati
 import { RoleEnum } from 'common/models/users/role.enum';
 import { Roles } from 'common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
+import { ResponseUserDto } from 'common/models/users/dto/response-user.dto';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -26,54 +27,57 @@ export class UsersController {
 
   @Post()
   @Roles(RoleEnum.Admin)
-  create(@Body() createUserDto: BaseUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: BaseUserDto) {
+    return new ResponseUserDto(await this.usersService.create(createUserDto));
   }
 
   @Get()
   @UsePipes(new PaginationPipe(0, 10))
   @Roles(RoleEnum.Admin)
-  getAll(@Query() pagination: PaginationDto) {
-    return this.usersService.getAll(pagination);
+  async getAll(@Query() pagination: PaginationDto) {
+    const users = await this.usersService.getAll(pagination);
+    return users.map((user) => new ResponseUserDto(user));
   }
 
   @Get(':id')
   @Roles(RoleEnum.Admin)
-  getById(@Param('id', ObjectIdValidationPipe) id: string) {
-    return this.usersService.getById(id);
+  async getById(@Param('id', ObjectIdValidationPipe) id: string) {
+    return new ResponseUserDto(await this.usersService.getById(id));
   }
 
   @Put(':id')
   @Roles(RoleEnum.Admin)
-  update(
+  async update(
     @Body() updateUserDto: BaseUserDto,
     @Param('id', ObjectIdValidationPipe) id: string,
   ) {
-    return this.usersService.update(id, updateUserDto);
+    return new ResponseUserDto(
+      await this.usersService.update(id, updateUserDto),
+    );
   }
 
   @Delete(':id')
   @Roles(RoleEnum.Admin)
-  remove(@Param('id', ObjectIdValidationPipe) id: string) {
-    return this.usersService.remove(id);
+  async remove(@Param('id', ObjectIdValidationPipe) id: string) {
+    return new ResponseUserDto(await this.usersService.remove(id));
   }
 
   @Post(':id/role')
   @Roles(RoleEnum.Admin)
-  addRole(
+  async addRole(
     @Param('id', ObjectIdValidationPipe) id: string,
     @Body() addRoleDto: AddRoleDto,
   ) {
-    return this.usersService.addRole(id, addRoleDto);
+    return new ResponseUserDto(await this.usersService.addRole(id, addRoleDto));
   }
 
   @Post(':id/ban')
   @Roles(RoleEnum.Admin)
-  ban(
+  async ban(
     @Param('id', ObjectIdValidationPipe) id: string,
     @Body() banUserDto: BanUserDto,
   ) {
-    return this.usersService.ban(id, banUserDto);
+    return new ResponseUserDto(await this.usersService.ban(id, banUserDto));
   }
 
   @Put('password')
