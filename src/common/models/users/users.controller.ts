@@ -2,70 +2,117 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { UsersService } from 'common/models/users/users.service';
-import { AddRoleDto, BanUserDto, BaseUserDto } from 'common/models/users/dto';
+import {
+  AddRoleDto,
+  BanUserDto,
+  BaseUserDto,
+  UserDto,
+} from 'common/models/users/dto';
 import { PaginationDto } from 'common/pipes/pagination/dto/pagination.dto';
 import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
+import { RoleEnum } from 'common/models/users/role.enum';
+import { Roles } from 'common/decorators/roles.decorator';
+import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
+import { ResponseUserDto } from 'common/models/users/dto/response-user.dto';
+import { RoleGuard } from 'auth/guards/role.guard';
+import { User } from 'common/decorators/user.decorator';
+import { UpdatePasswordDto } from 'common/models/users/dto/update-password.dto';
+import { UpdateOthersPassword } from 'common/models/users/dto/update-others-password.dto';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard, RoleGuard)
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  private static checkIfUserIsAllowed(userId: string, authUser: UserDto): void {
+    if (userId == authUser._id) {
+      return;
+    }
+    if (!authUser.roles.includes(RoleEnum.Admin)) {
+      throw new ForbiddenException();
+    }
+  }
+
+  @Put('changeOthersPassword')
+  @Roles(RoleEnum.Admin)
+  changeOthersPassword(@Body() updatePasswordDto: UpdateOthersPassword) {
+    return this.usersService.changeOthersPassword(updatePasswordDto);
+  }
+
+  @Put('changePassword')
+  changePassword(
+    @Body() updatePasswordDto: UpdatePasswordDto,
+    @User() user: UserDto,
+  ) {
+    return this.usersService.changePassword(user._id, updatePasswordDto);
+  }
+
   @Post()
+  @Roles(RoleEnum.Admin)
   create(@Body() createUserDto: BaseUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
   @UsePipes(new PaginationPipe(0, 10))
-  getAll(@Query() pagination: PaginationDto) {
-    return this.usersService.getAll(pagination);
+  @Roles(RoleEnum.Admin)
+  async getAll(@Query() pagination: PaginationDto) {
+    const users = await this.usersService.getAll(pagination);
+    return users.map((user) => new ResponseUserDto(user));
   }
 
   @Get(':id')
-  getById(@Param('id', ObjectIdValidationPipe) id: string) {
-    return this.usersService.getById(id);
+  async getById(@Param('id', ObjectIdValidationPipe) id: string) {
+    return new ResponseUserDto(await this.usersService.getById(id));
   }
 
   @Put(':id')
-  update(
+  async update(
     @Body() updateUserDto: BaseUserDto,
     @Param('id', ObjectIdValidationPipe) id: string,
+    @User() authUser: UserDto,
   ) {
-    return this.usersService.update(id, updateUserDto);
+    UsersController.checkIfUserIsAllowed(id, authUser);
+    return new ResponseUserDto(
+      await this.usersService.update(id, updateUserDto),
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id', ObjectIdValidationPipe) id: string) {
-    return this.usersService.remove(id);
+  async remove(
+    @Param('id', ObjectIdValidationPipe) id: string,
+    @User() authUser: UserDto,
+  ) {
+    UsersController.checkIfUserIsAllowed(id, authUser);
+    return new ResponseUserDto(await this.usersService.remove(id));
   }
 
   @Post(':id/role')
-  addRole(
+  @Roles(RoleEnum.Admin)
+  async addRole(
     @Param('id', ObjectIdValidationPipe) id: string,
     @Body() addRoleDto: AddRoleDto,
   ) {
-    return this.usersService.addRole(id, addRoleDto);
+    return new ResponseUserDto(await this.usersService.addRole(id, addRoleDto));
   }
 
   @Post(':id/ban')
-  ban(
+  @Roles(RoleEnum.Admin)
+  async ban(
     @Param('id', ObjectIdValidationPipe) id: string,
     @Body() banUserDto: BanUserDto,
   ) {
-    return this.usersService.ban(id, banUserDto);
-  }
-
-  @Put('password')
-  changePassword() {
-    return { message: 'Change Password' };
+    return new ResponseUserDto(await this.usersService.ban(id, banUserDto));
   }
 }

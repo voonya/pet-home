@@ -10,15 +10,19 @@ import {
   UpdateApplicationDto,
 } from 'common/models/applications/dto';
 import { IDataServices } from 'data-services/interfaces/idata-services';
+import { RequestService } from 'common/models/requests/requests.service';
 
 @Injectable()
 export class ApplicationService {
-  constructor(private dataServices: IDataServices) {}
+  constructor(
+    private dataServices: IDataServices,
+    private requestService: RequestService,
+  ) {}
 
   private notFoundMsg = 'Application not found';
 
   private async isRequestActual(id: string) {
-    const request = await this.dataServices.requests.getById(id);
+    const request = await this.requestService.getById(id);
     return request?.expirationDate ? new Date() < request.expirationDate : true;
   }
 

@@ -41,6 +41,7 @@ export class JwtAuthGuard implements CanActivate {
       throw new ForbiddenException('User is banned!');
     }
     req.user = userInDb;
+
     return true;
   }
 }

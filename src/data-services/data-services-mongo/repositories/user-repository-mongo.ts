@@ -39,7 +39,19 @@ export class UserRepositoryMongo implements IUserRepository {
     return this._repository.findByIdAndUpdate(id, dto, { new: true }).exec();
   }
 
-  async addRole(id: string, addRoleDto: AddRoleDto) {
+  async updatePassword(
+    id: string,
+    password: string,
+  ): Promise<UserDto | null | undefined> {
+    return this._repository
+      .findByIdAndUpdate(id, { password: password }, { new: true })
+      .exec();
+  }
+
+  async addRole(
+    id: string,
+    addRoleDto: AddRoleDto,
+  ): Promise<UserDto | null | undefined> {
     const user = await this.getById(id);
     if (!user) {
       return Promise.resolve(null);
@@ -54,7 +66,7 @@ export class UserRepositoryMongo implements IUserRepository {
     return Promise.resolve(user);
   }
 
-  ban(id: string, banUserDto: BanUserDto) {
+  ban(id: string, banUserDto: BanUserDto): Promise<UserDto | null | undefined> {
     return this._repository
       .findByIdAndUpdate(id, { banned: true, ...banUserDto }, { new: true })
       .exec();
