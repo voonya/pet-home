@@ -20,7 +20,7 @@ import { Roles } from 'common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
 import { UpdatePasswordDto } from 'common/models/users/dto/update-password.dto';
 import { UserId } from 'common/decorators/userId.decorator';
-import { UpdateOthersPassword } from './dto/update-others-password.dto';
+import { UpdateOthersPassword } from 'common/models/users/dto/update-others-password.dto';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -80,7 +80,6 @@ export class UsersController {
   }
 
   @Put('changePassword')
-  @Roles(RoleEnum.User)
   changePassword(
     @Body() updatePasswordDto: UpdatePasswordDto,
     @UserId() userId: string,
