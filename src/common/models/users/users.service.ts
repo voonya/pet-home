@@ -104,8 +104,11 @@ export class UsersService {
 
   async changePassword(userId: string, updatePasswordDto: UpdatePasswordDto) {
     const user = await this.getById(userId);
-
-    if (!bcrypt.compare(updatePasswordDto.oldPassword, user.password)) {
+    const compareResult = await bcrypt.compare(
+      updatePasswordDto.oldPassword,
+      user.password,
+    );
+    if (!compareResult) {
       throw new BadRequestException('Old password missmatched');
     }
 

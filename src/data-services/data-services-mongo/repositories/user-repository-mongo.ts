@@ -39,12 +39,13 @@ export class UserRepositoryMongo implements IUserRepository {
     return this._repository.findByIdAndUpdate(id, dto, { new: true }).exec();
   }
 
-  async updatePassword(id: string, password: string) {
-    return this._repository.findByIdAndUpdate(
-      id,
-      { password: password },
-      { new: true },
-    );
+  async updatePassword(
+    id: string,
+    password: string,
+  ): Promise<UserDto | null | undefined> {
+    return this._repository
+      .findByIdAndUpdate(id, { password: password }, { new: true })
+      .exec();
   }
 
   async addRole(id: string, addRoleDto: AddRoleDto) {

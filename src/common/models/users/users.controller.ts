@@ -27,6 +27,23 @@ import { UpdateOthersPassword } from 'common/models/users/dto/update-others-pass
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  @Put(':id/changePassword')
+  @Roles(RoleEnum.Admin)
+  changeOthersPassword(
+    @Body() updatePasswordDto: UpdateOthersPassword,
+    @Param('id') userId: string,
+  ) {
+    return this.usersService.changeOthersPassword(userId, updatePasswordDto);
+  }
+
+  @Put('changePassword')
+  changePassword(
+    @Body() updatePasswordDto: UpdatePasswordDto,
+    @UserId() userId: string,
+  ) {
+    return this.usersService.changePassword(userId, updatePasswordDto);
+  }
+
   @Post()
   @Roles(RoleEnum.Admin)
   create(@Body() createUserDto: BaseUserDto) {
@@ -77,22 +94,5 @@ export class UsersController {
     @Body() banUserDto: BanUserDto,
   ) {
     return this.usersService.ban(id, banUserDto);
-  }
-
-  @Put('changePassword')
-  changePassword(
-    @Body() updatePasswordDto: UpdatePasswordDto,
-    @UserId() userId: string,
-  ) {
-    return this.usersService.changePassword(userId, updatePasswordDto);
-  }
-
-  @Put(':id/changePassword')
-  @Roles(RoleEnum.Admin)
-  changeOthersPassword(
-    @Body() updatePasswordDto: UpdateOthersPassword,
-    @Param('id') userId: string,
-  ) {
-    return this.usersService.changeOthersPassword(userId, updatePasswordDto);
   }
 }
