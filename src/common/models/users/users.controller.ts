@@ -18,6 +18,8 @@ import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validati
 import { RoleEnum } from 'common/models/users/role.enum';
 import { Roles } from 'common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
+import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UserId } from 'common/decorators/userId.decorator';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -76,9 +78,21 @@ export class UsersController {
     return this.usersService.ban(id, banUserDto);
   }
 
-  @Put('password')
+  @Put('changePassword/:password')
+  @Roles(RoleEnum.User)
+  changePassword(
+    @Param('password') updatePasswordDto: UpdatePasswordDto,
+    @UserId() userId: string,
+  ) {
+    return this.usersService.changePassword(userId, updatePasswordDto);
+  }
+
+  @Put(':id/changePassword/:password')
   @Roles(RoleEnum.Admin)
-  changePassword() {
-    return { message: 'Change Password' };
+  changeOthersPassword(
+    @Param('password') password: string,
+    @Param('id') userId: string,
+  ) {
+    return this.usersService.chngeOthersPassword(userId, password);
   }
 }

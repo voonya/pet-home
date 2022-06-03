@@ -21,4 +21,9 @@ export interface IUserRepository {
   addRole(id: string, addRoleDto: AddRoleDto);
 
   ban(id: string, banUserDto: BanUserDto);
+
+  updatePassword(
+    id: string,
+    password: string,
+  ): Promise<UserDto | null | undefined>;
 }

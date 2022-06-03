@@ -39,6 +39,14 @@ export class UserRepositoryMongo implements IUserRepository {
     return this._repository.findByIdAndUpdate(id, dto, { new: true }).exec();
   }
 
+  async updatePassword(id: string, password: string) {
+    return this._repository.findByIdAndUpdate(
+      id,
+      { password: password },
+      { new: true },
+    );
+  }
+
   async addRole(id: string, addRoleDto: AddRoleDto) {
     const user = await this.getById(id);
     if (!user) {

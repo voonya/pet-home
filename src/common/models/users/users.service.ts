@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
   AddRoleDto,
@@ -14,6 +15,7 @@ import { PaginationDto } from 'common/pipes/pagination/dto/pagination.dto';
 import { RoleEnum } from 'common/models/users/role.enum';
 import { IDataServices } from 'data-services/interfaces/idata-services';
 import * as bcrypt from 'bcrypt';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -98,7 +100,38 @@ export class UsersService {
     return bannedUser;
   }
 
+  async changePassword(userId: string, updatePasswordDto: UpdatePasswordDto) {
+    const user = await this.dataServices.users.getById(userId);
+
+    const oldPasswordHash = this.hashPassword(updatePasswordDto.oldPassword);
+    if (user.password !== oldPasswordHash) {
+      throw new BadRequestException('Old password missmatched');
+    }
+
+    const newPasswordHash = this.hashPassword(updatePasswordDto.newPassword);
+    return this.updatePassword(userId, newPasswordHash);
+  }
+
+  async chngeOthersPassword(userId: string, password: string) {
+    const user = await this.dataServices.users.getById(userId);
+    if (!user) {
+      throw new NotFoundException('No user with this id!');
+    }
+
+    if (user.roles.includes(RoleEnum.Admin)) {
+      throw new UnauthorizedException('Only admin can change own password');
+    }
+
+    const newPasswordHash = this.hashPassword(password);
+    return this.updatePassword(userId, newPasswordHash);
+  }
+
   private hashPassword(password: string) {
     return bcrypt.hash(password, Number(process.env.PASSWORD_SALT));
+  }
+
+  private updatePassword(userId: string, newPassword: string) {
+    const newPasswordHash = this.hashPassword(newPassword);
+    return this.dataServices.users.updatePassword(userId, newPasswordHash);
   }
 }
