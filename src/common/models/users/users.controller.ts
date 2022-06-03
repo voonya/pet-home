@@ -18,8 +18,9 @@ import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validati
 import { RoleEnum } from 'common/models/users/role.enum';
 import { Roles } from 'common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
-import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdatePasswordDto } from 'common/models/users/dto/update-password.dto';
 import { UserId } from 'common/decorators/userId.decorator';
+import { UpdateOthersPassword } from './dto/update-others-password.dto';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -78,21 +79,21 @@ export class UsersController {
     return this.usersService.ban(id, banUserDto);
   }
 
-  @Put('changePassword/:password')
+  @Put('changePassword')
   @Roles(RoleEnum.User)
   changePassword(
-    @Param('password') updatePasswordDto: UpdatePasswordDto,
+    @Body() updatePasswordDto: UpdatePasswordDto,
     @UserId() userId: string,
   ) {
     return this.usersService.changePassword(userId, updatePasswordDto);
   }
 
-  @Put(':id/changePassword/:password')
+  @Put(':id/changePassword')
   @Roles(RoleEnum.Admin)
   changeOthersPassword(
-    @Param('password') password: string,
+    @Body() updatePasswordDto: UpdateOthersPassword,
     @Param('id') userId: string,
   ) {
-    return this.usersService.chngeOthersPassword(userId, password);
+    return this.usersService.changeOthersPassword(userId, updatePasswordDto);
   }
 }

@@ -15,7 +15,8 @@ import { PaginationDto } from 'common/pipes/pagination/dto/pagination.dto';
 import { RoleEnum } from 'common/models/users/role.enum';
 import { IDataServices } from 'data-services/interfaces/idata-services';
 import * as bcrypt from 'bcrypt';
-import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdatePasswordDto } from 'common/models/users/dto/update-password.dto';
+import { UpdateOthersPassword } from './dto/update-others-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -117,8 +118,13 @@ export class UsersService {
     return this.updatePassword(userId, newPasswordHash);
   }
 
-  async chngeOthersPassword(userId: string, password: string) {
-    const user = await this.dataServices.users.getById(userId);
+  async changeOthersPassword(
+    userId: string,
+    updatePasswordDto: UpdateOthersPassword,
+  ) {
+    const user = await this.dataServices.users.getByEmail(
+      updatePasswordDto.email,
+    );
     if (!user) {
       throw new NotFoundException('No user with this id!');
     }
@@ -127,7 +133,7 @@ export class UsersService {
       throw new UnauthorizedException('Only admin can change own password');
     }
 
-    const newPasswordHash = await this.hashPassword(password);
+    const newPasswordHash = await this.hashPassword(updatePasswordDto.password);
     return this.updatePassword(userId, newPasswordHash);
   }
 
