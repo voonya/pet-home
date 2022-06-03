@@ -11,10 +11,10 @@ export class LoggerMiddleware implements NestMiddleware {
     const headers = JSON.stringify(req.headers ?? {});
     const query = JSON.stringify(req.query ?? {});
     const body = JSON.stringify(req.body ?? {});
-    const url = JSON.stringify(req.url ?? {});
+    const { method, url } = req;
 
     loggerService.log(
-      `url: ${url}, headers: ${headers}, query: ${query}, body: ${body}`,
+      `${method} ${url}, headers: ${headers}, query: ${query}, body: ${body}`,
     );
 
     next();

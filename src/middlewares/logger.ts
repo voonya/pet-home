@@ -56,6 +56,6 @@ export class LoggerService implements LS {
   }
 
   private sanitize(message: string) {
-    return message.replace(/\\/, '');
+    return message.replace(/\\/, ''); //.replace(/\\n/g, '');
   }
 }
