@@ -48,7 +48,10 @@ export class AuthService {
   }
 
   async logout(userId: string) {
-    await this.tokenService.removeToken(userId);
+    const logoutRes = await this.tokenService.removeToken(userId);
+    if (!logoutRes) {
+      throw new BadRequestException('You are already logouted!');
+    }
   }
 
   checkPasswords(givenPassword, databasePassword) {

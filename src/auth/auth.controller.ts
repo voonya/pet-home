@@ -14,6 +14,7 @@ import { BaseUserDto } from 'common/models/users/dto';
 import { Cookies } from 'common/decorators/cookies.decorator';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
+import { User } from 'common/decorators/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -59,8 +60,8 @@ export class AuthController {
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Req() req, @Res() res) {
-    const userId = req.user._id.toString();
+  async logout(@Req() req, @User() user, @Res() res) {
+    const userId = user._id.toString();
     await this.authService.logout(userId);
     res.clearCookie('refreshToken');
     res.send({
