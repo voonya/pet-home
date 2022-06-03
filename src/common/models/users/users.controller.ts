@@ -19,9 +19,10 @@ import { RoleEnum } from 'common/models/users/role.enum';
 import { Roles } from 'common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
 import { ResponseUserDto } from 'common/models/users/dto/response-user.dto';
+import { RoleGuard } from 'auth/guards/role.guard';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RoleGuard)
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
