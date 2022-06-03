@@ -46,22 +46,20 @@ export class UsersController {
 
   @Put('change-others-password')
   @Roles(RoleEnum.Admin)
-  changeOthersPassword(@Body() updatePasswordDto: UpdateOthersPassword) {
-    return this.usersService.changeOthersPassword(updatePasswordDto);
+  async changeOthersPassword(@Body() updatePasswordDto: UpdateOthersPassword) {
+    return new ResponseUserDto(
+      await this.usersService.changeOthersPassword(updatePasswordDto),
+    );
   }
 
   @Put('change-password')
-  changePassword(
+  async changePassword(
     @Body() updatePasswordDto: UpdatePasswordDto,
     @User() user: UserDto,
   ) {
-    return this.usersService.changePassword(user._id, updatePasswordDto);
-  }
-
-  @Post()
-  @Roles(RoleEnum.Admin)
-  create(@Body() createUserDto: BaseUserDto) {
-    return this.usersService.create(createUserDto);
+    return new ResponseUserDto(
+      await this.usersService.changePassword(user._id, updatePasswordDto),
+    );
   }
 
   @Get()
