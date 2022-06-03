@@ -37,7 +37,8 @@ export class UsersService {
     if (user) {
       throw new BadRequestException('This email is already registered');
     }
-    const hashedPassword = this.hashPassword(user.password);
+    const hashedPassword = await this.hashPassword(createUserDto.password);
+
     const newUser: UserDto = {
       ...createUserDto,
       password: hashedPassword,
@@ -103,12 +104,16 @@ export class UsersService {
   async changePassword(userId: string, updatePasswordDto: UpdatePasswordDto) {
     const user = await this.dataServices.users.getById(userId);
 
-    const oldPasswordHash = this.hashPassword(updatePasswordDto.oldPassword);
+    const oldPasswordHash = await this.hashPassword(
+      updatePasswordDto.oldPassword,
+    );
     if (user.password !== oldPasswordHash) {
       throw new BadRequestException('Old password missmatched');
     }
 
-    const newPasswordHash = this.hashPassword(updatePasswordDto.newPassword);
+    const newPasswordHash = await this.hashPassword(
+      updatePasswordDto.newPassword,
+    );
     return this.updatePassword(userId, newPasswordHash);
   }
 
@@ -122,16 +127,16 @@ export class UsersService {
       throw new UnauthorizedException('Only admin can change own password');
     }
 
-    const newPasswordHash = this.hashPassword(password);
+    const newPasswordHash = await this.hashPassword(password);
     return this.updatePassword(userId, newPasswordHash);
   }
 
-  private hashPassword(password: string) {
+  private async hashPassword(password: string) {
     return bcrypt.hash(password, Number(process.env.PASSWORD_SALT));
   }
 
-  private updatePassword(userId: string, newPassword: string) {
-    const newPasswordHash = this.hashPassword(newPassword);
+  private async updatePassword(userId: string, newPassword: string) {
+    const newPasswordHash = await this.hashPassword(newPassword);
     return this.dataServices.users.updatePassword(userId, newPasswordHash);
   }
 }
