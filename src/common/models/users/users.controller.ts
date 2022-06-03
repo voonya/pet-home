@@ -44,13 +44,13 @@ export class UsersController {
     }
   }
 
-  @Put('changeOthersPassword')
+  @Put('change-others-password')
   @Roles(RoleEnum.Admin)
   changeOthersPassword(@Body() updatePasswordDto: UpdateOthersPassword) {
     return this.usersService.changeOthersPassword(updatePasswordDto);
   }
 
-  @Put('changePassword')
+  @Put('change-password')
   changePassword(
     @Body() updatePasswordDto: UpdatePasswordDto,
     @User() user: UserDto,
