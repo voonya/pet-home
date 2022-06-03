@@ -112,24 +112,17 @@ export class UsersService {
       throw new BadRequestException('Old password missmatched');
     }
 
-    const newPasswordHash = await this.hashPassword(
-      updatePasswordDto.newPassword,
-    );
-    return this.updatePassword(userId, newPasswordHash);
+    return this.updatePassword(userId, updatePasswordDto.newPassword);
   }
 
-  async changeOthersPassword(
-    userId: string,
-    updatePasswordDto: UpdateOthersPassword,
-  ) {
+  async changeOthersPassword(updatePasswordDto: UpdateOthersPassword) {
     const user = await this.getByEmail(updatePasswordDto.email);
 
     if (user.roles.includes(RoleEnum.Admin)) {
       throw new UnauthorizedException('Only admin can change own password');
     }
 
-    const newPasswordHash = await this.hashPassword(updatePasswordDto.password);
-    return this.updatePassword(userId, newPasswordHash);
+    return this.updatePassword(user._id, updatePasswordDto.password);
   }
 
   private async hashPassword(password: string) {

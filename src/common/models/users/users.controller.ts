@@ -27,13 +27,10 @@ import { UpdateOthersPassword } from 'common/models/users/dto/update-others-pass
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Put(':id/changePassword')
+  @Put('changeOthersPassword')
   @Roles(RoleEnum.Admin)
-  changeOthersPassword(
-    @Body() updatePasswordDto: UpdateOthersPassword,
-    @Param('id') userId: string,
-  ) {
-    return this.usersService.changeOthersPassword(userId, updatePasswordDto);
+  changeOthersPassword(@Body() updatePasswordDto: UpdateOthersPassword) {
+    return this.usersService.changeOthersPassword(updatePasswordDto);
   }
 
   @Put('changePassword')
