@@ -16,7 +16,7 @@ import { RoleEnum } from 'common/models/users/role.enum';
 import { IDataServices } from 'data-services/interfaces/idata-services';
 import * as bcrypt from 'bcrypt';
 import { UpdatePasswordDto } from 'common/models/users/dto/update-password.dto';
-import { UpdateOthersPassword } from './dto/update-others-password.dto';
+import { UpdateOthersPassword } from 'common/models/users/dto/update-others-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -103,7 +103,7 @@ export class UsersService {
   }
 
   async changePassword(userId: string, updatePasswordDto: UpdatePasswordDto) {
-    const user = await this.dataServices.users.getById(userId);
+    const user = await this.getById(userId);
 
     const oldPasswordHash = await this.hashPassword(
       updatePasswordDto.oldPassword,
@@ -122,12 +122,7 @@ export class UsersService {
     userId: string,
     updatePasswordDto: UpdateOthersPassword,
   ) {
-    const user = await this.dataServices.users.getByEmail(
-      updatePasswordDto.email,
-    );
-    if (!user) {
-      throw new NotFoundException('No user with this id!');
-    }
+    const user = await this.getByEmail(updatePasswordDto.email);
 
     if (user.roles.includes(RoleEnum.Admin)) {
       throw new UnauthorizedException('Only admin can change own password');
