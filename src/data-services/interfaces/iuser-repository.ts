@@ -24,4 +24,9 @@ export interface IUserRepository {
   ): Promise<UserDto | null | undefined>;
 
   ban(id: string, banUserDto: BanUserDto): Promise<UserDto | null | undefined>;
+
+  updatePassword(
+    id: string,
+    password: string,
+  ): Promise<UserDto | null | undefined>;
 }

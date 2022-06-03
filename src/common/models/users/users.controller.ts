@@ -27,6 +27,8 @@ import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
 import { ResponseUserDto } from 'common/models/users/dto/response-user.dto';
 import { RoleGuard } from 'auth/guards/role.guard';
 import { User } from 'common/decorators/user.decorator';
+import { UpdatePasswordDto } from 'common/models/users/dto/update-password.dto';
+import { UpdateOthersPassword } from 'common/models/users/dto/update-others-password.dto';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RoleGuard)
@@ -40,6 +42,26 @@ export class UsersController {
     if (!authUser.roles.includes(RoleEnum.Admin)) {
       throw new ForbiddenException();
     }
+  }
+
+  @Put('changeOthersPassword')
+  @Roles(RoleEnum.Admin)
+  changeOthersPassword(@Body() updatePasswordDto: UpdateOthersPassword) {
+    return this.usersService.changeOthersPassword(updatePasswordDto);
+  }
+
+  @Put('changePassword')
+  changePassword(
+    @Body() updatePasswordDto: UpdatePasswordDto,
+    @User() user: UserDto,
+  ) {
+    return this.usersService.changePassword(user._id, updatePasswordDto);
+  }
+
+  @Post()
+  @Roles(RoleEnum.Admin)
+  create(@Body() createUserDto: BaseUserDto) {
+    return this.usersService.create(createUserDto);
   }
 
   @Get()
@@ -92,11 +114,5 @@ export class UsersController {
     @Body() banUserDto: BanUserDto,
   ) {
     return new ResponseUserDto(await this.usersService.ban(id, banUserDto));
-  }
-
-  @Put('password')
-  @Roles(RoleEnum.Admin)
-  changePassword() {
-    return { message: 'Change Password' };
   }
 }

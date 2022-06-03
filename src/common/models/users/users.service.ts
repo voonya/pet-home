@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
   AddRoleDto,
@@ -14,6 +15,8 @@ import { PaginationDto } from 'common/pipes/pagination/dto/pagination.dto';
 import { RoleEnum } from 'common/models/users/role.enum';
 import { IDataServices } from 'data-services/interfaces/idata-services';
 import * as bcrypt from 'bcrypt';
+import { UpdatePasswordDto } from 'common/models/users/dto/update-password.dto';
+import { UpdateOthersPassword } from 'common/models/users/dto/update-others-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -35,7 +38,8 @@ export class UsersService {
     if (user) {
       throw new BadRequestException('This email is already registered');
     }
-    const hashedPassword = this.hashPassword(user.password);
+    const hashedPassword = await this.hashPassword(createUserDto.password);
+
     const newUser: UserDto = {
       ...createUserDto,
       password: hashedPassword,
@@ -98,7 +102,35 @@ export class UsersService {
     return bannedUser;
   }
 
-  private hashPassword(password: string) {
+  async changePassword(userId: string, updatePasswordDto: UpdatePasswordDto) {
+    const user = await this.getById(userId);
+    const compareResult = await bcrypt.compare(
+      updatePasswordDto.oldPassword,
+      user.password,
+    );
+    if (!compareResult) {
+      throw new BadRequestException('Old password missmatched');
+    }
+
+    return this.updatePassword(userId, updatePasswordDto.newPassword);
+  }
+
+  async changeOthersPassword(updatePasswordDto: UpdateOthersPassword) {
+    const user = await this.getByEmail(updatePasswordDto.email);
+
+    if (user.roles.includes(RoleEnum.Admin)) {
+      throw new UnauthorizedException('Only admin can change own password');
+    }
+
+    return this.updatePassword(user._id, updatePasswordDto.password);
+  }
+
+  private async hashPassword(password: string) {
     return bcrypt.hash(password, Number(process.env.PASSWORD_SALT));
+  }
+
+  private async updatePassword(userId: string, newPassword: string) {
+    const newPasswordHash = await this.hashPassword(newPassword);
+    return this.dataServices.users.updatePassword(userId, newPasswordHash);
   }
 }
