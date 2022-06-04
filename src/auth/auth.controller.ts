@@ -83,6 +83,7 @@ export class AuthController {
       ),
       sameSite: 'strict',
       httpOnly: true,
+      path: '/auth/refresh',
     });
     res.send({ accessToken });
     return res;
