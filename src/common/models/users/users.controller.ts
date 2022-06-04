@@ -15,7 +15,7 @@ import { UsersService } from 'common/models/users/users.service';
 import {
   AddRoleDto,
   BanUserDto,
-  BaseUserDto,
+  UpdateUserDto,
   UserDto,
 } from 'common/models/users/dto';
 import { PaginationDto } from 'common/pipes/pagination/dto/pagination.dto';
@@ -77,7 +77,7 @@ export class UsersController {
 
   @Put(':id')
   async update(
-    @Body() updateUserDto: BaseUserDto,
+    @Body() updateUserDto: UpdateUserDto,
     @Param('id', ObjectIdValidationPipe) id: string,
     @User() authUser: UserDto,
   ) {

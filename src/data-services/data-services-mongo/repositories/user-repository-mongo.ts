@@ -4,7 +4,7 @@ import { UserDocument } from 'data-services/data-services-mongo/schemas/user.sch
 import {
   AddRoleDto,
   BanUserDto,
-  BaseUserDto,
+  UpdateUserDto,
   UserDto,
 } from 'common/models/users/dto';
 
@@ -35,7 +35,7 @@ export class UserRepositoryMongo implements IUserRepository {
     return this._repository.findByIdAndRemove(id).exec();
   }
 
-  update(id: string, dto: BaseUserDto): Promise<UserDto | null | undefined> {
+  update(id: string, dto: UpdateUserDto): Promise<UserDto | null | undefined> {
     return this._repository.findByIdAndUpdate(id, dto, { new: true }).exec();
   }
 

@@ -10,6 +10,7 @@ import {
   BanUserDto,
   BaseUserDto,
   UserDto,
+  UpdateUserDto,
 } from 'common/models/users/dto';
 import { PaginationDto } from 'common/pipes/pagination/dto/pagination.dto';
 import { RoleEnum } from 'common/models/users/role.enum';
@@ -74,7 +75,7 @@ export class UsersService {
     return user;
   }
 
-  async update(id: string, updateUserDto: BaseUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     const savedUser = await this.dataServices.users.update(id, updateUserDto);
     if (!savedUser) {
       throw new InternalServerErrorException();

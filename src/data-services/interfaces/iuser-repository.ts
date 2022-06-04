@@ -1,7 +1,7 @@
 import {
   AddRoleDto,
   BanUserDto,
-  BaseUserDto,
+  UpdateUserDto,
   UserDto,
 } from 'common/models/users/dto';
 
@@ -14,7 +14,7 @@ export interface IUserRepository {
 
   create(dto: UserDto): Promise<UserDto>;
 
-  update(id: string, dto: BaseUserDto): Promise<UserDto | null | undefined>;
+  update(id: string, dto: UpdateUserDto): Promise<UserDto | null | undefined>;
 
   remove(id: string): Promise<UserDto | null | undefined>;
 
