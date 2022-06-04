@@ -52,7 +52,7 @@ export class FeedbackController {
 
   @Post()
   leftFeedback(@Body() feedback: PostFeedbackDto, @User() user: UserDto) {
-    return this.feedbackService.createFeedback(user._id, feedback);
+    return this.feedbackService.createFeedback(user._id.toString(), feedback);
   }
 
   @Delete(':id')
@@ -60,6 +60,6 @@ export class FeedbackController {
     @Param('id', ObjectIdValidationPipe) id: string,
     @User() user: UserDto,
   ) {
-    return this.feedbackService.deleteFeedback(id, user._id);
+    return this.feedbackService.deleteFeedback(id, user._id.toString());
   }
 }
