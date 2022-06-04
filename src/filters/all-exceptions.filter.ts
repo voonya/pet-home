@@ -55,7 +55,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const loggerService = new LoggerService(request.url);
     const stack = (exception as Error)?.stack ?? 'no stack';
 
-    console.error(exception);
     loggerService.error({ ...errorResponse, stack: stack });
     response.status(status).json(errorResponse);
   }
