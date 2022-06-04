@@ -52,8 +52,8 @@ export class ApplicationService {
     if (!(await this.isRequestActual(applicationDto.requestId))) {
       throw new BadRequestException('Request is expired');
     }
-
-    if (request.userId === userId) {
+    console.log(request.userId.toString(), userId);
+    if (request.userId.toString() === userId) {
       throw new BadRequestException("Can't apply to own request");
     }
 

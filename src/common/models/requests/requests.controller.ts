@@ -20,6 +20,7 @@ import { PaginationPipe } from 'common/pipes/pagination/pagination.pipe';
 import { ObjectIdValidationPipe } from 'common/pipes/object-id/objectid-validation.pipe';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
 import { User } from 'common/decorators/user.decorator';
+import { UserDto } from 'common/models/users/dto';
 
 @Controller('requests')
 @UseGuards(JwtAuthGuard)
@@ -38,41 +39,49 @@ export class RequestsController {
   }
 
   @Post()
-  create(@Body() createRequestDto: BaseRequestDto, @User() userId: string) {
-    return this.requestsService.create(createRequestDto, userId);
+  create(@Body() createRequestDto: BaseRequestDto, @User() user: UserDto) {
+    return this.requestsService.create(createRequestDto, user._id.toString());
   }
 
   @Delete(':id')
   remove(
     @Param('id', ObjectIdValidationPipe) id: string,
-    @User() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.requestsService.remove(id, userId);
+    return this.requestsService.remove(id, user._id.toString());
   }
 
   @Put(':id')
   update(
     @Param('id', ObjectIdValidationPipe) id: string,
     @Body() updateRequestDto: UpdateRequestDto,
-    @User() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.requestsService.update(id, userId, updateRequestDto);
+    return this.requestsService.update(
+      id,
+      user._id.toString(),
+      updateRequestDto,
+    );
   }
 
   @Put(':requestId/assign/:applicationId')
   assign(
     @Param('requestId', ObjectIdValidationPipe) requestId: string,
     @Param('applicationId', ObjectIdValidationPipe) applicationId: string,
-    @User() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.requestsService.assign(requestId, applicationId, userId);
+    return this.requestsService.assign(
+      requestId,
+      applicationId,
+      user._id.toString(),
+    );
   }
 
   @Put(':requestId/resign')
   resign(
     @Param('requestId', ObjectIdValidationPipe) requestId: string,
-    @User() userId: string,
+    @User() user: UserDto,
   ) {
-    return this.requestsService.resign(requestId, userId);
+    return this.requestsService.resign(requestId, user._id.toString());
   }
 }
