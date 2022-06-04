@@ -58,7 +58,7 @@ export class AnimalsService {
     const animal = await this.getById(id, userId);
     if (animal.ownerId !== userId) {
       throw new BadRequestException(
-        'User cannot delete this animal, it not his',
+        'User cannot update this animal, it not his',
       );
     }
     const savedAnimal = await this.dataServices.animals.update(
