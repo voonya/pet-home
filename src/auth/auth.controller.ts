@@ -15,6 +15,7 @@ import { Cookies } from 'common/decorators/cookies.decorator';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'auth/guards/jwt-auth.guard';
 import { User } from 'common/decorators/user.decorator';
+import { ResponseUserDto } from 'common/models/users/dto/response-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -36,8 +37,8 @@ export class AuthController {
 
   @HttpCode(200)
   @Post('registration')
-  registration(@Body() user: BaseUserDto) {
-    return this.authService.registration(user);
+  async registration(@Body() user: BaseUserDto) {
+    return new ResponseUserDto(await this.authService.registration(user));
   }
 
   @HttpCode(200)
