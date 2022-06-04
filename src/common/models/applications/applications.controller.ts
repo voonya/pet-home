@@ -43,7 +43,10 @@ export class ApplicationController {
     @Body() createApplicationDto: BaseApplicationDto,
     @User() user: UserDto,
   ) {
-    return this.applicationService.create(createApplicationDto, user._id);
+    return this.applicationService.create(
+      createApplicationDto,
+      user._id.toString(),
+    );
   }
 
   @Delete(':id')
@@ -51,7 +54,7 @@ export class ApplicationController {
     @Param('id', ObjectIdValidationPipe) id: string,
     @User() user: UserDto,
   ) {
-    return this.applicationService.remove(id, user._id);
+    return this.applicationService.remove(id, user._id.toString());
   }
 
   @Put(':id')
@@ -60,6 +63,10 @@ export class ApplicationController {
     @Body() updateApplicationDto: UpdateApplicationDto,
     @User() user: UserDto,
   ) {
-    return this.applicationService.update(id, user._id, updateApplicationDto);
+    return this.applicationService.update(
+      id,
+      user._id.toString(),
+      updateApplicationDto,
+    );
   }
 }

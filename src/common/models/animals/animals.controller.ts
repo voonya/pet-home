@@ -26,13 +26,16 @@ export class AnimalsController {
 
   @Post()
   create(@Body() createAnimalDto: BaseAnimalDto, @User() user: UserDto) {
-    return this.animalsService.createAnimal(createAnimalDto, user._id);
+    return this.animalsService.createAnimal(
+      createAnimalDto,
+      user._id.toString(),
+    );
   }
 
   @Get()
   @UsePipes(new PaginationPipe(0, 10))
   getAll(@Query() pagination: PaginationDto, @User() user: UserDto) {
-    return this.animalsService.getAll(pagination, user._id);
+    return this.animalsService.getAll(pagination, user._id.toString());
   }
 
   @Get(':id')
@@ -40,7 +43,7 @@ export class AnimalsController {
     @Param('id', ObjectIdValidationPipe) id: string,
     @User() user: UserDto,
   ) {
-    return this.animalsService.getById(id, user._id);
+    return this.animalsService.getById(id, user._id.toString());
   }
 
   @Put(':id')
@@ -49,7 +52,7 @@ export class AnimalsController {
     @Param('id', ObjectIdValidationPipe) id: string,
     @User() user: UserDto,
   ) {
-    return this.animalsService.update(id, updateAnimalDto, user._id);
+    return this.animalsService.update(id, updateAnimalDto, user._id.toString());
   }
 
   @Delete(':id')
@@ -57,6 +60,6 @@ export class AnimalsController {
     @Param('id', ObjectIdValidationPipe) id: string,
     @User() user: UserDto,
   ) {
-    return this.animalsService.remove(id, user._id);
+    return this.animalsService.remove(id, user._id.toString());
   }
 }
