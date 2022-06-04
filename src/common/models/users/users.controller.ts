@@ -36,7 +36,7 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   private static checkIfUserIsAllowed(userId: string, authUser: UserDto): void {
-    if (userId == authUser._id) {
+    if (userId == authUser._id.toString()) {
       return;
     }
     if (!authUser.roles.includes(RoleEnum.Admin)) {
