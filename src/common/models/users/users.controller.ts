@@ -44,7 +44,7 @@ export class UsersController {
     }
   }
 
-  @Put('change-others-password')
+  @Put('change-password-by-email')
   @Roles(RoleEnum.Admin)
   async changeOthersPassword(@Body() updatePasswordDto: UpdateOthersPassword) {
     return new ResponseUserDto(
