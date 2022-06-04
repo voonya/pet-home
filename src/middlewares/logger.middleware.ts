@@ -14,6 +14,7 @@ export class LoggerMiddleware implements NestMiddleware {
     const { method, url } = req;
 
     loggerService.log({
+      message: `METHOD: ${method} URL: ${url}`,
       method: method,
       url: url,
       headers: headers,
