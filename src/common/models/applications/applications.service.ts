@@ -53,7 +53,7 @@ export class ApplicationService {
       throw new BadRequestException('Request is expired');
     }
 
-    if (request.userId.toString() === userId) {
+    if (request.user.toString() === userId) {
       throw new BadRequestException("Can't apply to own request");
     }
 

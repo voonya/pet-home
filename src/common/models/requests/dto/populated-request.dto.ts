@@ -1,17 +1,25 @@
 import {
-  IsDate,
   IsMongoId,
-  IsNotEmpty,
   IsOptional,
+  IsDate,
+  IsNotEmpty,
   IsString,
-  MaxLength,
   MinLength,
+  MaxLength,
 } from 'class-validator';
 import mongoose from 'mongoose';
 
-export class BaseRequestDto {
+export class PopulatedRequestDto {
   @IsMongoId()
-  animal: mongoose.Types.ObjectId;
+  @IsOptional()
+  _id?: string;
+
+  @IsDate()
+  creationDate: Date;
+
+  user: mongoose.Schema.Types.ObjectId;
+
+  animal: mongoose.Schema.Types.ObjectId;
 
   @IsString()
   @MinLength(10)

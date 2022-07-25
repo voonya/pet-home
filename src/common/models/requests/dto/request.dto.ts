@@ -1,5 +1,6 @@
-import { IsDate, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsDate, IsMongoId, IsOptional } from 'class-validator';
 import { BaseRequestDto } from 'common/models/requests/dto/base-request.dto';
+import mongoose from 'mongoose';
 
 export class RequestDto extends BaseRequestDto {
   @IsMongoId()
@@ -10,6 +11,5 @@ export class RequestDto extends BaseRequestDto {
   creationDate: Date;
 
   @IsMongoId()
-  @IsNotEmpty()
-  userId: string;
+  user: mongoose.Types.ObjectId;
 }

@@ -10,6 +10,7 @@ import {
   RequestQueryDto,
   UpdateRequestDto,
 } from 'common/models/requests/dto';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class RequestService {
@@ -37,7 +38,7 @@ export class RequestService {
     const newRecord: RequestDto = {
       ...requestDto,
       creationDate: new Date(),
-      userId: userId,
+      user: new mongoose.Types.ObjectId(userId),
     };
 
     if (this.isDateUnacceptable(newRecord, newRecord.creationDate)) {
@@ -45,7 +46,7 @@ export class RequestService {
     }
 
     const animal = await this.dataServices.animals.getById(
-      requestDto.animalId,
+      requestDto.animal.toString(),
       userId,
     );
     if (!animal) {
@@ -66,7 +67,7 @@ export class RequestService {
   async update(id: string, userId: string, updateRequestDto: UpdateRequestDto) {
     const oldRequest = await this.getById(id);
 
-    if (oldRequest.userId !== userId) {
+    if (oldRequest.user.toString() !== userId) {
       throw new BadRequestException('Only owner can update the request');
     }
 
@@ -97,7 +98,7 @@ export class RequestService {
       throw new BadRequestException('Requesst already has an assignee');
     }
 
-    if (request.userId !== userId) {
+    if (request.user.toString() !== userId) {
       throw new BadRequestException('You can assign only to own request');
     }
 
@@ -121,7 +122,7 @@ export class RequestService {
   async resign(requestId: string, userId: string) {
     const request = await this.getById(requestId);
 
-    if (request.userId !== userId) {
+    if (request.user.toString() !== userId) {
       throw new BadRequestException('You can resignonly own request');
     }
 
